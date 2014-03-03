@@ -1,0 +1,19 @@
+.list-item {
+  margin: 0px 0px 0px 10px;
+  padding: 0px 0px 0px 0px;
+  display: flex;
+  flex-direction: row;
+  flex: none;
+}
+
+.list-item-expand-collapse {
+  flex: none;
+  min-width: 10px;
+  cursor: pointer;
+}
+
+.list-item-selection {
+  flex: none;
+  min-width: 10px;
+  cursor: pointer;
+}

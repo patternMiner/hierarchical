@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+
+<html ng-app>
+  <head>
+    <meta charset="utf-8">
+    <title>Hierarchical</title>
+    <link rel="stylesheet" href="hierarchical.css">
+  </head>
+  <body>
+
+    <h1>Hierarchical</h1>
+
+    <tree tree-selection-enabled="true">
+      <list>
+        <list-item>Shape</list-item>
+        <list>
+          <list-item>Open shape</list-item>
+          <list-item>Closed shape</list-item>
+          <list>
+            <list-item>Polygon</list-item>
+            <list>
+              <list-item>Triangle</list-item>
+              <list-item>Quadrangle</list-item>
+              <list-item>Pentagon</list-item>
+              <list-end/>
+            </list>
+            <list-item>Ellipse</list-item>
+            <list>
+              <list-item>Circle</list-item>
+              <list-end/>
+            </list>
+            <list-end/>
+          </list>
+          <list-end/>
+        </list>
+        <list-end/>
+      </list>
+    </tree>
+
+    <script src="packages/shadow_dom/shadow_dom.min.js"></script>
+    <script type="application/dart" src="main.dart"></script>
+    <script type="text/javascript" src="packages/browser/dart.js"></script>
+  </body>
+</html>

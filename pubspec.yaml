@@ -1,4 +1,6 @@
 name: hierarchical
-description: A sample web application
+description: Sample hierarchical components using AngularDart.
+version: 0.0.1
 dependencies:
+  angular: any
   browser: any
