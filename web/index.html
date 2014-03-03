@@ -8,34 +8,51 @@
   </head>
   <body>
 
-    <h1>Hierarchical</h1>
+    <event-bus>
+      <div class="panel-container">
+        <div class="panel">
+          <div class="panel-header">
+            <h1>Hierarchical</h1>
+          </div>
+          <div class="panel-content">
+            <tree selection-enabled="true">
+              <list>
+                <list-item>Shape</list-item>
+                <list>
+                  <list-item>Open shape</list-item>
+                  <list-item>Closed shape</list-item>
+                  <list>
+                    <list-item>Polygon</list-item>
+                    <list>
+                      <list-item>Triangle</list-item>
+                      <list-item>Quadrangle</list-item>
+                      <list-item>Pentagon</list-item>
+                      <list-end/>
+                    </list>
+                    <list-item>Ellipse</list-item>
+                    <list>
+                      <list-item>Circle</list-item>
+                      <list-end/>
+                    </list>
+                    <list-end/>
+                  </list>
+                  <list-end/>
+                </list>
+                <list-end/>
+              </list>
+            </tree>
+          </div>
+        </div>
 
-    <tree tree-selection-enabled="true">
-      <list>
-        <list-item>Shape</list-item>
-        <list>
-          <list-item>Open shape</list-item>
-          <list-item>Closed shape</list-item>
-          <list>
-            <list-item>Polygon</list-item>
-            <list>
-              <list-item>Triangle</list-item>
-              <list-item>Quadrangle</list-item>
-              <list-item>Pentagon</list-item>
-              <list-end/>
-            </list>
-            <list-item>Ellipse</list-item>
-            <list>
-              <list-item>Circle</list-item>
-              <list-end/>
-            </list>
-            <list-end/>
-          </list>
-          <list-end/>
-        </list>
-        <list-end/>
-      </list>
-    </tree>
+        <div class="panel">
+          <div class="panel-header">
+            <h1>Chips</h1>
+          </div>
+          <div class="panel-content">
+          </div>
+        </div>
+      </div>
+    </event-bus>
 
     <script src="packages/shadow_dom/shadow_dom.min.js"></script>
     <script type="application/dart" src="main.dart"></script>

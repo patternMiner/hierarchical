@@ -12,8 +12,8 @@ class TreeController {
   final Set expansionSet = new HashSet();
   final List _parentStack = [];
 
-  @NgOneWayOneTime('tree-selection-enabled')
-  bool treeSelectionEnabled;
+  @NgOneWayOneTime('selection-enabled')
+  bool selectionEnabled;
 
   var _curValue;
   var _parent;

@@ -1,12 +1,11 @@
-<div class="list-item custom-list-item" ng-if="ctrl.visible">
+<div class="list-item" ng-if="ctrl.visible">
   <!-- list-item expand/collapse cell-->
-  <div class="list-item-expand-collapse"
+  <div ng-class="ctrl.expansionState"
        ng-click="ctrl.toggleExpand()">
-       {{ctrl.expansionState}}
   </div>
   <!-- list-item selection cell -->
   <div class="list-item-selection"
-    ng-if="ctrl.treeSelectionEnabled">
+    ng-if="ctrl.selectionEnabled">
     <input type="checkbox" ng-model="ctrl.selected">
   </div>
   <!-- list-item content cell -->

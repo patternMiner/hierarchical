@@ -22,8 +22,10 @@ class ListItemComponent {
   Iterable get children => _treeController.children(this);
   bool toggleExpand() => _treeController.toggleExpansion(this);
   bool get hasChildren => children.isNotEmpty;
-  bool get treeSelectionEnabled => _treeController.treeSelectionEnabled;
-  String get expansionState => hasChildren ? (expanded ? '-' : '+') : '';
+  bool get selectionEnabled => _treeController.selectionEnabled;
+  String get expansionState => hasChildren ?
+      (expanded ? 'list-item-expanded' : 'list-item-collapsed') :
+          'list-item-expand-collapse';
   bool get visible => _treeController.isVisible(this);
   bool get hasParent => _treeController.hasParent(this);
   String get containerClass => hasParent ? 'list-offset' : 'no-list-offset';

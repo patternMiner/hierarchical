@@ -4,6 +4,7 @@ part of hierarchical;
     selector: 'list',
     templateUrl: '../lib/component/list/list.html',
     cssUrl: '../lib/component/list/list.css',
+    applyAuthorStyles: true,
     publishAs: 'list'
 )
 class ListComponent {
