@@ -1,0 +1,7 @@
+<div class="chip-container">
+  <div ng-if="chips.getLabel != null">
+    <chip ng-repeat="chip in chips.list" item="chip">
+      {{chips.getLabel(chip)}}
+    </chip>
+  </div>
+</div>

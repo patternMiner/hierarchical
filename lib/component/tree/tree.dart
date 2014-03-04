@@ -5,18 +5,62 @@ part of hierarchical;
     publishAs: 'tree',
     visibility: NgDirective.CHILDREN_VISIBILITY
 )
-class TreeController {
+class TreeController implements NgAttachAware, NgDetachAware {
   final Expando<_GraphNode> valueMap = new Expando<_GraphNode>();
   final Graph<_GraphNode> _graph = new Graph<_GraphNode>();
   final Set selectionSet = new HashSet();
   final Set expansionSet = new HashSet();
   final List _parentStack = [];
+  final AppEventBus _eventBus;
 
   @NgOneWayOneTime('selection-enabled')
   bool selectionEnabled;
 
+  StreamSubscription<AppEvent> _subscription;
+
   var _curValue;
   var _parent;
+
+  TreeController(this._eventBus) {
+    _subscription = _eventBus.onAppEvent().listen((AppEvent event) {
+      switch(event.type) {
+        case AppEvent.CHIP_DELETED:
+          toggleSelection(event.data);
+          return;
+        case AppEvent.CURRENT_SELECTION:
+          if (event.completer != null) {
+            event.completer.complete(getSelections());
+          }
+          return;
+      }
+    });
+  }
+
+  void attach() {
+    _cancelSubscription();
+    _subscription = _eventBus.onAppEvent().listen((AppEvent event) {
+      switch(event.type) {
+        case AppEvent.CHIP_DELETED:
+          toggleSelection(event.data);
+          return;
+        case AppEvent.CURRENT_SELECTION:
+          if (event.completer != null) {
+            event.completer.complete(getSelections());
+          }
+          return;
+      }
+    });
+  }
+
+  void detach() {
+    _cancelSubscription();
+  }
+
+  void _cancelSubscription() {
+    if (_subscription != null) {
+      _subscription.cancel();
+    }
+  }
 
   bool isSelected(value) => selectionSet.contains(value);
   bool isExpanded(value) => expansionSet.contains(value);
@@ -34,6 +78,8 @@ class TreeController {
       selectionSet.addAll(_graph.getDescendants(_getNode(value))
           .map((_GraphNode node) => node.value));
     }
+    _eventBus.post(new AppEvent(AppEvent.SELECTION_CHANGED,
+        getSelections(), null));
   }
 
   bool isVisible(value) {
@@ -42,6 +88,23 @@ class TreeController {
       return true;
     }
     return ancestors.every((node) => isExpanded(node.value));
+  }
+
+  Iterable getSelections() {
+    List result = [];
+    _graph.getRoots().forEach((_GraphNode node) {
+      getSelectedSubtree(node, result);
+    });
+    return result;
+  }
+
+  void getSelectedSubtree(_GraphNode node, List result) {
+    if (isSelected(node.value)) {
+      result.add(node.value);
+    }
+    _graph.getChildren(node).forEach((_GraphNode child) {
+      getSelectedSubtree(child, result);
+    });
   }
 
   void pushList() {

@@ -12,6 +12,9 @@ class ListItemComponent {
 
   final TreeController _treeController;
 
+  @NgOneWayOneTime('label')
+  String label;
+
   ListItemComponent(this._treeController) {
     _treeController.addNode(this);
   }

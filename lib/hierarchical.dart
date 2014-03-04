@@ -1,5 +1,6 @@
 library hierarchical;
 
+import 'dart:html';
 import 'dart:async';
 import 'dart:collection';
 import 'package:angular/angular.dart';
@@ -13,6 +14,8 @@ import 'dart:mirrors';
 
 part 'common/graph/graph.dart';
 part 'common/event/app_event_bus.dart';
+part 'component/chip/chip.dart';
+part 'component/chip/chip_container.dart';
 part 'component/list/list.dart';
 part 'component/list/list_end.dart';
 part 'component/list/list_item.dart';
@@ -25,5 +28,7 @@ class HierarchicalModule extends Module {
     type(ListComponent);
     type(ListEndController);
     type(ListItemComponent);
+    type(ChipComponent);
+    type(ChipContainerComponent);
   }
 }
