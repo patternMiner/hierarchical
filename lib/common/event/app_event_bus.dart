@@ -26,11 +26,20 @@ class AppEventBus {
   Stream<AppEvent> onAppEvent() => _streamController.stream;
 }
 
-
+/**
+ * Encapsulates both requests for information from the listeners, and
+ * notifications to the listeners.
+ *
+ * For requests for information, the requester will include a completer
+ * that needs to be completed with appropriate result by the listener.
+ */
 class AppEvent {
-  static const String SELECTION_CHANGED     = 'SELECTION_CHANGED';
+  /// Queries that require the listener to respond through the completer.
   static const String GET_CURRENT_SELECTION = 'GET_CURRENT_SELECTION';
   static const String GET_LABEL_FUNCTION    = 'GET_LABEL_FUNCTION';
+
+  /// Notifications to the listeners. No response required.
+  static const String SELECTION_CHANGED     = 'SELECTION_CHANGED';
   static const String CHIP_DELETED          = 'CHIP_DELETED';
 
   final String type;
