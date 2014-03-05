@@ -21,39 +21,37 @@ class TreeController implements NgAttachAware, NgDetachAware {
   StreamSubscription<AppEvent> _subscription;
 
   TreeController(this._eventBus) {
-    _subscription = _eventBus.onAppEvent().listen((AppEvent event) {
-      switch(event.type) {
-        case AppEvent.CHIP_DELETED:
-          toggleSelection(event.data);
-          return;
-        case AppEvent.CURRENT_SELECTION:
-          if (event.completer != null) {
-            event.completer.complete(getSelections());
-          }
-          return;
-      }
-    });
+    _createSubscription();
   }
 
   void attach() {
     _processList(items, []);
     _cancelSubscription();
+    _createSubscription();
+  }
+
+  void detach() {
+    _cancelSubscription();
+  }
+
+  void _createSubscription() {
     _subscription = _eventBus.onAppEvent().listen((AppEvent event) {
       switch(event.type) {
         case AppEvent.CHIP_DELETED:
           toggleSelection(event.data);
           return;
-        case AppEvent.CURRENT_SELECTION:
+        case AppEvent.GET_CURRENT_SELECTION:
           if (event.completer != null) {
             event.completer.complete(getSelections());
           }
           return;
+        case AppEvent.GET_LABEL_FUNCTION:
+          if (event.completer != null) {
+            event.completer.complete(getLabel);
+          }
+          return;
       }
     });
-  }
-
-  void detach() {
-    _cancelSubscription();
   }
 
   void _cancelSubscription() {
@@ -143,4 +141,8 @@ class _Node {
   final value;
 
   _Node(this.value);
+}
+
+String getLabel(_Node item) {
+  return item.value.toString();
 }
