@@ -10,7 +10,12 @@ part of hierarchical;
 class ListComponent {
   final TreeController _treeController;
 
-  ListComponent(this._treeController) {
-    _treeController.pushList();
-  }
+  @NgOneWayOneTime('items')
+  Iterable items;
+
+  ListComponent(this._treeController);
+
+  bool isLeaf(item) => _treeController.isLeaf(item);
+  bool hasChildren(item) => getChildren(item).isNotEmpty;
+  Iterable getChildren(item) => _treeController.children(item);
 }

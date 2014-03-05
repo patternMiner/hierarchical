@@ -1,3 +1,6 @@
 <div class='list custom-list'>
-  <content></content>
+  <div ng-repeat="item in list.items">
+    <list-item item="item">{{item.value}}</list-item>
+    <list ng-if="list.hasChildren(item)" items="list.getChildren(item)"></list>
+  </div>
 </div>

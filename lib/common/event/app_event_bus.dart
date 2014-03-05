@@ -57,7 +57,7 @@ class AppEventBus implements NgAttachAware, NgDetachAware {
 
 
 String getLabel(item) {
-  return item.label;
+  return item.value;
 }
 
 class AppEvent {

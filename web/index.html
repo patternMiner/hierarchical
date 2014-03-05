@@ -7,54 +7,32 @@
     <link rel="stylesheet" href="hierarchical.css">
   </head>
   <body>
-
-    <event-bus>
-      <div class="panel-container">
-        <div class="panel">
-          <div class="panel-header">
-            <h1>Hierarchical</h1>
+    <hierarchical-app>
+      <event-bus>
+        <div class="panel-container">
+          <div class="panel">
+            <div class="panel-header">
+              <h1>Hierarchical</h1>
+            </div>
+            <div class="panel-content">
+              <tree selection-enabled="true" items="app.hierarchy">
+                <list items="tree.roots"></list>
+              </tree>
+            </div>
           </div>
-          <div class="panel-content">
-            <tree selection-enabled="true">
-              <list>
-                <list-item label="'Shape'">Shape</list-item>
-                <list>
-                  <list-item label="'Open shape'">Open shape</list-item>
-                  <list-item label="'Closed shape'">Closed shape</list-item>
-                  <list>
-                    <list-item label="'Polygon'">Polygon</list-item>
-                    <list>
-                      <list-item label="'Triangle'">Triangle</list-item>
-                      <list-item label="'Quadrangle'">Quadrangle</list-item>
-                      <list-item label="'Pentagon'">Pentagon</list-item>
-                      <list-end/>
-                    </list>
-                    <list-item label="'Ellipse'">Ellipse</list-item>
-                    <list>
-                      <list-item label="'Circle'">Circle</list-item>
-                      <list-end/>
-                    </list>
-                    <list-end/>
-                  </list>
-                  <list-end/>
-                </list>
-                <list-end/>
-              </list>
-            </tree>
+
+          <div class="panel">
+            <div class="panel-header">
+              <h1>Chips</h1>
+            </div>
+            <div class="panel-content">
+              <chip-container>
+              </chip-container>
+            </div>
           </div>
         </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <h1>Chips</h1>
-          </div>
-          <div class="panel-content">
-            <chip-container>
-            </chip-container>
-          </div>
-        </div>
-      </div>
-    </event-bus>
+      </event-bus>
+    </hierarchical-app>
 
     <script src="packages/shadow_dom/shadow_dom.min.js"></script>
     <script type="application/dart" src="main.dart"></script>
