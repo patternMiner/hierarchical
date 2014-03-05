@@ -13,6 +13,7 @@ h1, p {
 
 .panel {
   width: 320px;
+  height: 360px;
   flex: none;
   border: 1px solid #dcdcdc;
   margin: 20px;

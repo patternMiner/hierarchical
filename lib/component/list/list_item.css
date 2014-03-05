@@ -31,7 +31,8 @@
 
 .list-item-selection {
   flex: none;
-  min-width: 10px;
-  margin: 0px 5px 0px 0px;
+  width: 16px;
+  height: 16px;
+  margin: auto 5px;
   cursor: pointer;
 }
