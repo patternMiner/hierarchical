@@ -9,7 +9,6 @@ class TreeController implements NgAttachAware, NgDetachAware {
   final Graph<_Node> _graph = new Graph<_Node>();
   final Set selectionSet = new HashSet();
   final Set expansionSet = new HashSet();
-  final List _parentStack = [];
   final AppEventBus _eventBus;
 
   @NgOneWayOneTime('selection-enabled')
@@ -135,7 +134,6 @@ class TreeController implements NgAttachAware, NgDetachAware {
   Iterable get roots => _graph.getRoots();
   Iterable children(_Node parent) => _graph.getChildren(parent);
 }
-
 
 class _Node {
   final value;

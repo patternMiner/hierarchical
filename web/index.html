@@ -7,31 +7,10 @@
     <link rel="stylesheet" href="hierarchical.css">
   </head>
   <body>
-    <hierarchical-app>
-      <event-bus>
-        <div class="panel-container">
-          <div class="panel">
-            <div class="panel-header">
-              <h1>Hierarchical</h1>
-            </div>
-            <div class="panel-content">
-              <tree selection-enabled="true" items="app.hierarchy">
-                <list items="tree.roots"></list>
-              </tree>
-            </div>
-          </div>
 
-          <div class="panel">
-            <div class="panel-header">
-              <h1>Chips</h1>
-            </div>
-            <div class="panel-content">
-              <chip-container>
-              </chip-container>
-            </div>
-          </div>
-        </div>
-      </event-bus>
+    <hierarchical-app>
+      <tree-chip title="'Shape hierarchy'" items="app.shapes"></tree-chip>
+      <tree-chip title="'Collection hierarchy'" items="app.collections"></tree-chip>
     </hierarchical-app>
 
     <script src="packages/shadow_dom/shadow_dom.min.js"></script>

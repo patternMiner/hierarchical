@@ -1,0 +1,24 @@
+<event-bus>
+  <div class="panel-container">
+    <div class="panel">
+      <div class="panel-header">
+        <h1>{{ctrl.title}}</h1>
+      </div>
+      <div class="panel-content">
+        <tree selection-enabled="true" items="ctrl.items">
+          <list items="tree.roots"></list>
+        </tree>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h1>Chips</h1>
+      </div>
+      <div class="panel-content">
+        <chip-container>
+        </chip-container>
+      </div>
+    </div>
+  </div>
+</event-bus>

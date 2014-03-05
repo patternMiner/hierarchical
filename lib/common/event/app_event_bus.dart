@@ -1,8 +1,8 @@
 part of hierarchical;
 
 @NgController(
-    selector: 'app-event-bus',
-    publishAs: 'AppEventBus',
+    selector: 'event-bus',
+    publishAs: 'eventBus',
     visibility: NgDirective.CHILDREN_VISIBILITY
 )
 class AppEventBus {
