@@ -36,7 +36,7 @@ class AppEventBus {
 class AppEvent {
   /// Queries that require the listener to respond through the completer.
   static const String GET_CURRENT_SELECTION = 'GET_CURRENT_SELECTION';
-  static const String GET_LABEL_FUNCTION    = 'GET_LABEL_FUNCTION';
+  static const String GET_TEMPLATE_MARKUP_FUNCTION = 'GET_TEMPLATE_MARKUP_FUNCTION';
 
   /// Notifications to the listeners. No response required.
   static const String SELECTION_CHANGED     = 'SELECTION_CHANGED';

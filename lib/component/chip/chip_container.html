@@ -1,5 +1,5 @@
-<div class="chip-container" ng-if="chips.getLabel != null">
+<div class="chip-container" ng-if="chips.getTemplateMarkup != null">
     <chip ng-repeat="chip in chips.list" item="chip">
-      {{chips.getLabel(chip)}}
+      <item-placeholder template-markup="chips.getTemplateMarkup(chip)"></item-placeholder>
     </chip>
 </div>

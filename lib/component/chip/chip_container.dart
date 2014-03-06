@@ -10,12 +10,13 @@ part of hierarchical;
 class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   var list = [];
-  Function getLabel;
+  Function getTemplateMarkup;
   StreamSubscription<AppEvent> _subscription;
   final AppEventBus _eventBus;
 
   ChipContainerComponent(this._eventBus) {
-    _getLabelFunction().then((Function getLabel) => this.getLabel = getLabel);
+    _getTemplateMarkupFunction().then((Function getTemplateMarkup) =>
+        this.getTemplateMarkup = getTemplateMarkup);
   }
 
   void attach() {
@@ -55,11 +56,11 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
     return completer.future;
   }
 
-  Future<Function> _getLabelFunction() {
+  Future<Function> _getTemplateMarkupFunction() {
     Completer<Function> completer = new Completer<Function>();
-    AppEvent labelFunctionEvent = new AppEvent(AppEvent.GET_LABEL_FUNCTION,
-        null, completer);
-    _eventBus.post(labelFunctionEvent);
+    AppEvent templateMarkupFunctionEvent =
+        new AppEvent(AppEvent.GET_TEMPLATE_MARKUP_FUNCTION, null, completer);
+    _eventBus.post(templateMarkupFunctionEvent);
     return completer.future;
   }
 

@@ -44,9 +44,9 @@ class TreeController implements NgAttachAware, NgDetachAware {
             event.completer.complete(getSelections());
           }
           return;
-        case AppEvent.GET_LABEL_FUNCTION:
+        case AppEvent.GET_TEMPLATE_MARKUP_FUNCTION:
           if (event.completer != null) {
-            event.completer.complete(getLabel);
+            event.completer.complete(getTemplateMarkup);
           }
           return;
       }
@@ -144,8 +144,3 @@ class _Node {
 
   _Node(this.value);
 }
-
-String getLabel(_Node item) {
-  return item.value.toString();
-}
-
