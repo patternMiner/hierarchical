@@ -133,6 +133,10 @@ class TreeController implements NgAttachAware, NgDetachAware {
 
   Iterable get roots => _graph.getRoots();
   Iterable children(_Node parent) => _graph.getChildren(parent);
+
+  String getTemplateMarkup(_Node item) {
+    return "<div>${item.value}</div>";
+  }
 }
 
 class _Node {
@@ -144,3 +148,4 @@ class _Node {
 String getLabel(_Node item) {
   return item.value.toString();
 }
+

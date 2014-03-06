@@ -18,4 +18,5 @@ class ListComponent {
   bool isLeaf(item) => _treeController.isLeaf(item);
   bool hasChildren(item) => getChildren(item).isNotEmpty;
   Iterable getChildren(item) => _treeController.children(item);
+  String getTemplateMarkup(item) => _treeController.getTemplateMarkup(item);
 }
