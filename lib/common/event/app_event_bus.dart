@@ -1,4 +1,7 @@
-part of hierarchical;
+library app_event_bus;
+
+import 'dart:async';
+import 'package:angular/angular.dart';
 
 @NgController(
     selector: 'event-bus',

@@ -1,9 +1,13 @@
-part of hierarchical;
+library list_item;
+
+import 'package:angular/angular.dart';
+
+import '../../component/tree/tree.dart';
 
 @NgComponent(
     selector: 'list-item',
-    templateUrl: '../lib/component/list/list_item.html',
-    cssUrl: '../lib/component/list/list_item.css',
+    templateUrl: '../lib/component/list_item/list_item.html',
+    cssUrl: '../lib/component/list_item/list_item.css',
     publishAs: 'ctrl',
     applyAuthorStyles: true,
     visibility: NgDirective.CHILDREN_VISIBILITY

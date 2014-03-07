@@ -1,4 +1,6 @@
-part of hierarchical;
+library tree_chip;
+
+import 'package:angular/angular.dart';
 
 @NgComponent(
     selector: 'tree-chip',

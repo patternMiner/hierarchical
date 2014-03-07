@@ -1,5 +1,4 @@
 .chip-bordered-box {
-  display: inline-block;
   border: 1px solid #dddddd;
   border-radius: 4px;
   background: #F7F7F7;
@@ -7,7 +6,6 @@
   margin: 5px;
   display: flex;
   flex-direction: row;
-  flex: none;
 }
 
 .chip-close-button {

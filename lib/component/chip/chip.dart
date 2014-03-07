@@ -1,4 +1,7 @@
-part of hierarchical;
+library chip;
+
+import 'package:angular/angular.dart';
+import '../../common/event/app_event_bus.dart';
 
 @NgComponent(
     selector: 'chip',

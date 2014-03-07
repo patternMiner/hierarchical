@@ -1,4 +1,7 @@
-part of hierarchical;
+library item_placeholder;
+
+import 'dart:html';
+import 'package:angular/angular.dart';
 
 @NgComponent(
     selector: 'item-placeholder',

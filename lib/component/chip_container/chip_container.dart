@@ -1,9 +1,14 @@
-part of hierarchical;
+library chip_container;
+
+import 'dart:async';
+import 'package:angular/angular.dart';
+
+import '../../common/event/app_event_bus.dart';
 
 @NgComponent(
     selector: 'chip-container',
-    templateUrl: '../lib/component/chip/chip_container.html',
-    cssUrl: '../lib/component/chip/chip_container.css',
+    templateUrl: '../lib/component/chip_container/chip_container.html',
+    cssUrl: '../lib/component/chip_container/chip_container.css',
     publishAs: 'chips',
     applyAuthorStyles: true
 )

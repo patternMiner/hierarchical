@@ -1,4 +1,6 @@
-part of hierarchical;
+library graph;
+
+import 'dart:collection';
 
 class Graph<T> {
   final Set<T> _vertices = new LinkedHashSet<T>();

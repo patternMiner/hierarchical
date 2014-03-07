@@ -1,4 +1,8 @@
-part of hierarchical;
+library list;
+
+import 'package:angular/angular.dart';
+
+import '../../component/tree/tree.dart';
 
 @NgComponent(
     selector: 'list',

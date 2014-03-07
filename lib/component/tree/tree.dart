@@ -1,4 +1,11 @@
-part of hierarchical;
+library tree;
+
+import 'dart:collection';
+import 'dart:async';
+
+import 'package:angular/angular.dart';
+import '../../common/graph/graph.dart';
+import '../../common/event/app_event_bus.dart';
 
 @NgController(
     selector: 'tree',
