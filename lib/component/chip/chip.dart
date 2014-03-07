@@ -21,6 +21,6 @@ class ChipComponent {
   ChipComponent(this._eventBus);
 
   void delete() {
-    _eventBus.post(new AppEvent(AppEvent.CHIP_DELETED, item, null));
+    _eventBus.post(new AppEvent(AppEvent.CHIP_DELETED, this, item, null));
   }
 }

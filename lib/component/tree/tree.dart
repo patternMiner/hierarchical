@@ -110,7 +110,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
       selectionSet.addAll(_graph.getDescendants(item));
     }
     _eventBus.post(new AppEvent(AppEvent.SELECTION_CHANGED,
-        getSelections(), null));
+        this, getSelections(), null));
   }
 
   bool isVisible(item) {

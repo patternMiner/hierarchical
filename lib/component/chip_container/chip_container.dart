@@ -56,7 +56,7 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
   Future<List> _loadCurrentSelection() {
     Completer<List> completer = new Completer<List>();
     AppEvent curSelectionEvent = new AppEvent(AppEvent.GET_CURRENT_SELECTION,
-        null, completer);
+        this, null, completer);
     _eventBus.post(curSelectionEvent);
     return completer.future;
   }
@@ -64,7 +64,8 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
   Future<Function> _getTemplateMarkupFunction() {
     Completer<Function> completer = new Completer<Function>();
     AppEvent templateMarkupFunctionEvent =
-        new AppEvent(AppEvent.GET_TEMPLATE_MARKUP_FUNCTION, null, completer);
+        new AppEvent(AppEvent.GET_TEMPLATE_MARKUP_FUNCTION, 
+            this, null, completer);
     _eventBus.post(templateMarkupFunctionEvent);
     return completer.future;
   }

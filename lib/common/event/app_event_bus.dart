@@ -39,15 +39,17 @@ class AppEventBus {
 class AppEvent {
   /// Queries that require the listener to respond through the completer.
   static const String GET_CURRENT_SELECTION = 'GET_CURRENT_SELECTION';
-  static const String GET_TEMPLATE_MARKUP_FUNCTION = 'GET_TEMPLATE_MARKUP_FUNCTION';
+  static const String GET_TEMPLATE_MARKUP_FUNCTION =
+                                              'GET_TEMPLATE_MARKUP_FUNCTION';
 
   /// Notifications to the listeners. No response required.
-  static const String SELECTION_CHANGED     = 'SELECTION_CHANGED';
-  static const String CHIP_DELETED          = 'CHIP_DELETED';
+  static const String SELECTION_CHANGED = 'SELECTION_CHANGED';
+  static const String CHIP_DELETED      = 'CHIP_DELETED';
 
   final String type;
+  final dynamic source;
   final dynamic data;
   final Completer completer;
 
-  AppEvent(this.type, this.data, this.completer);
+  AppEvent(this.type, this.source, this.data, this.completer);
 }
