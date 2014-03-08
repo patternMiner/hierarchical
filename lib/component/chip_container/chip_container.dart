@@ -28,9 +28,6 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
     _cancelSubscription();
     _subscription = _eventBus.onAppEvent().listen((AppEvent event) {
       switch(event.type) {
-        case AppEvent.CHIP_DELETED:
-          list.remove(event.data);
-          return;
         case AppEvent.SELECTION_CHANGED:
           list.clear();
           list.addAll(event.data);
@@ -64,7 +61,7 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
   Future<Function> _getTemplateMarkupFunction() {
     Completer<Function> completer = new Completer<Function>();
     AppEvent templateMarkupFunctionEvent =
-        new AppEvent(AppEvent.GET_TEMPLATE_MARKUP_FUNCTION, 
+        new AppEvent(AppEvent.GET_TEMPLATE_MARKUP_FUNCTION,
             this, null, completer);
     _eventBus.post(templateMarkupFunctionEvent);
     return completer.future;
