@@ -3,7 +3,7 @@ library chip_container;
 import 'dart:async';
 import 'package:angular/angular.dart';
 
-import '../../common/event/app_event_bus.dart';
+import '../../common/event/event_bus.dart';
 
 @NgComponent(
     selector: 'chip-container',
@@ -16,8 +16,8 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   var list = [];
   Function getTemplateMarkup;
-  StreamSubscription<AppEvent> _subscription;
-  final AppEventBus _eventBus;
+  StreamSubscription<Event> _subscription;
+  final EventBus _eventBus;
 
   ChipContainerComponent(this._eventBus) {
     _getTemplateMarkupFunction().then((Function getTemplateMarkup) =>
@@ -26,9 +26,9 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   void attach() {
     _cancelSubscription();
-    _subscription = _eventBus.onAppEvent().listen((AppEvent event) {
+    _subscription = _eventBus.onAppEvent().listen((Event event) {
       switch(event.type) {
-        case AppEvent.SELECTION_CHANGED:
+        case Event.SELECTION_CHANGED:
           list.clear();
           list.addAll(event.data);
           return;
@@ -52,7 +52,7 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   Future<List> _loadCurrentSelection() {
     Completer<List> completer = new Completer<List>();
-    AppEvent curSelectionEvent = new AppEvent(AppEvent.GET_CURRENT_SELECTION,
+    Event curSelectionEvent = new Event(Event.GET_CURRENT_SELECTION,
         this, null, completer);
     _eventBus.post(curSelectionEvent);
     return completer.future;
@@ -60,8 +60,8 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   Future<Function> _getTemplateMarkupFunction() {
     Completer<Function> completer = new Completer<Function>();
-    AppEvent templateMarkupFunctionEvent =
-        new AppEvent(AppEvent.GET_TEMPLATE_MARKUP_FUNCTION,
+    Event templateMarkupFunctionEvent =
+        new Event(Event.GET_TEMPLATE_MARKUP_FUNCTION,
             this, null, completer);
     _eventBus.post(templateMarkupFunctionEvent);
     return completer.future;

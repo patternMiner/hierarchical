@@ -3,7 +3,7 @@ library hierarchical;
 import 'package:angular/angular.dart';
 import 'package:di/di.dart';
 
-import 'common/event/app_event_bus.dart';
+import 'common/event/event_bus.dart';
 import 'component/chip_container/chip_container.dart';
 import 'component/chip/chip.dart';
 import 'component/item_placeholder/item_placeholder.dart';
@@ -16,7 +16,7 @@ part 'app/hierarchical_app.dart';
 
 class HierarchicalModule extends Module {
   HierarchicalModule() {
-    type(AppEventBus);
+    type(EventBus);
     type(ChipComponent);
     type(ChipContainerComponent);
     type(HierarchicalApp);

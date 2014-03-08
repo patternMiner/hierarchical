@@ -1,4 +1,4 @@
-library app_event_bus;
+library event_bus;
 
 import 'dart:async';
 import 'package:angular/angular.dart';

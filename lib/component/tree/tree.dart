@@ -5,7 +5,7 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import '../../common/graph/graph.dart';
-import '../../common/event/app_event_bus.dart';
+import '../../common/event/event_bus.dart';
 
 @NgController(
     selector: 'tree',
@@ -16,7 +16,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
   final Graph<_Node> _graph = new Graph<_Node>();
   final Set selectionSet = new HashSet();
   final Set expansionSet = new HashSet();
-  final AppEventBus _eventBus;
+  final EventBus _eventBus;
 
   @NgOneWayOneTime('selection-enabled')
   bool selectionEnabled;
@@ -24,7 +24,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
   @NgOneWayOneTime('items')
   List items;
 
-  StreamSubscription<AppEvent> _subscription;
+  StreamSubscription<Event> _subscription;
 
   TreeController(this._eventBus) {
     _createSubscription();
@@ -41,17 +41,17 @@ class TreeController implements NgAttachAware, NgDetachAware {
   }
 
   void _createSubscription() {
-    _subscription = _eventBus.onAppEvent().listen((AppEvent event) {
+    _subscription = _eventBus.onAppEvent().listen((Event event) {
       switch(event.type) {
-        case AppEvent.CHIP_DELETED:
+        case Event.CHIP_DELETED:
           toggleSelection(event.data);
           return;
-        case AppEvent.GET_CURRENT_SELECTION:
+        case Event.GET_CURRENT_SELECTION:
           if (event.completer != null) {
             event.completer.complete(getSelections());
           }
           return;
-        case AppEvent.GET_TEMPLATE_MARKUP_FUNCTION:
+        case Event.GET_TEMPLATE_MARKUP_FUNCTION:
           if (event.completer != null) {
             event.completer.complete(getTemplateMarkup);
           }
@@ -109,7 +109,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
       selectionSet.add(item);
       selectionSet.addAll(_graph.getDescendants(item));
     }
-    _eventBus.post(new AppEvent(AppEvent.SELECTION_CHANGED,
+    _eventBus.post(new Event(Event.SELECTION_CHANGED,
         this, getSelections(), null));
   }
 
