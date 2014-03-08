@@ -1,5 +1,7 @@
 <div class="chip-container" ng-if="chips.getTemplateMarkup != null">
-    <chip ng-repeat="chip in chips.list" item="chip">
-      <item-placeholder template-markup="chips.getTemplateMarkup(chip)"></item-placeholder>
+    <chip ng-repeat="chip in chips.list" item="chip"
+        on-delete="chips.onDelete">
+      <item-placeholder
+          template-markup="chips.getTemplateMarkup(chip)"></item-placeholder>
     </chip>
 </div>

@@ -1,7 +1,6 @@
 library chip;
 
 import 'package:angular/angular.dart';
-import '../../common/event/event_bus.dart';
 
 @NgComponent(
     selector: 'chip',
@@ -12,15 +11,14 @@ import '../../common/event/event_bus.dart';
     applyAuthorStyles: true
 )
 class ChipComponent {
-
   @NgOneWayOneTime('item')
   var item;
-
-  final EventBus _eventBus;
-
-  ChipComponent(this._eventBus);
+  @NgOneWayOneTime('on-delete')
+  Function onDelete;
 
   void delete() {
-    _eventBus.post(new Event(Event.CHIP_DELETED, this, item, null));
+    if (onDelete != null) {
+      onDelete(item);
+    }
   }
 }

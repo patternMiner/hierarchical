@@ -67,4 +67,7 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
     return completer.future;
   }
 
+  void onDelete(item) {
+    _eventBus.post(new Event(Event.CHIP_DELETED, this, item, null));
+  }
 }
