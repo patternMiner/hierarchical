@@ -1,6 +1,6 @@
 .chip-container {
   display: flex;
   flex-flow: row wrap;
-  margin: 6px;
-  padding; 3px;
+  margin: 0px;
+  padding; 0px;
 }
