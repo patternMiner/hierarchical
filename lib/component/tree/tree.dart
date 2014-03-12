@@ -24,6 +24,8 @@ class TreeController implements NgAttachAware, NgDetachAware {
   @NgOneWayOneTime('items')
   List items;
 
+  List roots = [];
+
   StreamSubscription<Event> _subscription;
 
   TreeController(this._eventBus) {
@@ -32,6 +34,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
 
   void attach() {
     _processList(items, []);
+    roots.addAll(_graph.getRoots());
     _cancelSubscription();
     _createSubscription();
   }
@@ -138,7 +141,6 @@ class TreeController implements NgAttachAware, NgDetachAware {
     });
   }
 
-  Iterable get roots => _graph.getRoots();
   Iterable children(_Node parent) => _graph.getChildren(parent);
 
   String getTemplateMarkup(_Node item) {
