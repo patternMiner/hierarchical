@@ -16,6 +16,7 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   var list = [];
   Function getTemplateMarkup;
+
   StreamSubscription<Event> _subscription;
   final EventBus _eventBus;
 

@@ -13,21 +13,21 @@ class ItemPlaceholderComponent implements NgShadowRootAware {
   @NgOneWayOneTime('template-markup')
   String templateMarkup;
 
-  Compiler compiler;
-  Injector injector;
-  Scope scope;
-  DirectiveMap directives;
+  Compiler _compiler;
+  Injector _injector;
+  Scope _scope;
+  DirectiveMap _directives;
 
-  ItemPlaceholderComponent(this.compiler, this.injector, this.scope,
-      this.directives);
+  ItemPlaceholderComponent(this._compiler, this._injector, this._scope,
+      this._directives);
 
   void onShadowRoot(ShadowRoot shadowRoot) {
     DivElement placeholder = shadowRoot.querySelector("#item-placeholder");
     placeholder.appendHtml(templateMarkup);
-    BlockFactory template = compiler([placeholder], directives);
-    Scope childScope = scope.createChild(new PrototypeMap(scope.context));
+    BlockFactory template = _compiler([placeholder], _directives);
+    Scope childScope = _scope.createChild(new PrototypeMap(_scope.context));
     Injector childInjector =
-        injector.createChild([new Module()..value(Scope, childScope)]);
+        _injector.createChild([new Module()..value(Scope, childScope)]);
     template(childInjector, [placeholder]);
   }
 

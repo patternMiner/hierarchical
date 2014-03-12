@@ -14,13 +14,12 @@ import '../../common/event/event_bus.dart';
 )
 class TreeController implements NgAttachAware, NgDetachAware {
   final Graph<_Node> _graph = new Graph<_Node>();
-  final Set selectionSet = new HashSet();
-  final Set expansionSet = new HashSet();
+  final Set _selectionSet = new HashSet();
+  final Set _expansionSet = new HashSet();
   final EventBus _eventBus;
 
   @NgOneWayOneTime('selection-enabled')
   bool selectionEnabled;
-
   @NgOneWayOneTime('items')
   List items;
 
@@ -40,6 +39,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
   }
 
   void detach() {
+    roots.clear();
     _cancelSubscription();
   }
 
@@ -97,20 +97,20 @@ class TreeController implements NgAttachAware, NgDetachAware {
     return dst;
   }
 
-  bool isSelected(item) => selectionSet.contains(item);
-  bool isExpanded(item) => expansionSet.contains(item);
+  bool isSelected(item) => _selectionSet.contains(item);
+  bool isExpanded(item) => _expansionSet.contains(item);
   bool toggleExpansion(item) =>
-      isExpanded(item) ? expansionSet.remove(item) : expansionSet.add(item);
+      isExpanded(item) ? _expansionSet.remove(item) : _expansionSet.add(item);
   bool hasParent(item) => _graph.getParents(item).isNotEmpty;
   bool isLeaf(item) => _graph.isLeaf(item);
 
   void toggleSelection(item) {
     if (isSelected(item)) {
-      selectionSet.remove(item);
-      selectionSet.removeAll(_graph.getDescendants(item));
+      _selectionSet.remove(item);
+      _selectionSet.removeAll(_graph.getDescendants(item));
     } else {
-      selectionSet.add(item);
-      selectionSet.addAll(_graph.getDescendants(item));
+      _selectionSet.add(item);
+      _selectionSet.addAll(_graph.getDescendants(item));
     }
     _eventBus.post(new Event(Event.SELECTION_CHANGED,
         this, getSelections(), null));
