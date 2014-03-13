@@ -4,7 +4,7 @@
       <div class="panel-header">
         <h1>{{ctrl.title}}</h1>
       </div>
-      <div class="panel-content">
+      <div class="panel-content" ng-mousedown="ctrl.onMouseDown($event)">
         <tree selection-enabled="true" items="ctrl.items">
           <list items="tree.roots"></list>
         </tree>
