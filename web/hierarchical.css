@@ -13,8 +13,10 @@ h1, p {
 
 .panel {
   width: 320px;
-  height: 360px;
+  height: 300px;
   flex: none;
+  display: flex;
+  flex-direction: column;
   border: 1px solid #dcdcdc;
   margin: 20px;
 }
@@ -25,16 +27,15 @@ h1, p {
 }
 
 .panel-header {
-  display: block;
   border-bottom: 1px solid #dcdcdc;
   background: #f7f7f7;
   padding: 15px;
 }
 
 .panel-content {
-  display: block;
   padding: 15px 0px;
-  min-height: 200px;
+  flex: 1;
+  overflow: auto;
 }
 
 .chip-bordered-box {
