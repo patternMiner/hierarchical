@@ -24,7 +24,7 @@ class ItemPlaceholderComponent implements NgShadowRootAware {
   void onShadowRoot(ShadowRoot shadowRoot) {
     DivElement placeholder = shadowRoot.querySelector("#item-placeholder");
     placeholder.appendHtml(templateMarkup);
-    BlockFactory template = _compiler([placeholder], _directives);
+    ViewFactory template = _compiler([placeholder], _directives);
     Scope childScope = _scope.createChild(new PrototypeMap(_scope.context));
     Injector childInjector =
         _injector.createChild([new Module()..value(Scope, childScope)]);
