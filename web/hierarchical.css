@@ -12,7 +12,7 @@ h1, p {
 
 .panel {
   width: 320px;
-  height: 300px;
+  height: 320px;
   flex: none;
   display: flex;
   flex-direction: column;
