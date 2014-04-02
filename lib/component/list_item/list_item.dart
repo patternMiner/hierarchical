@@ -15,6 +15,7 @@ import '../../component/tree/tree.dart';
 class ListItemComponent {
 
   final TreeController _treeController;
+  final List _ancestors = [];
 
   @NgOneWayOneTime('item')
   var item;
@@ -34,4 +35,9 @@ class ListItemComponent {
   bool get visible => _treeController.isVisible(item);
   bool get hasParent => _treeController.hasParent(item);
   String get containerClass => hasParent ? 'list-offset' : 'no-list-offset';
+  Iterable get ancestors {
+    _ancestors.clear();
+    _ancestors.addAll(_treeController.getAncestors(item));
+    return _ancestors;
+  }
 }

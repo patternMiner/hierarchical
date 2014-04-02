@@ -103,6 +103,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
       isExpanded(item) ? _expansionSet.remove(item) : _expansionSet.add(item);
   bool hasParent(item) => _graph.getParents(item).isNotEmpty;
   bool isLeaf(item) => _graph.isLeaf(item);
+  Iterable getAncestors(item) => _graph.getAncestors(item);
 
   void toggleSelection(item) {
     if (isSelected(item)) {
