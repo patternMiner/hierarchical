@@ -26,14 +26,16 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
     _getTemplateMarkupFunction().then((Function getTemplateMarkup) =>
         this.getTemplateMarkup = getTemplateMarkup);
     _cancelSubscription();
-    _subscription = mediator.onAppEvent().listen((SelectionEvent event) {
-      switch(event.type) {
-        case SelectionEvent.SELECTION_CHANGED:
-          list.clear();
-          list.addAll(event.data);
-          return;
-      }
-    });
+    if (mediator != null) {
+      _subscription = mediator.onAppEvent().listen((SelectionEvent event) {
+        switch(event.type) {
+          case SelectionEvent.SELECTION_CHANGED:
+            list.clear();
+            list.addAll(event.data);
+            return;
+        }
+      });
+    }
     _loadCurrentSelection().then((List chips) {
       list.clear();
       list.addAll(chips);
@@ -52,24 +54,30 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   Future<List> _loadCurrentSelection() {
     Completer<List> completer = new Completer<List>();
-    SelectionEvent curSelectionEvent =
-        new SelectionEvent(SelectionEvent.GET_CURRENT_SELECTION, this,
-            null, completer);
-    mediator.post(curSelectionEvent);
+    if (mediator != null) {
+      SelectionEvent curSelectionEvent =
+          new SelectionEvent(SelectionEvent.GET_CURRENT_SELECTION, this,
+              null, completer);
+      mediator.post(curSelectionEvent);
+    }
     return completer.future;
   }
 
   Future<Function> _getTemplateMarkupFunction() {
     Completer<Function> completer = new Completer<Function>();
-    SelectionEvent templateMarkupFunctionEvent =
-        new SelectionEvent(SelectionEvent.GET_TEMPLATE_MARKUP_FUNCTION,
-            this, null, completer);
-    mediator.post(templateMarkupFunctionEvent);
+    if (mediator != null) {
+      SelectionEvent templateMarkupFunctionEvent =
+          new SelectionEvent(SelectionEvent.GET_TEMPLATE_MARKUP_FUNCTION,
+              this, null, completer);
+      mediator.post(templateMarkupFunctionEvent);
+    }
     return completer.future;
   }
 
   void onDelete(item) {
-    mediator.post(new SelectionEvent(SelectionEvent.DESELECT, this,
-        item, null));
+    if (mediator != null) {
+      mediator.post(new SelectionEvent(SelectionEvent.DESELECT, this,
+          item, null));
+    }
   }
 }

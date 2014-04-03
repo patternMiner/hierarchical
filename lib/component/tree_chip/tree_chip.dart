@@ -2,6 +2,7 @@ library tree_chip;
 
 import 'dart:html';
 import 'package:angular/angular.dart';
+import '../../common/mediator/selection_mediator.dart';
 
 @NgComponent(
     selector: 'tree-chip',
@@ -16,6 +17,8 @@ class TreeChipComponent {
 
   @NgOneWayOneTime('items')
   Iterable items;
+
+  final SelectionMediator mediator = new SelectionMediator();
 
   void onMouseDown(MouseEvent event) {
     if (isOnScrollbar(event)) {

@@ -13,7 +13,7 @@ import '../../common/mediator/selection_mediator.dart';
     visibility: NgDirective.CHILDREN_VISIBILITY
 )
 class TreeController implements NgAttachAware, NgDetachAware {
-  final Graph<_Node> _graph = new Graph<_Node>();
+  final Graph<Path> _graph = new Graph<Path>();
   final Set _selectionSet = new HashSet();
   final Set _expansionSet = new HashSet();
 
@@ -22,7 +22,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
   @NgOneWayOneTime('selection-enabled')
   bool selectionEnabled;
   @NgOneWayOneTime('items')
-  List items;
+  List items = [];
 
   List roots = [];
 
@@ -41,6 +41,9 @@ class TreeController implements NgAttachAware, NgDetachAware {
   }
 
   void _createSubscription() {
+    if (mediator == null) {
+      return;
+    }
     _subscription = mediator.onAppEvent().listen((SelectionEvent event) {
       switch(event.type) {
         case SelectionEvent.DESELECT:
@@ -88,9 +91,11 @@ class TreeController implements NgAttachAware, NgDetachAware {
     });
   }
 
-  _Node _processListItem(item, List parentStack) {
-    _Node dst = new _Node(item);
-    _Node src = parentStack.isNotEmpty ? parentStack.last : null;
+  Path _processListItem(item, List parentStack) {
+    Path src = parentStack.isNotEmpty ? parentStack.last : null;
+    List pathComponents = src != null ? src.components.toList() : [];
+    pathComponents.add(item);
+    Path dst = new Path(pathComponents);
     if (src != null) {
       _graph.addEdge(src, dst);
     } else {
@@ -115,8 +120,10 @@ class TreeController implements NgAttachAware, NgDetachAware {
       _selectionSet.add(item);
       _selectionSet.addAll(_graph.getDescendants(item));
     }
-    mediator.post(new SelectionEvent(SelectionEvent.SELECTION_CHANGED,
-        this, getSelections(), null));
+    if (mediator != null) {
+      mediator.post(new SelectionEvent(SelectionEvent.SELECTION_CHANGED,
+          this, getSelections(), null));
+    }
   }
 
   bool isVisible(item) {
@@ -129,32 +136,52 @@ class TreeController implements NgAttachAware, NgDetachAware {
 
   Iterable getSelections() {
     List result = [];
-    _graph.getRoots().forEach((_Node item) {
+    _graph.getRoots().forEach((Path item) {
       _getSelectedSubtree(item, result);
     });
     return result;
   }
 
-  void _getSelectedSubtree(_Node item, List result) {
+  void _getSelectedSubtree(Path item, List result) {
     if (isSelected(item)) {
       result.add(item);
     }
-    _graph.getChildren(item).forEach((_Node item) {
+    _graph.getChildren(item).forEach((Path item) {
       _getSelectedSubtree(item, result);
     });
   }
 
-  Iterable children(_Node parent) => _graph.getChildren(parent);
+  Iterable children(Path parent) => _graph.getChildren(parent);
 
-  String getTemplateMarkup(_Node item) {
-    return "<div>${item.value}</div>";
+  String getTemplateMarkup(Path item) {
+    return "<div>${getValue(item)}</div>";
   }
 
-  getValue(_Node item) => item.value;
+  getValue(Path item) => item.components.last;
 }
 
-class _Node {
-  final value;
+class Path {
+  final List components;
 
-  _Node(this.value);
+  Path(this.components) {
+    assert(this.components != null);
+  }
+
+  int  get hashCode {
+    int hash = 1;
+    components.forEach((value) => hash = hash * 31 + value.hashCode);
+    return hash;
+  }
+
+  bool operator==(Path other) {
+    if (this.components.length == other.components.length) {
+      for (int i=0; i<this.components.length; i++) {
+        if (this.components[i] != other.components[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
 }

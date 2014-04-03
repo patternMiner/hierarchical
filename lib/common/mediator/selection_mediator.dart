@@ -1,13 +1,7 @@
 library selection_mediator;
 
 import 'dart:async';
-import 'package:angular/angular.dart';
 
-@NgController(
-    selector: 'selection-mediator',
-    publishAs: 'mediator',
-    visibility: NgDirective.CHILDREN_VISIBILITY
-)
 class SelectionMediator {
   StreamController<SelectionEvent> _streamController;
 
