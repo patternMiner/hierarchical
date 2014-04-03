@@ -1,4 +1,4 @@
-library selection_mediator;
+library mediator;
 
 import 'dart:async';
 
@@ -20,7 +20,7 @@ class SelectionMediator {
     }
   }
 
-  Stream<SelectionEvent> onAppEvent() => _streamController.stream;
+  Stream<SelectionEvent> onSelectionEvent() => _streamController.stream;
 }
 
 /**
@@ -32,15 +32,15 @@ class SelectionMediator {
  * listener.
  */
 class SelectionEvent {
-  /// Queries that require the listener to respond through the completer.
+  /// Request for access to the current selection of selection paths.
+  /// The listener must complete the completer in the data field with
+  /// the requested information.
   static const String GET_CURRENT_SELECTION = 'GET_CURRENT_SELECTION';
-  static const String GET_VALUE_FUNCTION    = 'GET_VALUE_FUNCTION';
-  static const String GET_TEMPLATE_MARKUP_FUNCTION =
-                                              'GET_TEMPLATE_MARKUP_FUNCTION';
-
-  /// Notifications to the listeners. No response required.
+  /// Selection has changed. The data field contains the new selection paths.
   static const String SELECTION_CHANGED = 'SELECTION_CHANGED';
+  /// Select the given selection paths in the data field.
   static const String SELECT            = 'SELECT';
+  /// Deselect the given selection path in the data field.
   static const String DESELECT          = 'DESELECT';
 
   final String type;
@@ -49,4 +49,34 @@ class SelectionEvent {
   final Completer completer;
 
   SelectionEvent(this.type, this.source, this.data, this.completer);
+}
+
+
+class SelectionPath {
+  final List components;
+
+  SelectionPath(this.components) {
+    assert(this.components != null);
+  }
+
+  SelectionPath get parent => components.length < 2 ? null :
+      new SelectionPath(components.sublist(0, components.length-1));
+
+  int  get hashCode {
+    int hash = 1;
+    components.forEach((value) => hash = hash * 31 + value.hashCode);
+    return hash;
+  }
+
+  bool operator==(SelectionPath other) {
+    if (this.components.length == other.components.length) {
+      for (int i=0; i<this.components.length; i++) {
+        if (this.components[i] != other.components[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
+    return false;
+  }
 }

@@ -6,6 +6,7 @@
     <div class="panel-content" ng-mousedown="ctrl.onMouseDown($event)">
       <tree selection-enabled="true"
             selection-mediator="ctrl.mediator"
+            get-template-markup="ctrl.getTemplateMarkup"
             items="ctrl.items">
         <list items="tree.roots"></list>
       </tree>
@@ -17,7 +18,8 @@
       <h1>Chips</h1>
     </div>
     <div class="panel-content">
-      <chip-container selection-mediator="ctrl.mediator">
+      <chip-container selection-mediator="ctrl.mediator"
+                      get-template-markup="ctrl.getTemplateMarkup">
       </chip-container>
     </div>
   </div>

@@ -14,20 +14,19 @@ import '../../common/mediator/selection_mediator.dart';
 )
 class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
-  var list = [];
-  Function getTemplateMarkup;
-
-  StreamSubscription<SelectionEvent> _subscription;
-
   @NgOneWayOneTime('selection-mediator')
   SelectionMediator mediator;
+  @NgOneWayOneTime('get-template-markup')
+  Function getTemplateMarkup;
+
+  var list = [];
+  StreamSubscription<SelectionEvent> _subscription;
+
 
   void attach() {
-    _getTemplateMarkupFunction().then((Function getTemplateMarkup) =>
-        this.getTemplateMarkup = getTemplateMarkup);
     _cancelSubscription();
     if (mediator != null) {
-      _subscription = mediator.onAppEvent().listen((SelectionEvent event) {
+      _subscription = mediator.onSelectionEvent().listen((SelectionEvent event) {
         switch(event.type) {
           case SelectionEvent.SELECTION_CHANGED:
             list.clear();
@@ -59,17 +58,6 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
           new SelectionEvent(SelectionEvent.GET_CURRENT_SELECTION, this,
               null, completer);
       mediator.post(curSelectionEvent);
-    }
-    return completer.future;
-  }
-
-  Future<Function> _getTemplateMarkupFunction() {
-    Completer<Function> completer = new Completer<Function>();
-    if (mediator != null) {
-      SelectionEvent templateMarkupFunctionEvent =
-          new SelectionEvent(SelectionEvent.GET_TEMPLATE_MARKUP_FUNCTION,
-              this, null, completer);
-      mediator.post(templateMarkupFunctionEvent);
     }
     return completer.future;
   }

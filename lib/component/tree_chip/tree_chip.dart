@@ -26,6 +26,12 @@ class TreeChipComponent {
     }
   }
 
+  String getTemplateMarkup(SelectionPath item) {
+    return "<div>${getValue(item)}</div>";
+  }
+
+  getValue(SelectionPath item) => item.components.last;
+
   bool isOnScrollbar(MouseEvent event) {
     Element element = event.target as Element;
     bool isOverflow = element.scrollWidth > element.clientWidth ||

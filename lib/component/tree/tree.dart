@@ -13,12 +13,15 @@ import '../../common/mediator/selection_mediator.dart';
     visibility: NgDirective.CHILDREN_VISIBILITY
 )
 class TreeController implements NgAttachAware, NgDetachAware {
-  final Graph<Path> _graph = new Graph<Path>();
+  final Graph<SelectionPath> _graph = new Graph<SelectionPath>();
   final Set _selectionSet = new HashSet();
   final Set _expansionSet = new HashSet();
 
   @NgOneWayOneTime('selection-mediator')
   SelectionMediator mediator;
+  @NgOneWayOneTime('get-template-markup')
+  Function getTemplateMarkup;
+
   @NgOneWayOneTime('selection-enabled')
   bool selectionEnabled;
   @NgOneWayOneTime('items')
@@ -44,7 +47,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
     if (mediator == null) {
       return;
     }
-    _subscription = mediator.onAppEvent().listen((SelectionEvent event) {
+    _subscription = mediator.onSelectionEvent().listen((SelectionEvent event) {
       switch(event.type) {
         case SelectionEvent.DESELECT:
           toggleSelection(event.data);
@@ -52,16 +55,6 @@ class TreeController implements NgAttachAware, NgDetachAware {
         case SelectionEvent.GET_CURRENT_SELECTION:
           if (event.completer != null) {
             event.completer.complete(getSelections());
-          }
-          return;
-        case SelectionEvent.GET_TEMPLATE_MARKUP_FUNCTION:
-          if (event.completer != null) {
-            event.completer.complete(getTemplateMarkup);
-          }
-          return;
-        case SelectionEvent.GET_VALUE_FUNCTION:
-          if (event.completer != null) {
-            event.completer.complete(getValue);
           }
           return;
       }
@@ -91,17 +84,21 @@ class TreeController implements NgAttachAware, NgDetachAware {
     });
   }
 
-  Path _processListItem(item, List parentStack) {
-    Path src = parentStack.isNotEmpty ? parentStack.last : null;
+  SelectionPath _processListItem(item, List parentStack) {
+    SelectionPath src = parentStack.isNotEmpty ? parentStack.last : null;
     List pathComponents = src != null ? src.components.toList() : [];
     pathComponents.add(item);
-    Path dst = new Path(pathComponents);
-    if (src != null) {
-      _graph.addEdge(src, dst);
+    return addPath(new SelectionPath(pathComponents));
+  }
+
+  SelectionPath addPath(SelectionPath path) {
+    SelectionPath parent = path.parent;
+    if (parent != null) {
+      _graph.addEdge(parent, path);
     } else {
-      _graph.addNode(dst);
+      _graph.addNode(path);
     }
-    return dst;
+    return path;
   }
 
   bool isSelected(item) => _selectionSet.contains(item);
@@ -136,52 +133,20 @@ class TreeController implements NgAttachAware, NgDetachAware {
 
   Iterable getSelections() {
     List result = [];
-    _graph.getRoots().forEach((Path item) {
+    _graph.getRoots().forEach((SelectionPath item) {
       _getSelectedSubtree(item, result);
     });
     return result;
   }
 
-  void _getSelectedSubtree(Path item, List result) {
+  void _getSelectedSubtree(SelectionPath item, List result) {
     if (isSelected(item)) {
       result.add(item);
     }
-    _graph.getChildren(item).forEach((Path item) {
+    _graph.getChildren(item).forEach((SelectionPath item) {
       _getSelectedSubtree(item, result);
     });
   }
 
-  Iterable children(Path parent) => _graph.getChildren(parent);
-
-  String getTemplateMarkup(Path item) {
-    return "<div>${getValue(item)}</div>";
-  }
-
-  getValue(Path item) => item.components.last;
-}
-
-class Path {
-  final List components;
-
-  Path(this.components) {
-    assert(this.components != null);
-  }
-
-  int  get hashCode {
-    int hash = 1;
-    components.forEach((value) => hash = hash * 31 + value.hashCode);
-    return hash;
-  }
-
-  bool operator==(Path other) {
-    if (this.components.length == other.components.length) {
-      for (int i=0; i<this.components.length; i++) {
-        if (this.components[i] != other.components[i]) {
-          return false;
-        }
-      }
-      return true;
-    }
-    return false;
-  }
+  Iterable children(SelectionPath parent) => _graph.getChildren(parent);
 }
