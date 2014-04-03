@@ -5,7 +5,7 @@ import 'dart:async';
 
 import 'package:angular/angular.dart';
 import '../../common/graph/graph.dart';
-import '../../common/event/event_bus.dart';
+import '../../common/mediator/selection_mediator.dart';
 
 @NgController(
     selector: 'tree',
@@ -16,8 +16,9 @@ class TreeController implements NgAttachAware, NgDetachAware {
   final Graph<_Node> _graph = new Graph<_Node>();
   final Set _selectionSet = new HashSet();
   final Set _expansionSet = new HashSet();
-  final EventBus _eventBus;
 
+  @NgOneWayOneTime('selection-mediator')
+  SelectionMediator mediator;
   @NgOneWayOneTime('selection-enabled')
   bool selectionEnabled;
   @NgOneWayOneTime('items')
@@ -25,11 +26,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
 
   List roots = [];
 
-  StreamSubscription<Event> _subscription;
-
-  TreeController(this._eventBus) {
-    _createSubscription();
-  }
+  StreamSubscription<SelectionEvent> _subscription;
 
   void attach() {
     _processList(items, []);
@@ -44,19 +41,24 @@ class TreeController implements NgAttachAware, NgDetachAware {
   }
 
   void _createSubscription() {
-    _subscription = _eventBus.onAppEvent().listen((Event event) {
+    _subscription = mediator.onAppEvent().listen((SelectionEvent event) {
       switch(event.type) {
-        case Event.CHIP_DELETED:
+        case SelectionEvent.DESELECT:
           toggleSelection(event.data);
           return;
-        case Event.GET_CURRENT_SELECTION:
+        case SelectionEvent.GET_CURRENT_SELECTION:
           if (event.completer != null) {
             event.completer.complete(getSelections());
           }
           return;
-        case Event.GET_TEMPLATE_MARKUP_FUNCTION:
+        case SelectionEvent.GET_TEMPLATE_MARKUP_FUNCTION:
           if (event.completer != null) {
             event.completer.complete(getTemplateMarkup);
+          }
+          return;
+        case SelectionEvent.GET_VALUE_FUNCTION:
+          if (event.completer != null) {
+            event.completer.complete(getValue);
           }
           return;
       }
@@ -113,7 +115,7 @@ class TreeController implements NgAttachAware, NgDetachAware {
       _selectionSet.add(item);
       _selectionSet.addAll(_graph.getDescendants(item));
     }
-    _eventBus.post(new Event(Event.SELECTION_CHANGED,
+    mediator.post(new SelectionEvent(SelectionEvent.SELECTION_CHANGED,
         this, getSelections(), null));
   }
 
@@ -147,6 +149,8 @@ class TreeController implements NgAttachAware, NgDetachAware {
   String getTemplateMarkup(_Node item) {
     return "<div>${item.value}</div>";
   }
+
+  getValue(_Node item) => item.value;
 }
 
 class _Node {

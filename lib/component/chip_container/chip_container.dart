@@ -3,7 +3,7 @@ library chip_container;
 import 'dart:async';
 import 'package:angular/angular.dart';
 
-import '../../common/event/event_bus.dart';
+import '../../common/mediator/selection_mediator.dart';
 
 @NgComponent(
     selector: 'chip-container',
@@ -17,19 +17,18 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
   var list = [];
   Function getTemplateMarkup;
 
-  StreamSubscription<Event> _subscription;
-  final EventBus _eventBus;
+  StreamSubscription<SelectionEvent> _subscription;
 
-  ChipContainerComponent(this._eventBus) {
-    _getTemplateMarkupFunction().then((Function getTemplateMarkup) =>
-        this.getTemplateMarkup = getTemplateMarkup);
-  }
+  @NgOneWayOneTime('selection-mediator')
+  SelectionMediator mediator;
 
   void attach() {
+    _getTemplateMarkupFunction().then((Function getTemplateMarkup) =>
+        this.getTemplateMarkup = getTemplateMarkup);
     _cancelSubscription();
-    _subscription = _eventBus.onAppEvent().listen((Event event) {
+    _subscription = mediator.onAppEvent().listen((SelectionEvent event) {
       switch(event.type) {
-        case Event.SELECTION_CHANGED:
+        case SelectionEvent.SELECTION_CHANGED:
           list.clear();
           list.addAll(event.data);
           return;
@@ -53,22 +52,24 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   Future<List> _loadCurrentSelection() {
     Completer<List> completer = new Completer<List>();
-    Event curSelectionEvent = new Event(Event.GET_CURRENT_SELECTION,
-        this, null, completer);
-    _eventBus.post(curSelectionEvent);
+    SelectionEvent curSelectionEvent =
+        new SelectionEvent(SelectionEvent.GET_CURRENT_SELECTION, this,
+            null, completer);
+    mediator.post(curSelectionEvent);
     return completer.future;
   }
 
   Future<Function> _getTemplateMarkupFunction() {
     Completer<Function> completer = new Completer<Function>();
-    Event templateMarkupFunctionEvent =
-        new Event(Event.GET_TEMPLATE_MARKUP_FUNCTION,
+    SelectionEvent templateMarkupFunctionEvent =
+        new SelectionEvent(SelectionEvent.GET_TEMPLATE_MARKUP_FUNCTION,
             this, null, completer);
-    _eventBus.post(templateMarkupFunctionEvent);
+    mediator.post(templateMarkupFunctionEvent);
     return completer.future;
   }
 
   void onDelete(item) {
-    _eventBus.post(new Event(Event.CHIP_DELETED, this, item, null));
+    mediator.post(new SelectionEvent(SelectionEvent.DESELECT, this,
+        item, null));
   }
 }
