@@ -35,13 +35,15 @@ class SelectionEvent {
   /// Request for access to the current selection of selection paths.
   /// The listener must complete the completer in the data field with
   /// the requested information.
-  static const String GET_CURRENT_SELECTION = 'GET_CURRENT_SELECTION';
+  static const String GET_CURRENT_SELECTION  = 'GET_CURRENT_SELECTION';
   /// Selection has changed. The data field contains the new selection paths.
-  static const String SELECTION_CHANGED = 'SELECTION_CHANGED';
+  static const String SELECTION_CHANGED      = 'SELECTION_CHANGED';
   /// Select the given selection paths in the data field.
-  static const String SELECT            = 'SELECT';
+  static const String SET_SELECTION          = 'SET_SELECTION';
   /// Deselect the given selection path in the data field.
-  static const String DESELECT          = 'DESELECT';
+  static const String DESELECT               = 'DESELECT';
+  /// Model has changed: selection path got deleted.
+  static const String SELECTION_PATH_DELETED = 'SELECTION_PATH_DELETED';
 
   final String type;
   final dynamic source;

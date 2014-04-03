@@ -3,6 +3,7 @@ library tree_chip;
 import 'dart:html';
 import 'package:angular/angular.dart';
 import '../../common/mediator/selection_mediator.dart';
+import '../../component/selection_controller/selection_controller.dart';
 
 @NgComponent(
     selector: 'tree-chip',
@@ -14,9 +15,8 @@ class TreeChipComponent {
 
   @NgOneWayOneTime('title')
   String title;
-
-  @NgOneWayOneTime('items')
-  Iterable items;
+  @NgOneWayOneTime('selection-path-model')
+  SelectionPathModel model = new SelectionPathModel();
 
   final SelectionMediator mediator = new SelectionMediator();
 

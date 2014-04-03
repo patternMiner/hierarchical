@@ -2,7 +2,7 @@ library list;
 
 import 'package:angular/angular.dart';
 
-import '../../component/tree/tree.dart';
+import '../../component/selection_controller/selection_controller.dart';
 
 @NgComponent(
     selector: 'list',
@@ -12,9 +12,9 @@ import '../../component/tree/tree.dart';
     publishAs: 'list'
 )
 class ListComponent {
-  final TreeController _treeController;
+  final SelectionController _treeController;
 
-  @NgOneWayOneTime('items')
+  @NgOneWay('items')
   Iterable items;
 
   ListComponent(this._treeController);

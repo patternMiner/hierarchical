@@ -2,7 +2,7 @@ library list_item;
 
 import 'package:angular/angular.dart';
 
-import '../../component/tree/tree.dart';
+import '../../component/selection_controller/selection_controller.dart';
 
 @NgComponent(
     selector: 'list-item',
@@ -14,7 +14,7 @@ import '../../component/tree/tree.dart';
 )
 class ListItemComponent {
 
-  final TreeController _treeController;
+  final SelectionController _treeController;
   final List _ancestors = [];
 
   @NgOneWayOneTime('item')

@@ -9,12 +9,15 @@
   <body>
 
     <hierarchical-app>
-      <tree-chip title="'Shape hierarchy'" items="app.shapes"></tree-chip>
-      <tree-chip title="'Collection hierarchy'" items="app.collections"></tree-chip>
+      <tree-chip title="'Shape hierarchy'"
+                 selection-path-model="app.shapes"></tree-chip>
+      <tree-chip title="'Collection hierarchy'"
+                 selection-path-model="app.collections"></tree-chip>
     </hierarchical-app>
 
     <script src="packages/shadow_dom/shadow_dom.min.js"></script>
     <script type="application/dart" src="main.dart"></script>
     <script type="text/javascript" src="packages/browser/dart.js"></script>
+
   </body>
 </html>
