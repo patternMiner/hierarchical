@@ -12,16 +12,18 @@ import '../../component/selection_controller/selection_controller.dart';
     publishAs: 'list'
 )
 class ListComponent {
-  final SelectionController _treeController;
+
+  final SelectionController _selectionController;
 
   @NgOneWay('items')
   Iterable items;
 
-  ListComponent(this._treeController);
+  ListComponent(this._selectionController);
 
-  bool isLeaf(item) => _treeController.isLeaf(item);
+  bool isLeaf(item) => _selectionController.isLeaf(item);
   bool hasChildren(item) => getChildren(item).isNotEmpty;
-  bool isExpanded(item) => _treeController.isExpanded(item);
-  Iterable getChildren(item) => _treeController.children(item);
-  String getTemplateMarkup(item) => _treeController.getTemplateMarkup(item);
+  bool isExpanded(item) => _selectionController.isExpanded(item);
+  Iterable getChildren(item) => _selectionController.children(item);
+  String getLabelTemplateMarkup(item) =>
+      _selectionController.getLabelTemplateMarkup(item);
 }

@@ -14,7 +14,8 @@ class HierarchicalApp {
                   const ['Polygon',
                       const ['Triangle', 'Quadrangle', 'Pentagon']],
                   const ['Ellipse',
-                      const ['Circle']]]]);
+                      const ['Circle']]]],
+                      getLabelTemplateMarkup);
 
   final SelectionPathModel collections =
       new SelectionPathModel.fromList(
@@ -23,5 +24,12 @@ class HierarchicalApp {
                  const ['Array list', 'Linked list']],
               const ['Queue',
                  const ['Deque',
-                    const ['Linked list', 'Array deque']]]]);
+                    const ['Linked list', 'Array deque']]]],
+                    getLabelTemplateMarkup);
+
+  static String getLabelTemplateMarkup(SelectionPath path) {
+    return "<div>${getValue(path)}</div>";
+  }
+
+  static dynamic getValue(SelectionPath path) => path.components.last;
 }

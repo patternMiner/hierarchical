@@ -33,9 +33,14 @@ class SelectionMediator {
  */
 class SelectionEvent {
   /// Request for access to the current selection of selection paths.
-  /// The listener must complete the completer in the data field with
+  /// The listener must complete the completer of the event with
   /// the requested information.
   static const String GET_CURRENT_SELECTION  = 'GET_CURRENT_SELECTION';
+  /// Request for access to 'getLabelTemplateMarkup' function of the
+  /// selection paths. The listener must complete the completer of the
+  /// event with the requested information.
+  static const String GET_LABEL_TEMPLATE_MARKUP_FUNCTION  =
+      'GET_LABEL_TEMPLATE_MARKUP_FUNCTION';
   /// Selection has changed. The data field contains the new selection paths.
   static const String SELECTION_CHANGED      = 'SELECTION_CHANGED';
   /// Select the given selection paths in the data field.

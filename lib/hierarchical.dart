@@ -8,8 +8,9 @@ import 'component/chip/chip.dart';
 import 'component/item_placeholder/item_placeholder.dart';
 import 'component/list/list.dart';
 import 'component/list_item/list_item.dart';
-import 'component/selection_controller/selection_controller.dart';
 import 'component/tree_chip/tree_chip.dart';
+import 'component/selection_controller/selection_controller.dart';
+import 'common/mediator/selection_mediator.dart';
 
 part 'app/hierarchical_app.dart';
 

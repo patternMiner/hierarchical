@@ -1,6 +1,7 @@
 <div class='list' ng-repeat="item in list.items">
   <list-item item="item">
-    <item-placeholder template-markup="list.getTemplateMarkup(item)"></item-placeholder>
+    <item-placeholder template-markup="list.getLabelTemplateMarkup(item)">
+    </item-placeholder>
   </list-item>
   <list ng-if="list.hasChildren(item) && list.isExpanded(item)"
         items="list.getChildren(item)"></list>

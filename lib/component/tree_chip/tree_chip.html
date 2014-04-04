@@ -4,10 +4,7 @@
       <h1>{{ctrl.title}}</h1>
     </div>
     <div class="panel-content" ng-mousedown="ctrl.onMouseDown($event)">
-      <selection-controller selection-enabled="true"
-            selection-mediator="ctrl.mediator"
-            get-template-markup="ctrl.getTemplateMarkup"
-            selection-path-model="ctrl.model">
+      <selection-controller selection-path-model="ctrl.model">
         <list items="selectionController.roots"></list>
       </selection-controller>
     </div>
@@ -18,8 +15,8 @@
       <h1>Chips</h1>
     </div>
     <div class="panel-content">
-      <chip-container selection-mediator="ctrl.mediator"
-                      get-template-markup="ctrl.getTemplateMarkup">
+      <chip-container
+        selection-mediator="ctrl.model.mediator">
       </chip-container>
     </div>
   </div>

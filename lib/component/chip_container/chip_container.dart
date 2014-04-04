@@ -16,25 +16,27 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   @NgOneWayOneTime('selection-mediator')
   SelectionMediator mediator;
-  @NgOneWayOneTime('get-template-markup')
-  Function getTemplateMarkup;
 
   var list = [];
   StreamSubscription<SelectionEvent> _subscription;
-
+  Function getLabelTemplateMarkup;
 
   void attach() {
+    Completer completer = new Completer();
+    mediator.post(
+        new SelectionEvent(SelectionEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION,
+            this, null, completer));
+    completer.future.then((Function f) => getLabelTemplateMarkup = f);
     _cancelSubscription();
-    if (mediator != null) {
-      _subscription = mediator.onSelectionEvent().listen((SelectionEvent event) {
-        switch(event.type) {
-          case SelectionEvent.SELECTION_CHANGED:
-            list.clear();
-            list.addAll(event.data);
-            return;
-        }
-      });
-    }
+    _subscription = mediator.onSelectionEvent().
+        listen((SelectionEvent event) {
+      switch(event.type) {
+        case SelectionEvent.SELECTION_CHANGED:
+          list.clear();
+          list.addAll(event.data);
+          return;
+      }
+    });
     _loadCurrentSelection().then((List chips) {
       list.clear();
       list.addAll(chips);

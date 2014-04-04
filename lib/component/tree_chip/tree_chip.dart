@@ -2,7 +2,6 @@ library tree_chip;
 
 import 'dart:html';
 import 'package:angular/angular.dart';
-import '../../common/mediator/selection_mediator.dart';
 import '../../component/selection_controller/selection_controller.dart';
 
 @NgComponent(
@@ -16,21 +15,13 @@ class TreeChipComponent {
   @NgOneWayOneTime('title')
   String title;
   @NgOneWayOneTime('selection-path-model')
-  SelectionPathModel model = new SelectionPathModel();
-
-  final SelectionMediator mediator = new SelectionMediator();
+  SelectionPathModel model;
 
   void onMouseDown(MouseEvent event) {
     if (isOnScrollbar(event)) {
       print("clicked on the scrollbar");
     }
   }
-
-  String getTemplateMarkup(SelectionPath item) {
-    return "<div>${getValue(item)}</div>";
-  }
-
-  getValue(SelectionPath item) => item.components.last;
 
   bool isOnScrollbar(MouseEvent event) {
     Element element = event.target as Element;

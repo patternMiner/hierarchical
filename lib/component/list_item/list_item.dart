@@ -14,30 +14,30 @@ import '../../component/selection_controller/selection_controller.dart';
 )
 class ListItemComponent {
 
-  final SelectionController _treeController;
   final List _ancestors = [];
+  final SelectionController _selectionController;
 
   @NgOneWayOneTime('item')
   var item;
 
-  ListItemComponent(this._treeController);
+  ListItemComponent(this._selectionController);
 
-  bool get selected => _treeController.isSelected(item);
-  set selected(bool state) => _treeController.toggleSelection(item);
-  bool get expanded => _treeController.isExpanded(item);
-  Iterable get children => _treeController.children(item);
-  bool toggleExpand() => _treeController.toggleExpansion(item);
+  bool get selected => _selectionController.isSelected(item);
+  set selected(bool state) => _selectionController.toggleSelection(item);
+  bool get expanded => _selectionController.isExpanded(item);
+  Iterable get children => _selectionController.children(item);
+  bool toggleExpand() => _selectionController.toggleExpansion(item);
   bool get hasChildren => children.isNotEmpty;
-  bool get selectionEnabled => _treeController.selectionEnabled;
+  bool get selectionEnabled => _selectionController.selectionEnabled;
   String get expansionState => hasChildren ?
       (expanded ? 'list-item-expanded' : 'list-item-collapsed') :
           'list-item-expand-collapse';
-  bool get visible => _treeController.isVisible(item);
-  bool get hasParent => _treeController.hasParent(item);
+  bool get visible => _selectionController.isVisible(item);
+  bool get hasParent => _selectionController.hasParent(item);
   String get containerClass => hasParent ? 'list-offset' : 'no-list-offset';
   Iterable get ancestors {
     _ancestors.clear();
-    _ancestors.addAll(_treeController.getAncestors(item));
+    _ancestors.addAll(_selectionController.getAncestors(item));
     return _ancestors;
   }
 }
