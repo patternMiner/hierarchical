@@ -7,7 +7,7 @@ part of hierarchical;
 class HierarchicalApp {
 
   final SelectionPathModel shapes =
-      new SelectionPathModel.fromList(
+      new TreeSelectionPathModel.fromList(
           const ['Shape',
               const ['Open shape'],
               const ['Closed shape',
@@ -18,7 +18,7 @@ class HierarchicalApp {
                       getLabelTemplateMarkup);
 
   final SelectionPathModel collections =
-      new SelectionPathModel.fromList(
+      new ListSelectionPathModel.fromList(
           const ['Collection',
               const ['List',
                  const ['Array list', 'Linked list']],

@@ -2,7 +2,7 @@ library tree_chip;
 
 import 'dart:html';
 import 'package:angular/angular.dart';
-import '../../component/selection_controller/selection_controller.dart';
+import '../../common/selection_path/selection_path.dart';
 
 @NgComponent(
     selector: 'tree-chip',

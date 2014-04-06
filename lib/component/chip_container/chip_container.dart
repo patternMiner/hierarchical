@@ -3,7 +3,7 @@ library chip_container;
 import 'dart:async';
 import 'package:angular/angular.dart';
 
-import '../../common/mediator/selection_mediator.dart';
+import '../../common/selection_path/selection_path.dart';
 
 @NgComponent(
     selector: 'chip-container',
@@ -15,23 +15,23 @@ import '../../common/mediator/selection_mediator.dart';
 class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   @NgOneWayOneTime('selection-mediator')
-  SelectionMediator mediator;
+  SelectionPathMediator mediator;
 
   var list = [];
-  StreamSubscription<SelectionEvent> _subscription;
+  StreamSubscription<SelectionPathEvent> _subscription;
   Function getLabelTemplateMarkup;
 
   void attach() {
     Completer completer = new Completer();
     mediator.post(
-        new SelectionEvent(SelectionEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION,
+        new SelectionPathEvent(SelectionPathEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION,
             this, null, completer));
     completer.future.then((Function f) => getLabelTemplateMarkup = f);
     _cancelSubscription();
     _subscription = mediator.onSelectionEvent().
-        listen((SelectionEvent event) {
+        listen((SelectionPathEvent event) {
       switch(event.type) {
-        case SelectionEvent.SELECTION_CHANGED:
+        case SelectionPathEvent.SELECTION_CHANGED:
           list.clear();
           list.addAll(event.data);
           return;
@@ -56,8 +56,8 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
   Future<List> _loadCurrentSelection() {
     Completer<List> completer = new Completer<List>();
     if (mediator != null) {
-      SelectionEvent curSelectionEvent =
-          new SelectionEvent(SelectionEvent.GET_CURRENT_SELECTION, this,
+      SelectionPathEvent curSelectionEvent =
+          new SelectionPathEvent(SelectionPathEvent.GET_CURRENT_SELECTION, this,
               null, completer);
       mediator.post(curSelectionEvent);
     }
@@ -66,7 +66,7 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   void onDelete(item) {
     if (mediator != null) {
-      mediator.post(new SelectionEvent(SelectionEvent.DESELECT, this,
+      mediator.post(new SelectionPathEvent(SelectionPathEvent.DESELECT, this,
           item, null));
     }
   }

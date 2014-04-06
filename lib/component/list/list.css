@@ -1,6 +1,9 @@
 .list {
-  margin:  0px 0px 3px 0px;
-  padding: 0px 0px 0px 0px;
   display: flex;
   flex-direction: column;
+}
+
+.list-item:hover, .list-item-selected {
+  color: #222;
+  background-color: #F1F1F1;
 }

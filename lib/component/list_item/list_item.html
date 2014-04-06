@@ -1,13 +1,17 @@
 <div class="list-item" ng-if="ctrl.visible">
   <!-- list-item-indent -->
-  <div ng-repeat="item in ctrl.ancestors" class="list-item-indent"></div>
+  <div ng-repeat="path in ctrl.ancestors" class="list-item-indent"></div>
   <!-- list-item expand/collapse cell-->
-  <div ng-class="ctrl.expansionState" ng-click="ctrl.toggleExpand()">
-  </div>
+  <div ng-class="ctrl.expansionState"
+       ng-click="ctrl.toggleExpand($event)"></div>
   <!-- list-item selection cell -->
-  <div ng-if="ctrl.selectionEnabled">
-    <input class="list-item-selection" type="checkbox" ng-model="ctrl.selected">
+  <input class="list-item-selection"
+         ng-click="ctrl.stopPropagation($event)"
+         type="checkbox"
+         ng-model="ctrl.selected">
+
+  <div ">
+    <!-- list-item content cell -->
+    <content></content>
   </div>
-  <!-- list-item content cell -->
-  <content></content>
 </div>

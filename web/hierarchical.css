@@ -57,3 +57,7 @@ h1, p {
 .chip-margin {
   margin: 0px 2px 0px 2px;
 }
+
+*:focus {
+  outline: none;
+}

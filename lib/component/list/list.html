@@ -1,8 +1,13 @@
-<div class='list' ng-repeat="item in list.items">
-  <list-item item="item">
-    <item-placeholder template-markup="list.getLabelTemplateMarkup(item)">
+<div class='list' ng-repeat="path in list.paths">
+  <list-item
+    ng-class="list.getStyle(path, $index)"
+    ng-mouseenter="list.onMouseEnter(path, $event)"
+    ng-mouseleave="list.onMouseLeave(path, $event)"
+    ng-click="list.onMouseClick(path, $event)"
+    path="path">
+    <item-placeholder template-markup="list.getLabelTemplateMarkup(path)">
     </item-placeholder>
   </list-item>
-  <list ng-if="list.hasChildren(item) && list.isExpanded(item)"
-        items="list.getChildren(item)"></list>
+  <list ng-if="list.hasChildren(path) && list.isExpanded(path)"
+        paths="list.getChildren(path)"></list>
 </div>

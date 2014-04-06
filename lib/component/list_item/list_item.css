@@ -1,7 +1,5 @@
 .list-item {
-  margin: 0px 0px 3px 0px;
-  padding: 0px 0px 0px 3px;
-  /* border-bottom: 1px solid #dcdcdc; */
+  margin: 3px;
   display: flex;
   flex-direction: row;
   flex: none;
@@ -38,6 +36,11 @@
   flex: none;
   width: 16px;
   height: 16px;
-  margin: 1px 5px 0px 5px;
+  margin: 0px 5px 0px 5px;
   cursor: pointer;
+}
+
+input {
+  margin: 0;
+  padding: 0;
 }
