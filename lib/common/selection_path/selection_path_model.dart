@@ -150,7 +150,9 @@ class ListSelectionPathModel implements SelectionPathModel {
   }
 
   SelectionPath add(SelectionPath path) {
-    _roots.add(path);
+    if (!_roots.contains(path)) {
+      _roots.add(path);
+    }
     return path;
   }
 

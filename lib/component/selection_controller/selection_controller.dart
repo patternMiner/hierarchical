@@ -105,6 +105,18 @@ class SelectionController implements NgAttachAware, NgDetachAware{
       model.getChildren(path).forEach((SelectionPath child) {
         _selectUnselect(child, unselect);
       });
+      if (unselect) {
+        bool hasSelectedChildren(SelectionPath parent) =>
+          model.getChildren(parent).firstWhere((SelectionPath child) =>
+              isSelected(child), orElse: () => null) != null;
+        model.getAncestors(path).forEach((SelectionPath ancestor) {
+          if(!hasSelectedChildren(ancestor)) {
+            _selectionSet.remove(ancestor);
+          }
+        });
+      } else {
+        _selectionSet.addAll(model.getAncestors(path));
+      }
     }
   }
 
@@ -232,7 +244,6 @@ class SelectionController implements NgAttachAware, NgDetachAware{
       select(_markedPath);
     }
   }
-
 
   void onMouseDownInput(MouseEvent event) {
     event.stopPropagation();
