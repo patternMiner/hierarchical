@@ -159,8 +159,8 @@ class SelectionController implements NgAttachAware, NgDetachAware {
         if(!hasSelectedChildren(ancestor)) {
           _selectionSet.remove(ancestor);
         }
-        _selectionSet.removeAll(model.getDescendants(path));
       });
+      _selectionSet.removeAll(model.getDescendants(path));
     }
   }
 
