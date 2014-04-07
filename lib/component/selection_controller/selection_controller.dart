@@ -53,11 +53,6 @@ class SelectionController implements NgAttachAware, NgDetachAware {
           case SelectionPathEvent.DESELECT:
             toggleSelection(event.data);
             return;
-          case SelectionPathEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION:
-            if (event.completer != null) {
-              event.completer.complete(model.getLabelTemplateMarkup);
-            }
-            return;
           case SelectionPathEvent.GET_CURRENT_SELECTION:
             if (event.completer != null) {
               event.completer.complete(getSelections());
@@ -203,8 +198,6 @@ class SelectionController implements NgAttachAware, NgDetachAware {
     clearSelections();
   }
 
-  String getLabelTemplateMarkup(SelectionPath path) => model != null ?
-      model.getLabelTemplateMarkup(path) : null;
 
   bool hasParent(SelectionPath path) => model != null ?
       model.hasParent(path) : false;

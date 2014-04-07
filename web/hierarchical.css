@@ -1,17 +1,33 @@
 body {
-  font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 13px;
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: #666666;
   font-weight: normal;
-  line-height: 1.2em;
-  margin: 15px;
 }
 
-h1, p {
-  color: #333;
+h1 {
+  font-size: 24px;
+  font-weight: normal;
+  color: #666666;
+  margin: 0px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: normal;
+  color: #666666;
+  margin: 0px;
+}
+
+h3, h4 {
+  margin: 0px;
 }
 
 .panel {
-  width: 500px;
+  width: 360px;
   height: 360px;
   flex: none;
   display: flex;
@@ -60,4 +76,17 @@ h1, p {
 
 *:focus {
   outline: none;
+}
+
+.list-item-content {
+  flex: 1 1 auto;
+  margin: 0 0 0 5px;
+}
+
+.list-item-ancestry {
+  flex: none;
+}
+
+.list-item-content .list-item-ancestry {
+  width: 200px;
 }

@@ -5,7 +5,8 @@
     ng-mouseleave="list.onMouseLeave(path, $event)"
     ng-click="list.onMouseClick(path, $event)"
     path="path">
-    <item-placeholder template-markup="list.getLabelTemplateMarkup(path)">
+    <item-placeholder style="flex: 1 1 auto;"
+       template-markup="list.getLabelTemplateMarkup(path)">
     </item-placeholder>
   </list-item>
   <list ng-if="list.hasChildren(path) && list.isExpanded(path)"

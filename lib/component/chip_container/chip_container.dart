@@ -16,18 +16,14 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   @NgOneWayOneTime('selection-mediator')
   SelectionPathEventMediator mediator;
+  @NgOneWayOneTime('get-label-template-markup')
+  Function getLabelTemplateMarkup = (SelectionPath path) =>
+      "<div>${path.components.last.toString()}</div>";
 
   var list = [];
   StreamSubscription<SelectionPathEvent> _subscription;
-  Function getLabelTemplateMarkup;
 
   void attach() {
-    Completer completer = new Completer();
-    mediator.post(
-        new SelectionPathEvent(
-            SelectionPathEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION,
-            this, null, completer));
-    completer.future.then((Function f) => getLabelTemplateMarkup = f);
     _cancelSubscription();
     _subscription = mediator.onSelectionEvent().
         listen((SelectionPathEvent event) {

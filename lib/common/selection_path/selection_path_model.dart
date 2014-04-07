@@ -1,8 +1,6 @@
 part of selection_path;
 
 abstract class SelectionPathModel {
-  Function get getLabelTemplateMarkup;
-  set getLabelTemplateMarkup(Function f);
   int get height;
   bool get isLinear;
   bool hasParent(SelectionPath path);
@@ -24,15 +22,10 @@ class TreeSelectionPathModel implements SelectionPathModel {
   final Map<SelectionPath, List<SelectionPath>> _childrenMap =
       <SelectionPath, List<SelectionPath>>{};
   StreamController<SelectionPathEvent> pathRemovedStreamController;
-  Function getLabelTemplateMarkup;
 
-  TreeSelectionPathModel(this.getLabelTemplateMarkup) {
-    assert(this.getLabelTemplateMarkup != null);
-  }
+  TreeSelectionPathModel();
 
-  TreeSelectionPathModel.fromList(List items,
-      this.getLabelTemplateMarkup) {
-    assert(this.getLabelTemplateMarkup != null);
+  TreeSelectionPathModel.fromList(List items) {
     _processList(items, []);
   }
 
@@ -134,15 +127,10 @@ class TreeSelectionPathModel implements SelectionPathModel {
 class ListSelectionPathModel implements SelectionPathModel {
   final List<SelectionPath> _roots = <SelectionPath>[];
   StreamController<SelectionPathEvent> pathRemovedStreamController;
-  Function getLabelTemplateMarkup;
 
-  ListSelectionPathModel(this.getLabelTemplateMarkup) {
-    assert(this.getLabelTemplateMarkup != null);
-  }
+  ListSelectionPathModel();
 
-  ListSelectionPathModel.fromList(List items,
-      this.getLabelTemplateMarkup) {
-    assert(this.getLabelTemplateMarkup != null);
+  ListSelectionPathModel.fromList(List items) {
     _processList(items, []);
   }
 
