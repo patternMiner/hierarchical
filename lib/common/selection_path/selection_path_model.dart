@@ -205,3 +205,87 @@ class ListSelectionPathModel implements SelectionPathModel {
     return add(new SelectionPath(pathComponents));
   }
 }
+
+/// A stateful abstraction that can either filter an existing item list,
+/// or generate a brand new item list, based on the user input and its
+/// mode of operation.
+///
+/// Can be in one of two modes:
+///   1. FILTER_MODE
+///   2. SEARCH_MODE
+///
+abstract class ItemListProvider<T> {
+final List<T> _items = new List<T>();
+List<T> get items => _items;
+
+/// FILTER_MODE: filterMode = true;
+/// SEARCH_MODE: filterMode = false;
+bool get filterMode;
+
+void clear() {
+  _items.clear();
+}
+
+void init(Iterable<T> items) {
+  _items.clear();
+  _items.addAll(items);
+}
+
+int remove(T item) {
+  int removalIndex = _items.indexOf(item);
+  if (removalIndex != -1) {
+    _items.removeAt(removalIndex);
+  }
+  return removalIndex;
+}
+
+void add(T item) {
+  if (!_items.contains(item)) {
+     _items.add(item);
+  }
+}
+
+void addAll(Iterable<T> items) {
+  for (T item in items) {
+    add(item);
+  }
+}
+
+Future<List<T>> getItems(String inputText);
+}
+
+/// An ItemListProvider that works in FILTER_MODE.
+class FilterBasedItemListProvider<T> extends ItemListProvider {
+final bool filterMode = true;
+final Function itemLabelHandler;
+
+FilterBasedItemListProvider(this.itemLabelHandler);
+
+Future<List<T>> getItems(String inputText) {
+  return new Future.value(_items);
+}
+
+String getItemLabel(T item) =>
+    (itemLabelHandler != null) ? itemLabelHandler(item) :
+      (item != null) ? item.toString() : '';
+}
+
+/// An empty ItemListProvider that works in SEARCH_MODE.
+/// Subclasses must set the 'searchForItems' to appropriate
+/// Function to perform search based item list generation.
+class SearchBasedItemListProvider<T> extends ItemListProvider {
+final bool filterMode = false;
+final ItemsGetter<T> searchForItems;
+
+SearchBasedItemListProvider(ItemsGetter<T> this.searchForItems);
+
+Future<List<T>> getItems(String inputText) => searchForItems(inputText);
+}
+
+typedef Future<List<T>> ItemsGetter<T>(String query);
+
+/// Typically inserts more items to the given list.
+typedef Iterable<T> ItemListEnricher<T>(Iterable<T> items);
+
+/// Typically removes items from the given list.
+typedef Iterable<T> ItemListFilter<T>(Iterable<T> items);

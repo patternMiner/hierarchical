@@ -5,42 +5,27 @@ part of hierarchical;
     publishAs: 'app'
 )
 class HierarchicalApp {
-
-  final SelectionPathModel shapes =
-      new TreeSelectionPathModel.fromList(
+  static final List<String> entities  =
+      const [
           const ['Shape',
               const ['Open shape'],
               const ['Closed shape',
                   const ['Polygon',
                       const ['Triangle', 'Quadrangle', 'Pentagon']],
                   const ['Ellipse',
-                      const ['Circle']]]]);
-
-  final SelectionPathModel linearShapes =
-      new ListSelectionPathModel.fromList(
-          const ['Shape',
-              const ['Open shape'],
-              const ['Closed shape',
-                  const ['Polygon',
-                      const ['Triangle', 'Quadrangle', 'Pentagon']],
-                  const ['Ellipse',
-                      const ['Circle']]]]);
-
-  final SelectionPathModel collections =
-      new ListSelectionPathModel.fromList(
+                      const ['Circle']]]],
           const ['Collection',
               const ['List',
-                 const ['Array list', 'Linked list']],
+                const ['Array list', 'Linked list']],
               const ['Queue',
-                 const ['Deque',
-                    const ['Linked list', 'Array deque']]]]);
+                const ['Deque',
+                    const ['Linked list', 'Array deque']]]],
+          const ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
+                 'Thursday', 'Friday', 'Saturday']];
 
-  final SelectionPathModel nonLinearCollections =
-      new TreeSelectionPathModel.fromList(
-          const ['Collection',
-              const ['List',
-                 const ['Array list', 'Linked list']],
-              const ['Queue',
-                 const ['Deque',
-                    const ['Linked list', 'Array deque']]]]);
+  final SelectionPathModel hierarchical =
+      new TreeSelectionPathModel.fromList(entities);
+
+  final SelectionPathModel linear =
+      new ListSelectionPathModel.fromList(entities);
 }
