@@ -2,10 +2,12 @@
   <!-- list-item-indent -->
   <div ng-repeat="path in ctrl.ancestors" class="list-item-indent"></div>
   <!-- list-item expand/collapse cell-->
-  <div ng-class="ctrl.expansionState"
+  <div ng-if="!ctrl.isLinear"
+       ng-class="ctrl.expansionState"
        ng-click="ctrl.toggleExpand($event)"></div>
   <!-- list-item selection cell -->
-  <input class="list-item-selection"
+  <input ng-if="ctrl.multiSelect"
+         class="list-item-selection"
          ng-click="ctrl.stopPropagation($event)"
          type="checkbox"
          ng-model="ctrl.selected">

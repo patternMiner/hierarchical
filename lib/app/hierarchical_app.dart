@@ -17,6 +17,17 @@ class HierarchicalApp {
                       const ['Circle']]]],
                       getLabelTemplateMarkup);
 
+  final SelectionPathModel linearShapes =
+      new ListSelectionPathModel.fromList(
+          const ['Shape',
+              const ['Open shape'],
+              const ['Closed shape',
+                  const ['Polygon',
+                      const ['Triangle', 'Quadrangle', 'Pentagon']],
+                  const ['Ellipse',
+                      const ['Circle']]]],
+                      getLabelTemplateMarkup);
+
   final SelectionPathModel collections =
       new ListSelectionPathModel.fromList(
           const ['Collection',
@@ -27,9 +38,21 @@ class HierarchicalApp {
                     const ['Linked list', 'Array deque']]]],
                     getLabelTemplateMarkup);
 
+  final SelectionPathModel nonLinearCollections =
+      new TreeSelectionPathModel.fromList(
+          const ['Collection',
+              const ['List',
+                 const ['Array list', 'Linked list']],
+              const ['Queue',
+                 const ['Deque',
+                    const ['Linked list', 'Array deque']]]],
+                    getLabelTemplateMarkup);
+
   static String getLabelTemplateMarkup(SelectionPath path) {
-    return "<div>${getValue(path)}</div>";
+    return "<span>${getValue(path).toString()}</span>";
   }
 
   static dynamic getValue(SelectionPath path) => path.components.last;
+  static dynamic getAncestry(SelectionPath path) =>
+      path.components.reversed.skip(1).join(' > ');
 }

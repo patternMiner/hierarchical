@@ -3,8 +3,8 @@ part of selection_path;
 abstract class SelectionPathModel {
   Function get getLabelTemplateMarkup;
   set getLabelTemplateMarkup(Function f);
-  SelectionPathMediator get mediator;
-  set mediator(SelectionPathMediator m);
+  int get height;
+  bool get isLinear;
   bool hasParent(SelectionPath path);
   bool isLeaf(SelectionPath path);
   Iterable getAncestors(SelectionPath path);
@@ -15,6 +15,7 @@ abstract class SelectionPathModel {
   void dfs(SelectionPath root, Set expansionSet, Function visitor);
   SelectionPath add(SelectionPath path);
   SelectionPath remove(SelectionPath path);
+  Stream<SelectionPathEvent> onSelectionPathRemoved();
 }
 
 class TreeSelectionPathModel implements SelectionPathModel {
@@ -22,8 +23,8 @@ class TreeSelectionPathModel implements SelectionPathModel {
   final List<SelectionPath> _roots = <SelectionPath>[];
   final Map<SelectionPath, List<SelectionPath>> _childrenMap =
       <SelectionPath, List<SelectionPath>>{};
+  StreamController<SelectionPathEvent> pathRemovedStreamController;
   Function getLabelTemplateMarkup;
-  SelectionPathMediator mediator;
 
   TreeSelectionPathModel(this.getLabelTemplateMarkup) {
     assert(this.getLabelTemplateMarkup != null);
@@ -35,6 +36,22 @@ class TreeSelectionPathModel implements SelectionPathModel {
     _processList(items, []);
   }
 
+  int get height {
+    int height = 1;
+    _graph.nodes.forEach((SelectionPath path) => height =
+        height < path.components.length ? path.components.length : height);
+    return height;
+  }
+
+  Stream<SelectionPathEvent> onSelectionPathRemoved() {
+    if (pathRemovedStreamController == null) {
+      pathRemovedStreamController =
+          new StreamController<SelectionPathEvent>.broadcast();
+    }
+    return pathRemovedStreamController.stream;
+  }
+
+  bool get isLinear => height == 1;
   bool hasParent(SelectionPath path) => _graph.getParents(path).isNotEmpty;
   bool isLeaf(SelectionPath path) => _graph.isLeaf(path);
   Iterable getAncestors(SelectionPath path) => _graph.getAncestors(path);
@@ -82,8 +99,8 @@ class TreeSelectionPathModel implements SelectionPathModel {
 
   SelectionPath remove(SelectionPath path) {
     _graph.removeNode(path);
-    if (mediator != null) {
-      mediator.post(new SelectionPathEvent(
+    if (pathRemovedStreamController != null) {
+      pathRemovedStreamController.add(new SelectionPathEvent(
           SelectionPathEvent.SELECTION_PATH_DELETED, this, path, null));
     }
     return path;
@@ -116,8 +133,8 @@ class TreeSelectionPathModel implements SelectionPathModel {
 
 class ListSelectionPathModel implements SelectionPathModel {
   final List<SelectionPath> _roots = <SelectionPath>[];
+  StreamController<SelectionPathEvent> pathRemovedStreamController;
   Function getLabelTemplateMarkup;
-  SelectionPathMediator mediator;
 
   ListSelectionPathModel(this.getLabelTemplateMarkup) {
     assert(this.getLabelTemplateMarkup != null);
@@ -127,6 +144,17 @@ class ListSelectionPathModel implements SelectionPathModel {
       this.getLabelTemplateMarkup) {
     assert(this.getLabelTemplateMarkup != null);
     _processList(items, []);
+  }
+
+  int get height => 1;
+  bool get isLinear => true;
+
+  Stream<SelectionPathEvent> onSelectionPathRemoved() {
+    if (pathRemovedStreamController == null) {
+      pathRemovedStreamController =
+          new StreamController<SelectionPathEvent>.broadcast();
+    }
+    return pathRemovedStreamController.stream;
   }
 
   bool hasParent(SelectionPath path) => false;
@@ -158,8 +186,8 @@ class ListSelectionPathModel implements SelectionPathModel {
 
   SelectionPath remove(SelectionPath path) {
     _roots.remove(path);
-    if (mediator != null) {
-      mediator.post(new SelectionPathEvent(
+    if (pathRemovedStreamController != null) {
+      pathRemovedStreamController.add(new SelectionPathEvent(
           SelectionPathEvent.SELECTION_PATH_DELETED, this, path, null));
     }
     return path;

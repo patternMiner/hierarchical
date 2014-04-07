@@ -1,11 +1,11 @@
 part of selection_path;
 
-class SelectionPathMediator {
+class SelectionPathEventMediator {
   StreamController<SelectionPathEvent> _streamController;
 
   int _listenerCount = 0;
 
-  SelectionPathMediator() {
+  SelectionPathEventMediator() {
     _streamController =
           new StreamController<SelectionPathEvent>.broadcast(
               onListen: () => _listenerCount++,

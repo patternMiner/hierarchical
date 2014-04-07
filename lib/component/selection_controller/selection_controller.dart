@@ -12,22 +12,23 @@ import '../../common/selection_path/selection_path.dart';
   publishAs: 'selectionController',
   visibility: NgDirective.CHILDREN_VISIBILITY
 )
-class SelectionController implements NgAttachAware, NgDetachAware{
+class SelectionController implements NgAttachAware, NgDetachAware {
   final Set _selectionSet = new HashSet();
   final Set _expansionSet = new HashSet();
-  final SelectionPathMediator mediator = new SelectionPathMediator();
   final List<SelectionPath> _visiblePaths = <SelectionPath>[];
   SelectionPath _markedPath;
 
   @NgOneWayOneTime('selection-path-model')
   SelectionPathModel model;
-  @NgOneWayOneTime('popup-mode')
-  bool popupMode = false;
+  @NgOneWayOneTime('multi-select')
+  bool multiSelect = false;
+  @NgOneWayOneTime('selection-mediator')
+  SelectionPathEventMediator mediator;
 
-  StreamSubscription<SelectionPathEvent> _subscription;
+  StreamSubscription<SelectionPathEvent> _mediatorSubscription;
+  StreamSubscription<SelectionPathEvent> _modelSubscription;
 
   void attach() {
-    model.mediator = mediator;
     _computeVisiblePaths();
     _createSubscription();
   }
@@ -42,39 +43,48 @@ class SelectionController implements NgAttachAware, NgDetachAware{
   }
 
   void _createSubscription() {
-    if (model == null) {
-      return;
+    if (mediator != null) {
+      _mediatorSubscription = mediator.onSelectionEvent()
+          .listen((SelectionPathEvent event) {
+        switch(event.type) {
+          case SelectionPathEvent.SET_SELECTION:
+            setSelection(event.data);
+            return;
+          case SelectionPathEvent.DESELECT:
+            toggleSelection(event.data);
+            return;
+          case SelectionPathEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION:
+            if (event.completer != null) {
+              event.completer.complete(model.getLabelTemplateMarkup);
+            }
+            return;
+          case SelectionPathEvent.GET_CURRENT_SELECTION:
+            if (event.completer != null) {
+              event.completer.complete(getSelections());
+            }
+            return;
+          case SelectionPathEvent.SELECTION_PATH_DELETED:
+            _selectionSet.remove(event.data);
+            _expansionSet.remove(event.data);
+            return;
+        }
+      });
     }
-    _subscription = mediator.onSelectionEvent()
-        .listen((SelectionPathEvent event) {
-      switch(event.type) {
-        case SelectionPathEvent.SET_SELECTION:
-          setSelection(event.data);
-          return;
-        case SelectionPathEvent.DESELECT:
-          toggleSelection(event.data);
-          return;
-        case SelectionPathEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION:
-          if (event.completer != null) {
-            event.completer.complete(model.getLabelTemplateMarkup);
-          }
-          return;
-        case SelectionPathEvent.GET_CURRENT_SELECTION:
-          if (event.completer != null) {
-            event.completer.complete(getSelections());
-          }
-          return;
-        case SelectionPathEvent.SELECTION_PATH_DELETED:
-          _selectionSet.remove(event.data);
-          _expansionSet.remove(event.data);
-          return;
-      }
-    });
+    if (model != null) {
+      _modelSubscription = model.onSelectionPathRemoved()
+          .listen((SelectionPathEvent event) {
+        _selectionSet.remove(event.data);
+        _expansionSet.remove(event.data);
+      });
+    }
   }
 
   void _cancelSubscription() {
-    if (_subscription != null) {
-      _subscription.cancel();
+    if (_mediatorSubscription != null) {
+      _mediatorSubscription.cancel();
+    }
+    if (_modelSubscription != null) {
+      _modelSubscription.cancel();
     }
   }
 
@@ -87,7 +97,7 @@ class SelectionController implements NgAttachAware, NgDetachAware{
   }
 
   void toggleSelection(path) {
-    _selectUnselect(path, isSelected(path));
+    isSelected(path) ? _unselect(path) : _select(path);
     notifySelections();
   }
 
@@ -96,27 +106,6 @@ class SelectionController implements NgAttachAware, NgDetachAware{
     if (model != null && collapse) {
       model.getDescendants(path).forEach((SelectionPath descendant) =>
         _expansionSet.remove(descendant));
-    }
-  }
-
-  void _selectUnselect(SelectionPath path, bool unselect) {
-    unselect ? _selectionSet.remove(path) : _selectionSet.add(path);
-    if (model != null) {
-      model.getChildren(path).forEach((SelectionPath child) {
-        _selectUnselect(child, unselect);
-      });
-      if (unselect) {
-        bool hasSelectedChildren(SelectionPath parent) =>
-          model.getChildren(parent).firstWhere((SelectionPath child) =>
-              isSelected(child), orElse: () => null) != null;
-        model.getAncestors(path).forEach((SelectionPath ancestor) {
-          if(!hasSelectedChildren(ancestor)) {
-            _selectionSet.remove(ancestor);
-          }
-        });
-      } else {
-        _selectionSet.addAll(model.getAncestors(path));
-      }
     }
   }
 
@@ -132,21 +121,46 @@ class SelectionController implements NgAttachAware, NgDetachAware{
   }
 
   void notifySelections() {
-    mediator.post(new SelectionPathEvent(SelectionPathEvent.SELECTION_CHANGED,
-        this, getSelections(), null));
+    if (mediator != null) {
+      mediator.post(new SelectionPathEvent(SelectionPathEvent.SELECTION_CHANGED,
+          this, getSelections(), null));
+    }
   }
 
   /// Sets the initial selection. Does not trigger the SELECTION_CHANGED event.
   void setSelection(Iterable<SelectionPath> paths) {
     if (paths != null) {
-      paths.forEach((SelectionPath path) => select(path));
+      paths.forEach((SelectionPath path) => _select(path));
     }
   }
 
-  void select(SelectionPath path) {
+  bool _select(SelectionPath path) {
+    if (!multiSelect) {
+      _selectionSet.clear();
+    }
+    if (isSelected(path)) {
+      return false;
+    }
     _selectionSet.add(path);
-    if (model != null) {
+    if (model != null && multiSelect) {
       _selectionSet.addAll(model.getDescendants(path));
+      _selectionSet.addAll(model.getAncestors(path));
+    }
+    return true;
+  }
+
+  void _unselect(SelectionPath path) {
+    _selectionSet.remove(path);
+    if (model != null && multiSelect) {
+      bool hasSelectedChildren(SelectionPath parent) =>
+        model.getChildren(parent).firstWhere((SelectionPath child) =>
+            isSelected(child), orElse: () => null) != null;
+      model.getAncestors(path).forEach((SelectionPath ancestor) {
+        if(!hasSelectedChildren(ancestor)) {
+          _selectionSet.remove(ancestor);
+        }
+        _selectionSet.removeAll(model.getDescendants(path));
+      });
     }
   }
 
@@ -183,7 +197,7 @@ class SelectionController implements NgAttachAware, NgDetachAware{
   }
 
   void selectAll(Iterable<SelectionPath> visiblePaths) =>
-    visiblePaths.forEach((SelectionPath path) => select(path));
+    visiblePaths.forEach((SelectionPath path) => _select(path));
 
   void selectNone() {
     clearSelections();
@@ -233,17 +247,21 @@ class SelectionController implements NgAttachAware, NgDetachAware{
       return 0;
     }
     index--;
-    if (index >= _visiblePaths.length) {
+    if (index < 0 || index >= _visiblePaths.length) {
       index = 0;
     }
     return index;
   }
 
-  void commitSelection() {
+  bool commitSelection() {
     if (isVisible(_markedPath)) {
-      select(_markedPath);
+      return _select(_markedPath);
     }
+    return false;
   }
+
+  int get height => model.height;
+  bool get isLinear => model.isLinear;
 
   void onMouseDownInput(MouseEvent event) {
     event.stopPropagation();
@@ -260,7 +278,11 @@ class SelectionController implements NgAttachAware, NgDetachAware{
         event.stopPropagation();
         event.preventDefault();
         return;
-    }
+      case KeyCode.SPACE:
+        event.stopPropagation();
+        event.preventDefault();
+        return;
+   }
   }
 
   /// do the navigation and also prevent the scrollbar distraction.
@@ -284,7 +306,15 @@ class SelectionController implements NgAttachAware, NgDetachAware{
         return;
       case KeyCode.SPACE:
       case KeyCode.ENTER:
-        toggleSelection(_markedPath);
+        if (multiSelect) {
+          toggleSelection(_markedPath);
+        } else {
+          if (!isSelected(_markedPath)) {
+            if (commitSelection()) {
+              notifySelections();
+            }
+          }
+        }
         event.stopPropagation();
         event.preventDefault();
         return;

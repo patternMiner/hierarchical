@@ -5,7 +5,7 @@ import '../graph/graph.dart';
 
 part 'selection_path_model.dart';
 part 'selection_path_event.dart';
-part 'selection_path_mediator.dart';
+part 'selection_path_event_mediator.dart';
 
 class SelectionPath {
   final List components;

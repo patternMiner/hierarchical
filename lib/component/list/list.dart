@@ -42,8 +42,13 @@ class ListComponent {
   }
 
   void onMouseClick(SelectionPath path, MouseEvent event) {
-    _selectionController.markPathForSelection(path);
-    _selectionController.toggleSelection(path);
+    if (_selectionController.multiSelect) {
+      _selectionController.toggleSelection(path);
+    } else {
+      if (_selectionController.commitSelection()) {
+        return _selectionController.notifySelections();
+      }
+    }
     event.stopPropagation();
     event.preventDefault();
   }

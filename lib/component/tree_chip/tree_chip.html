@@ -4,7 +4,8 @@
       <h1>{{ctrl.title}}</h1>
     </div>
     <div class="panel-content" ng-mousedown="ctrl.onMouseDown($event)">
-      <selection-controller multi-select="false"
+      <selection-controller multi-select="ctrl.multiSelect"
+        selection-mediator="ctrl.mediator"
         selection-path-model="ctrl.model">
         <div style="display: flex; flex-direction: column;" tabindex="0"
              ng-keydown="selectionController.onKeyDown($event)"
@@ -17,12 +18,10 @@
 
   <div class="panel">
     <div class="panel-header">
-      <h1>Chips</h1>
+      <h1>Chip selections</h1>
     </div>
     <div class="panel-content">
-      <chip-container
-        ng-if="ctrl.model.mediator != null"
-        selection-mediator="ctrl.model.mediator">
+      <chip-container selection-mediator="ctrl.mediator">
       </chip-container>
     </div>
   </div>

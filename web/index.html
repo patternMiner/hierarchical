@@ -9,10 +9,16 @@
   <body>
 
     <hierarchical-app>
-      <tree-chip title="'Shape hierarchy'"
+      <tree-chip title="'Nonlinear (single selection)'"
                  selection-path-model="app.shapes"></tree-chip>
-      <tree-chip title="'Collection list'"
-                 selection-path-model="app.collections"></tree-chip>
+      <tree-chip title="'Nonlinear (multiple selection)'"
+                 multi-select="true"
+                 selection-path-model="app.shapes"></tree-chip>
+      <tree-chip title="'Linear (single selection)'"
+                 selection-path-model="app.linearShapes"></tree-chip>
+      <tree-chip title="'Linear (multiple selection)'"
+                 multi-select="true"
+                 selection-path-model="app.linearShapes"></tree-chip>
     </hierarchical-app>
 
     <script src="packages/shadow_dom/shadow_dom.min.js"></script>

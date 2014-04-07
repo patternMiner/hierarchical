@@ -16,6 +16,10 @@ class TreeChipComponent {
   String title;
   @NgOneWayOneTime('selection-path-model')
   SelectionPathModel model;
+  @NgOneWayOneTime('multi-select')
+  bool multiSelect = false;
+
+  final SelectionPathEventMediator mediator = new SelectionPathEventMediator();
 
   void onMouseDown(MouseEvent event) {
     if (isOnScrollbar(event)) {

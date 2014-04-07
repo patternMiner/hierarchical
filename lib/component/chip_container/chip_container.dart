@@ -15,7 +15,7 @@ import '../../common/selection_path/selection_path.dart';
 class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   @NgOneWayOneTime('selection-mediator')
-  SelectionPathMediator mediator;
+  SelectionPathEventMediator mediator;
 
   var list = [];
   StreamSubscription<SelectionPathEvent> _subscription;
@@ -24,7 +24,8 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
   void attach() {
     Completer completer = new Completer();
     mediator.post(
-        new SelectionPathEvent(SelectionPathEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION,
+        new SelectionPathEvent(
+            SelectionPathEvent.GET_LABEL_TEMPLATE_MARKUP_FUNCTION,
             this, null, completer));
     completer.future.then((Function f) => getLabelTemplateMarkup = f);
     _cancelSubscription();

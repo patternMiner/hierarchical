@@ -36,6 +36,8 @@ class ListItemComponent {
   void stopPropagation(MouseEvent event) {
     event.stopPropagation();
   }
+  bool get multiSelect => _selectionController.multiSelect;
+  bool get isLinear => _selectionController.isLinear;
   bool get hasChildren => children.isNotEmpty;
   String get expansionState => hasChildren ?
       (expanded ? 'list-item-expanded' : 'list-item-collapsed') :
