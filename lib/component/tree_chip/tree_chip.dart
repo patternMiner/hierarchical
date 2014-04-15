@@ -2,7 +2,7 @@ library tree_chip;
 
 import 'dart:html';
 import 'package:angular/angular.dart';
-import '../../common/selection_path/selection_path.dart';
+import '../menu/menu.dart';
 
 @NgComponent(
     selector: 'tree-chip',
@@ -14,12 +14,12 @@ class TreeChipComponent {
 
   @NgOneWayOneTime('title')
   String title;
-  @NgOneWayOneTime('selection-path-model')
-  SelectionPathModel model;
+  @NgOneWayOneTime('menu-model')
+  MenuModel model;
   @NgOneWayOneTime('multi-select')
   bool multiSelect = false;
 
-  final SelectionPathEventMediator mediator = new SelectionPathEventMediator();
+  final MenuSelectionEventMediator mediator = new MenuSelectionEventMediator();
 
   void onMouseDown(MouseEvent event) {
     if (isOnScrollbar(event)) {

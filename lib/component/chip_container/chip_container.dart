@@ -3,7 +3,7 @@ library chip_container;
 import 'dart:async';
 import 'package:angular/angular.dart';
 
-import '../../common/selection_path/selection_path.dart';
+import '../menu/menu.dart';
 
 @NgComponent(
     selector: 'chip-container',
@@ -15,20 +15,20 @@ import '../../common/selection_path/selection_path.dart';
 class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   @NgOneWayOneTime('selection-mediator')
-  SelectionPathEventMediator mediator;
+  MenuSelectionEventMediator mediator;
   @NgOneWayOneTime('get-label-template-markup')
-  Function getLabelTemplateMarkup = (SelectionPath path) =>
+  Function getLabelTemplateMarkup = (MenuItem path) =>
       "<div>${path.components.last.toString()}</div>";
 
   var list = [];
-  StreamSubscription<SelectionPathEvent> _subscription;
+  StreamSubscription<MenuSelectionEvent> _subscription;
 
   void attach() {
     _cancelSubscription();
     _subscription = mediator.onSelectionEvent().
-        listen((SelectionPathEvent event) {
+        listen((MenuSelectionEvent event) {
       switch(event.type) {
-        case SelectionPathEvent.SELECTION_CHANGED:
+        case MenuSelectionEvent.SELECTION_CHANGED:
           list.clear();
           list.addAll(event.data);
           return;
@@ -53,8 +53,8 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
   Future<List> _loadCurrentSelection() {
     Completer<List> completer = new Completer<List>();
     if (mediator != null) {
-      SelectionPathEvent curSelectionEvent =
-          new SelectionPathEvent(SelectionPathEvent.GET_CURRENT_SELECTION, this,
+      MenuSelectionEvent curSelectionEvent =
+          new MenuSelectionEvent(MenuSelectionEvent.GET_CURRENT_SELECTION, this,
               null, completer);
       mediator.post(curSelectionEvent);
     }
@@ -63,7 +63,7 @@ class ChipContainerComponent implements NgAttachAware, NgDetachAware {
 
   void onDelete(item) {
     if (mediator != null) {
-      mediator.post(new SelectionPathEvent(SelectionPathEvent.DESELECT, this,
+      mediator.post(new MenuSelectionEvent(MenuSelectionEvent.DESELECT, this,
           item, null));
     }
   }

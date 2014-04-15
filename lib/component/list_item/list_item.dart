@@ -3,8 +3,7 @@ library list_item;
 import 'dart:html';
 import 'package:angular/angular.dart';
 
-import '../../common/selection_path/selection_path.dart';
-import '../../component/selection_controller/selection_controller.dart';
+import '../menu/menu.dart';
 
 @NgComponent(
     selector: 'list-item',
@@ -17,10 +16,10 @@ import '../../component/selection_controller/selection_controller.dart';
 class ListItemComponent {
 
   final List _ancestors = [];
-  final SelectionController _selectionController;
+  final Menu _selectionController;
 
   @NgOneWayOneTime('path')
-  SelectionPath path;
+  MenuItem path;
 
   ListItemComponent(this._selectionController);
 

@@ -23,11 +23,11 @@ class HierarchicalApp {
           const ['Sunday', 'Monday', 'Tuesday', 'Wednesday',
                  'Thursday', 'Friday', 'Saturday']];
 
-  final SelectionPathModel hierarchical =
-      new TreeSelectionPathModel.fromList(entities)..
+  final MenuModel hierarchical =
+      new TreeMenuModel.fromList(entities)..
       search='angle';
 
-  final SelectionPathModel linear =
-      new ListSelectionPathModel.fromList(entities)..
+  final MenuModel linear =
+      new ListMenuModel.fromList(entities)..
       search='angle';
 }
