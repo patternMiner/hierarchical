@@ -65,7 +65,10 @@ class Graph<T> {
   List<T> getAncestors(T node) =>
       _getAncestorsInternal(node, new HashSet<T>());
 
-  bool isLeaf(T node) => _getOutEdges(node).isEmpty;
+  bool isLeaf(T node) {
+    bool result = _getOutEdges(node).isEmpty;
+    return result;
+  }
 
   List<T> _getDescendantsInternal(T node, Set<T> visited) {
     visited.add(node);

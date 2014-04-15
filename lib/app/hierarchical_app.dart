@@ -24,8 +24,10 @@ class HierarchicalApp {
                  'Thursday', 'Friday', 'Saturday']];
 
   final SelectionPathModel hierarchical =
-      new TreeSelectionPathModel.fromList(entities);
+      new TreeSelectionPathModel.fromList(entities)..
+      search='angle';
 
   final SelectionPathModel linear =
-      new ListSelectionPathModel.fromList(entities);
+      new ListSelectionPathModel.fromList(entities)..
+      search='angle';
 }

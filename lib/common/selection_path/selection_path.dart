@@ -1,6 +1,7 @@
 library selection_path;
 
 import 'dart:async';
+import 'dart:collection';
 import '../graph/graph.dart';
 
 part 'selection_path_model.dart';
@@ -9,6 +10,7 @@ part 'selection_path_event_mediator.dart';
 
 class SelectionPath {
   final List components;
+  String _labelForFiltering;
 
   SelectionPath(this.components) {
     assert(this.components != null);
@@ -34,4 +36,16 @@ class SelectionPath {
     }
     return false;
   }
+
+  String _getLabelForFiltering() {
+    if (_labelForFiltering == null) {
+      _labelForFiltering = components.last.toString().toLowerCase();
+    }
+    return _labelForFiltering;
+  }
+
+  bool filter(String trimmedLowerCaseString) =>
+      _getLabelForFiltering().contains(trimmedLowerCaseString);
+
+  String toString() => _getLabelForFiltering();
 }
