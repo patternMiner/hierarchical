@@ -18,17 +18,17 @@ class ListItemComponent {
   final List _ancestors = [];
   final Menu _selectionController;
 
-  @NgOneWayOneTime('path')
-  MenuItem path;
+  @NgOneWayOneTime('item')
+  MenuItem item;
 
   ListItemComponent(this._selectionController);
 
-  bool get selected => _selectionController.isSelected(path);
-  set selected(bool state) => _selectionController.toggleSelection(path);
-  bool get expanded => _selectionController.isExpanded(path);
-  Iterable get children => _selectionController.children(path);
+  bool get selected => _selectionController.isSelected(item);
+  set selected(bool state) => _selectionController.toggleSelection(item);
+  bool get expanded => _selectionController.isExpanded(item);
+  Iterable get children => _selectionController.children(item);
   void toggleExpand(MouseEvent event) {
-    _selectionController.toggleExpansion(path);
+    _selectionController.toggleExpansion(item);
     event.stopPropagation();
     event.preventDefault();
   }
@@ -41,12 +41,12 @@ class ListItemComponent {
   String get expansionState => hasChildren ?
       (expanded ? 'list-item-expanded' : 'list-item-collapsed') :
           'list-item-expand-collapse';
-  bool get visible => _selectionController.isVisible(path);
-  bool get hasParent => _selectionController.hasParent(path);
+  bool get visible => _selectionController.isVisible(item);
+  bool get hasParent => _selectionController.hasParent(item);
   String get containerClass => hasParent ? 'list-offset' : 'no-list-offset';
   Iterable get ancestors {
     _ancestors.clear();
-    _ancestors.addAll(_selectionController.getAncestors(path));
+    _ancestors.addAll(_selectionController.getAncestors(item));
     return _ancestors;
   }
 }

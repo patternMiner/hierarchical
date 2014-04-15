@@ -19,18 +19,18 @@ abstract class MenuModel {
                                      ItemListFilter<MenuItem> enricher);
   int  get height;
   bool get isLinear;
-  bool hasParent(MenuItem path);
-  bool isLeaf(MenuItem path);
-  Iterable getAncestors(MenuItem path);
-  Iterable getDescendants(MenuItem path);
-  Iterable getChildren(MenuItem path);
+  bool hasParent(MenuItem item);
+  bool isLeaf(MenuItem item);
+  Iterable getAncestors(MenuItem item);
+  Iterable getDescendants(MenuItem item);
+  Iterable getChildren(MenuItem item);
   Iterable get roots;
   void clear();
   void dfs(MenuItem root, Set expansionSet, Function visitor);
-  MenuItem add(MenuItem path);
-  void addAll(Iterable<MenuItem> path);
-  MenuItem remove(MenuItem path);
-  Stream<MenuSelectionEvent> onSelectionPathRemoved();
+  MenuItem add(MenuItem item);
+  void addAll(Iterable<MenuItem> item);
+  MenuItem remove(MenuItem item);
+  Stream<MenuSelectionEvent> onSelectionItemRemoved();
 }
 
 class MenuItem {
@@ -80,7 +80,7 @@ abstract class MenuModelMixin {
   final List<MenuItem> _roots = <MenuItem>[];
   final Map<MenuItem, List<MenuItem>> _childrenMap =
       <MenuItem, List<MenuItem>>{};
-  StreamController<MenuSelectionEvent> pathRemovedStreamController;
+  StreamController<MenuSelectionEvent> itemRemovedStreamController;
   String _search;
   ItemListProvider<MenuItem> itemListProvider =
       new FilterBasedItemListProvider<MenuItem>();
@@ -179,9 +179,9 @@ abstract class MenuModelMixin {
     return processedItems;
   }
 
-  void init(Iterable<MenuItem> paths) {
+  void init(Iterable<MenuItem> items) {
     clear();
-    addAll(paths);
+    addAll(items);
     filter();
   }
 
@@ -195,25 +195,25 @@ abstract class MenuModelMixin {
   void filter() {
     _filteredItems.clear();
     _filteredItems.addAll(_primaryFilter(items));
-    processFilteredOutPaths(items.toSet().difference(_filteredItems));
-    processFilteredInPaths(_filteredItems);
+    processFilteredOutItems(items.toSet().difference(_filteredItems));
+    processFilteredInItems(_filteredItems);
     _updateFilteredItems();
   }
 
-  processFilteredOutPaths(Iterable<MenuItem> filteredOutPaths);
-  processFilteredInPaths(Iterable<MenuItem> filteredInPaths);
+  processFilteredOutItems(Iterable<MenuItem> filteredOutItems);
+  processFilteredInItems(Iterable<MenuItem> filteredInItems);
 
-  Stream<MenuSelectionEvent> onSelectionPathRemoved() {
-    if (pathRemovedStreamController == null) {
-      pathRemovedStreamController =
+  Stream<MenuSelectionEvent> onSelectionItemRemoved() {
+    if (itemRemovedStreamController == null) {
+      itemRemovedStreamController =
           new StreamController<MenuSelectionEvent>.broadcast();
     }
-    return pathRemovedStreamController.stream;
+    return itemRemovedStreamController.stream;
   }
 
-  Iterable getChildren(MenuItem path);
-  MenuItem add(MenuItem path);
-  void addAll(Iterable<MenuItem> path);
+  Iterable getChildren(MenuItem item);
+  MenuItem add(MenuItem item);
+  void addAll(Iterable<MenuItem> item);
 
   void dfs(MenuItem root, Set expansionSet, Function visitor) {
     visitor(root);
@@ -223,28 +223,28 @@ abstract class MenuModelMixin {
     }
   }
 
-  void _processList(List paths, List parentStack) {
+  void _processList(List items, List parentStack) {
     var curNode = null;
-    paths.forEach((path) {
-      if (path is List) {
+    items.forEach((item) {
+      if (item is List) {
         if (curNode != null) {
           parentStack.add(curNode);
         }
-        _processList(path, parentStack);
+        _processList(item, parentStack);
         if (parentStack.isNotEmpty) {
           parentStack.removeLast();
         }
       } else {
-        curNode = _processListItem(path, parentStack);
+        curNode = _processListItem(item, parentStack);
       }
     });
   }
 
-  MenuItem _processListItem(path, List parentStack) {
+  MenuItem _processListItem(item, List parentStack) {
     MenuItem src = parentStack.isNotEmpty ? parentStack.last : null;
-    List pathComponents = src != null ? src.components.toList() : [];
-    pathComponents.add(path);
-    return add(new MenuItem(pathComponents));
+    List itemComponents = src != null ? src.components.toList() : [];
+    itemComponents.add(item);
+    return add(new MenuItem(itemComponents));
   }
 }
 
@@ -260,28 +260,28 @@ class TreeMenuModel extends Object with MenuModelMixin
   }
 
   Iterable<MenuItem> get items =>
-    itemListProvider.items.where((MenuItem path) => _graph.isLeaf(path));
+    itemListProvider.items.where((MenuItem item) => _graph.isLeaf(item));
 
   int get height {
     int height = 1;
-    _graph.nodes.forEach((MenuItem path) => height =
-        height < path.components.length ? path.components.length : height);
+    _graph.nodes.forEach((MenuItem item) => height =
+        height < item.components.length ? item.components.length : height);
     return height;
   }
 
   bool get isLinear => height == 1;
-  bool hasParent(MenuItem path) => _graph.getParents(path).isNotEmpty;
-  bool isLeaf(MenuItem path) => _graph.isLeaf(path);
-  Iterable getAncestors(MenuItem path) => _graph.getAncestors(path);
-  Iterable getDescendants(MenuItem path) => _graph.getDescendants(path);
-  Iterable getChildren(MenuItem path) {
-    List children = _childrenMap[path];
+  bool hasParent(MenuItem item) => _graph.getParents(item).isNotEmpty;
+  bool isLeaf(MenuItem item) => _graph.isLeaf(item);
+  Iterable getAncestors(MenuItem item) => _graph.getAncestors(item);
+  Iterable getDescendants(MenuItem item) => _graph.getDescendants(item);
+  Iterable getChildren(MenuItem item) {
+    List children = _childrenMap[item];
     if (children == null) {
       children = <MenuItem>[];
-      _childrenMap[path] = children;
+      _childrenMap[item] = children;
     }
     children.clear();
-    children.addAll(_graph.getChildren(path));
+    children.addAll(_graph.getChildren(item));
     return children;
   }
 
@@ -300,43 +300,43 @@ class TreeMenuModel extends Object with MenuModelMixin
     _updateFilteredItems();
   }
 
-  void addAll(Iterable<MenuItem> paths) {
-    paths.forEach((MenuItem path) => _addToGraph(path));
-    itemListProvider.addAll(paths);
-    filteredItems.addAll(paths);
+  void addAll(Iterable<MenuItem> items) {
+    items.forEach((MenuItem item) => _addToGraph(item));
+    itemListProvider.addAll(items);
+    filteredItems.addAll(items);
     _updateFilteredItems();
   }
 
-  MenuItem add(MenuItem path) {
-    itemListProvider.add(_addToGraph(path));
-    filteredItems.add(path);
+  MenuItem add(MenuItem item) {
+    itemListProvider.add(_addToGraph(item));
+    filteredItems.add(item);
     _updateFilteredItems();
-    return path;
+    return item;
   }
 
-  MenuItem remove(MenuItem path) {
-    itemListProvider.remove(_removeFromGraph(path, false));
-    filteredItems.remove(path);
+  MenuItem remove(MenuItem item) {
+    itemListProvider.remove(_removeFromGraph(item, false));
+    filteredItems.remove(item);
     _updateFilteredItems();
-    return path;
+    return item;
   }
 
-  MenuItem _addToGraph(MenuItem path) {
-    MenuItem parent = path.parent;
+  MenuItem _addToGraph(MenuItem item) {
+    MenuItem parent = item.parent;
     if (parent != null) {
-      _graph.addEdge(parent, path);
+      _graph.addEdge(parent, item);
     } else {
-      _graph.addNode(path);
+      _graph.addNode(item);
     }
-    return path;
+    return item;
   }
 
-  MenuItem _removeFromGraph(MenuItem path, bool removeEmptyParent) {
-    Iterable<MenuItem> parents = _graph.getParents(path);
-    _graph.removeNode(path);
-    if (pathRemovedStreamController != null) {
-      pathRemovedStreamController.add(new MenuSelectionEvent(
-          MenuSelectionEvent.MENU_ITEM_DELETED, this, path, null));
+  MenuItem _removeFromGraph(MenuItem item, bool removeEmptyParent) {
+    Iterable<MenuItem> parents = _graph.getParents(item);
+    _graph.removeNode(item);
+    if (itemRemovedStreamController != null) {
+      itemRemovedStreamController.add(new MenuSelectionEvent(
+          MenuSelectionEvent.MENU_ITEM_DELETED, this, item, null));
     }
     if (removeEmptyParent) {
       parents.forEach((MenuItem parent) {
@@ -345,23 +345,23 @@ class TreeMenuModel extends Object with MenuModelMixin
         }
       });
     }
-    return path;
+    return item;
   }
 
-  void processFilteredOutPaths(Iterable<MenuItem> filteredOutPaths) {
-      filteredOutPaths.forEach((MenuItem path) =>
-          _removeFromGraph(path, true));
+  void processFilteredOutItems(Iterable<MenuItem> filteredOutItems) {
+      filteredOutItems.forEach((MenuItem item) =>
+          _removeFromGraph(item, true));
   }
 
-  void processFilteredInPaths(Iterable<MenuItem> filteredInPaths) {
-      filteredInPaths.forEach((MenuItem path) =>
-          _addToGraph(path));
+  void processFilteredInItems(Iterable<MenuItem> filteredInItems) {
+      filteredInItems.forEach((MenuItem item) =>
+          _addToGraph(item));
   }
 }
 
 class ListMenuModel extends Object with MenuModelMixin
     implements MenuModel {
-  StreamController<MenuSelectionEvent> pathRemovedStreamController;
+  StreamController<MenuSelectionEvent> itemRemovedStreamController;
 
   ListMenuModel();
 
@@ -375,11 +375,11 @@ class ListMenuModel extends Object with MenuModelMixin
   int get height => 1;
   bool get isLinear => true;
 
-  bool hasParent(MenuItem path) => false;
-  bool isLeaf(MenuItem path) => true;
-  Iterable getAncestors(MenuItem path) => const[];
-  Iterable getDescendants(MenuItem path) => const[];
-  Iterable getChildren(MenuItem path) => const[];
+  bool hasParent(MenuItem item) => false;
+  bool isLeaf(MenuItem item) => true;
+  Iterable getAncestors(MenuItem item) => const[];
+  Iterable getDescendants(MenuItem item) => const[];
+  Iterable getChildren(MenuItem item) => const[];
 
   Iterable get roots => filteredItems;
 
@@ -391,34 +391,34 @@ class ListMenuModel extends Object with MenuModelMixin
     _updateFilteredItems();
   }
 
-  void addAll(Iterable<MenuItem> paths) {
-    itemListProvider.addAll(paths);
-    filteredItems.addAll(paths);
+  void addAll(Iterable<MenuItem> items) {
+    itemListProvider.addAll(items);
+    filteredItems.addAll(items);
     _updateFilteredItems();
   }
 
-  MenuItem add(MenuItem path) {
-    itemListProvider.add(path);
-    filteredItems.add(path);
+  MenuItem add(MenuItem item) {
+    itemListProvider.add(item);
+    filteredItems.add(item);
     _updateFilteredItems();
-    return path;
+    return item;
   }
 
-  MenuItem remove(MenuItem path) {
-    if (pathRemovedStreamController != null) {
-      pathRemovedStreamController.add(new MenuSelectionEvent(
-          MenuSelectionEvent.MENU_ITEM_DELETED, this, path, null));
+  MenuItem remove(MenuItem item) {
+    if (itemRemovedStreamController != null) {
+      itemRemovedStreamController.add(new MenuSelectionEvent(
+          MenuSelectionEvent.MENU_ITEM_DELETED, this, item, null));
     }
-    itemListProvider.remove(path);
-    filteredItems.remove(path);
+    itemListProvider.remove(item);
+    filteredItems.remove(item);
     _updateFilteredItems();
-    return path;
+    return item;
   }
 
-  void processFilteredOutPaths(Iterable<MenuItem> filteredOutPaths) {
+  void processFilteredOutItems(Iterable<MenuItem> filteredOutItems) {
   }
 
-  void processFilteredInPaths(Iterable<MenuItem> filteredInPaths) {
+  void processFilteredInItems(Iterable<MenuItem> filteredInItems) {
   }
 }
 

@@ -1,14 +1,14 @@
-<div class='list' ng-repeat="path in list.paths">
+<div class='list' ng-repeat="item in list.items">
   <list-item
-      ng-class="list.getStyle(path, $index)"
-      ng-mouseenter="list.onMouseEnter(path, $event)"
-      ng-mouseleave="list.onMouseLeave(path, $event)"
-      ng-click="list.onMouseClick(path, $event)"
-      path="path">
+      ng-class="list.getStyle(item, $index)"
+      ng-mouseenter="list.onMouseEnter(item, $event)"
+      ng-mouseleave="list.onMouseLeave(item, $event)"
+      ng-click="list.onMouseClick(item, $event)"
+      item="item">
     <item-placeholder style="flex: 1 1 auto;"
-      template-markup="list.getLabelTemplateMarkup(path)">
+      template-markup="list.getLabelTemplateMarkup(item)">
     </item-placeholder>
   </list-item>
-  <list ng-if="list.hasChildren(path) && list.isExpanded(path)"
-        paths="list.getChildren(path)"></list>
+  <list ng-if="list.hasChildren(item) && list.isExpanded(item)"
+        items="list.getChildren(item)"></list>
 </div>

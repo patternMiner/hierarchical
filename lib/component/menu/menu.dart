@@ -20,8 +20,8 @@ part 'menu_selection_event_mediator.dart';
 class Menu implements NgAttachAware, NgDetachAware {
   final Set _selectionSet = new HashSet();
   final Set _expansionSet = new HashSet();
-  final List<MenuItem> _visiblePaths = <MenuItem>[];
-  MenuItem _markedPath;
+  final List<MenuItem> _visibleItems = <MenuItem>[];
+  MenuItem _markedItem;
 
   @NgOneWayOneTime('menu-model')
   MenuModel model;
@@ -34,7 +34,7 @@ class Menu implements NgAttachAware, NgDetachAware {
   StreamSubscription<MenuSelectionEvent> _modelSubscription;
 
   void attach() {
-    _computeVisiblePaths();
+    _computeVisibleItems();
     _createSubscription();
   }
 
@@ -71,7 +71,7 @@ class Menu implements NgAttachAware, NgDetachAware {
       });
     }
     if (model != null) {
-      _modelSubscription = model.onSelectionPathRemoved()
+      _modelSubscription = model.onSelectionItemRemoved()
           .listen((MenuSelectionEvent event) {
         _selectionSet.remove(event.data);
         _expansionSet.remove(event.data);
@@ -88,36 +88,36 @@ class Menu implements NgAttachAware, NgDetachAware {
     }
   }
 
-  bool isSelected(path) => _selectionSet.contains(path);
-  bool isExpanded(path) => _expansionSet.contains(path);
+  bool isSelected(item) => _selectionSet.contains(item);
+  bool isExpanded(item) => _expansionSet.contains(item);
 
-  void toggleExpansion(path) {
-    _expandCollapse(path, isExpanded(path));
-    _computeVisiblePaths();
+  void toggleExpansion(item) {
+    _expandCollapse(item, isExpanded(item));
+    _computeVisibleItems();
   }
 
-  void toggleSelection(path) {
-    isSelected(path) ? _unselect(path) : _select(path);
+  void toggleSelection(item) {
+    isSelected(item) ? _unselect(item) : _select(item);
     notifySelections();
   }
 
-  void _expandCollapse(MenuItem path, bool collapse) {
-    collapse ? _expansionSet.remove(path) : _expansionSet.add(path);
+  void _expandCollapse(MenuItem item, bool collapse) {
+    collapse ? _expansionSet.remove(item) : _expansionSet.add(item);
     if (model != null && collapse) {
-      model.getDescendants(path).forEach((MenuItem descendant) =>
+      model.getDescendants(item).forEach((MenuItem descendant) =>
         _expansionSet.remove(descendant));
     }
   }
 
-  void _computeVisiblePaths() {
-    _visiblePaths.clear();
+  void _computeVisibleItems() {
+    _visibleItems.clear();
     roots.forEach((MenuItem root) {
-      model.dfs(root, _expansionSet, _visiblePathVisitor);
+      model.dfs(root, _expansionSet, _visibleItemVisitor);
     });
   }
 
-  void _visiblePathVisitor(MenuItem path) {
-    _visiblePaths.add(path);
+  void _visibleItemVisitor(MenuItem item) {
+    _visibleItems.add(item);
   }
 
   void notifySelections() {
@@ -128,67 +128,67 @@ class Menu implements NgAttachAware, NgDetachAware {
   }
 
   /// Sets the initial selection. Does not trigger the SELECTION_CHANGED event.
-  void setSelection(Iterable<MenuItem> paths) {
-    if (paths != null) {
-      paths.forEach((MenuItem path) => _select(path));
+  void setSelection(Iterable<MenuItem> items) {
+    if (items != null) {
+      items.forEach((MenuItem item) => _select(item));
     }
   }
 
-  bool _select(MenuItem path) {
+  bool _select(MenuItem item) {
     if (!multiSelect) {
       _selectionSet.clear();
     }
-    if (isSelected(path)) {
+    if (isSelected(item)) {
       return false;
     }
-    _selectionSet.add(path);
+    _selectionSet.add(item);
     if (model != null && multiSelect) {
-      _selectionSet.addAll(model.getDescendants(path));
-      _selectionSet.addAll(model.getAncestors(path));
+      _selectionSet.addAll(model.getDescendants(item));
+      _selectionSet.addAll(model.getAncestors(item));
     }
     return true;
   }
 
-  void _unselect(MenuItem path) {
-    _selectionSet.remove(path);
+  void _unselect(MenuItem item) {
+    _selectionSet.remove(item);
     if (model != null && multiSelect) {
       bool hasSelectedChildren(MenuItem parent) =>
         model.getChildren(parent).firstWhere((MenuItem child) =>
             isSelected(child), orElse: () => null) != null;
-      model.getAncestors(path).forEach((MenuItem ancestor) {
+      model.getAncestors(item).forEach((MenuItem ancestor) {
         if(!hasSelectedChildren(ancestor)) {
           _selectionSet.remove(ancestor);
         }
       });
-      _selectionSet.removeAll(model.getDescendants(path));
+      _selectionSet.removeAll(model.getDescendants(item));
     }
   }
 
-  bool isVisible(path) {
-    if (model != null && path != null) {
-      Iterable ancestors = model.getAncestors(path);
+  bool isVisible(item) {
+    if (model != null && item != null) {
+      Iterable ancestors = model.getAncestors(item);
       if (ancestors.isEmpty) {
         return true;
       }
-      return ancestors.every((path) => isExpanded(path));
+      return ancestors.every((item) => isExpanded(item));
     }
     return false;
   }
 
   Iterable getSelections() {
     List result = [];
-    model.roots.forEach((MenuItem path) {
-      _getSelectedSubtree(path, result);
+    model.roots.forEach((MenuItem item) {
+      _getSelectedSubtree(item, result);
     });
     return result;
   }
 
-  void _getSelectedSubtree(MenuItem path, List result) {
-    if (isSelected(path)) {
-      result.add(path);
+  void _getSelectedSubtree(MenuItem item, List result) {
+    if (isSelected(item)) {
+      result.add(item);
     }
-    model.getChildren(path).forEach((MenuItem path) {
-      _getSelectedSubtree(path, result);
+    model.getChildren(item).forEach((MenuItem item) {
+      _getSelectedSubtree(item, result);
     });
   }
 
@@ -196,64 +196,64 @@ class Menu implements NgAttachAware, NgDetachAware {
     _selectionSet.clear();
   }
 
-  void selectAll(Iterable<MenuItem> visiblePaths) =>
-    visiblePaths.forEach((MenuItem path) => _select(path));
+  void selectAll(Iterable<MenuItem> visibleItems) =>
+    visibleItems.forEach((MenuItem item) => _select(item));
 
   void selectNone() {
     clearSelections();
   }
 
 
-  bool hasParent(MenuItem path) => model != null ?
-      model.hasParent(path) : false;
+  bool hasParent(MenuItem item) => model != null ?
+      model.hasParent(item) : false;
 
-  bool isLeaf(MenuItem path) => model != null ? model.isLeaf(path) :
+  bool isLeaf(MenuItem item) => model != null ? model.isLeaf(item) :
       false;
 
-  Iterable getAncestors(MenuItem path) => model != null ?
-      model.getAncestors(path) : const[];
+  Iterable getAncestors(MenuItem item) => model != null ?
+      model.getAncestors(item) : const[];
 
   Iterable children(MenuItem parent) => model != null ?
       model.getChildren(parent) : const[];
 
   Iterable get roots => model != null ? model.roots : const[];
 
-  markPathForSelection(MenuItem path) => _markedPath = path;
+  markItemForSelection(MenuItem item) => _markedItem = item;
 
-  bool isActive (MenuItem path) => _markedPath == path;
+  bool isActive (MenuItem item) => _markedItem == item;
 
-  void markPathForSelectionByIndex(int index) {
-    if (index < _visiblePaths.length)
-      _markedPath = _visiblePaths[index];
+  void markItemForSelectionByIndex(int index) {
+    if (index < _visibleItems.length)
+      _markedItem = _visibleItems[index];
   }
 
   int getForwardSelectionIndex() {
-    int index = _visiblePaths.indexOf(_markedPath);
+    int index = _visibleItems.indexOf(_markedItem);
     if (index < 0) {
       return 0;
     }
     index++;
-    if (index >= _visiblePaths.length) {
-      index = _visiblePaths.length -1;
+    if (index >= _visibleItems.length) {
+      index = _visibleItems.length -1;
     }
     return index;
   }
 
   int getBackwardSelectionIndex() {
-    int index = _visiblePaths.indexOf(_markedPath);
+    int index = _visibleItems.indexOf(_markedItem);
     if (index < 0) {
       return 0;
     }
     index--;
-    if (index < 0 || index >= _visiblePaths.length) {
+    if (index < 0 || index >= _visibleItems.length) {
       index = 0;
     }
     return index;
   }
 
   bool commitSelection() {
-    if (isVisible(_markedPath)) {
-      return _select(_markedPath);
+    if (isVisible(_markedItem)) {
+      return _select(_markedItem);
     }
     return false;
   }
@@ -287,17 +287,17 @@ class Menu implements NgAttachAware, NgDetachAware {
   void onKeyUp(KeyboardEvent event) {
     switch (event.keyCode) {
       case KeyCode.DOWN:
-        if (_visiblePaths.isNotEmpty) {
+        if (_visibleItems.isNotEmpty) {
           int index = getForwardSelectionIndex();
-          markPathForSelectionByIndex(index);
+          markItemForSelectionByIndex(index);
         }
         event.stopPropagation();
         event.preventDefault();
         return;
       case KeyCode.UP:
-        if (_visiblePaths.isNotEmpty) {
+        if (_visibleItems.isNotEmpty) {
           int index = getBackwardSelectionIndex();
-          markPathForSelectionByIndex(index);
+          markItemForSelectionByIndex(index);
         }
         event.stopPropagation();
         event.preventDefault();
@@ -305,9 +305,9 @@ class Menu implements NgAttachAware, NgDetachAware {
       case KeyCode.SPACE:
       case KeyCode.ENTER:
         if (multiSelect) {
-          toggleSelection(_markedPath);
+          toggleSelection(_markedItem);
         } else {
-          if (!isSelected(_markedPath)) {
+          if (!isSelected(_markedItem)) {
             if (commitSelection()) {
               notifySelections();
             }
