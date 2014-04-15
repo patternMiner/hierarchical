@@ -3,7 +3,7 @@ library chip_container;
 import 'dart:async';
 import 'package:angular/angular.dart';
 
-import '../menu/menu.dart';
+import '../menu_controller/menu_controller.dart';
 
 @NgComponent(
     selector: 'chip-container',

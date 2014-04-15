@@ -9,7 +9,7 @@ import 'component/item_placeholder/item_placeholder.dart';
 import 'component/list/list.dart';
 import 'component/list_item/list_item.dart';
 import 'component/tree_chip/tree_chip.dart';
-import 'component/menu/menu.dart';
+import 'component/menu_controller/menu_controller.dart';
 
 part 'app/hierarchical_app.dart';
 
@@ -21,7 +21,7 @@ class HierarchicalModule extends Module {
     type(ItemPlaceholderComponent);
     type(ListComponent);
     type(ListItemComponent);
-    type(Menu);
+    type(MenuController);
     type(TreeChipComponent);
   }
 }

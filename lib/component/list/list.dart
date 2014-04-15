@@ -3,7 +3,7 @@ library list;
 import 'dart:html';
 import 'package:angular/angular.dart';
 
-import '../menu/menu.dart';
+import '../menu_controller/menu_controller.dart';
 
 @NgComponent(
     selector: 'list',
@@ -14,20 +14,20 @@ import '../menu/menu.dart';
 )
 class ListComponent {
 
-  final Menu _selectionController;
+  final MenuController _menuController;
 
   @NgOneWay('items')
   Iterable items;
 
-  ListComponent(this._selectionController);
+  ListComponent(this._menuController);
 
-  bool isLeaf(item) => _selectionController.isLeaf(item);
+  bool isLeaf(item) => _menuController.isLeaf(item);
   bool hasChildren(item) => getChildren(item).isNotEmpty;
-  bool isExpanded(item) => _selectionController.isExpanded(item);
-  Iterable getChildren(item) => _selectionController.children(item);
+  bool isExpanded(item) => _menuController.isExpanded(item);
+  Iterable getChildren(item) => _menuController.children(item);
 
   String getLabelTemplateMarkup(MenuItem item) {
-    if (_selectionController.isLinear) {
+    if (_menuController.isLinear) {
       return "<div style='display: flex; flex-direction: row; flex: 1 1 auto;'>"
              "<div style='flex: 1 1 auto;'>${getValue(item).toString()}</div>"
              "<div style='flex: none; width: 20px;'>&nbsp;</div>"
@@ -44,22 +44,22 @@ class ListComponent {
 
   /// show the active item as active, if any.
   String getStyle(item, index) =>
-      _selectionController.isActive(item) ? 'list-item-selected' : 'list-item';
+      _menuController.isActive(item) ? 'list-item-selected' : 'list-item';
 
   void onMouseEnter(MenuItem item, MouseEvent event) {
-    _selectionController.markItemForSelection(item);
+    _menuController.markItemForSelection(item);
   }
 
   void onMouseLeave(MenuItem item, MouseEvent event) {
-    _selectionController.markItemForSelection(null);
+    _menuController.markItemForSelection(null);
   }
 
   void onMouseClick(MenuItem item, MouseEvent event) {
-    if (_selectionController.multiSelect) {
-      _selectionController.toggleSelection(item);
+    if (_menuController.multiSelect) {
+      _menuController.toggleSelection(item);
     } else {
-      if (_selectionController.commitSelection()) {
-        return _selectionController.notifySelections();
+      if (_menuController.commitSelection()) {
+        return _menuController.notifySelections();
       }
     }
     event.stopPropagation();

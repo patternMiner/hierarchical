@@ -2,7 +2,7 @@ library tree_chip;
 
 import 'dart:html';
 import 'package:angular/angular.dart';
-import '../menu/menu.dart';
+import '../menu_controller/menu_controller.dart';
 
 @NgComponent(
     selector: 'tree-chip',
