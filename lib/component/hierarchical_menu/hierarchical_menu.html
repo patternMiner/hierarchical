@@ -1,0 +1,15 @@
+<div class='menu' ng-repeat="menuItem in menu.items">
+  <hierarchical-menu-item
+      ng-class="menu.getStyle(menuItem, $index)"
+      ng-mouseenter="menu.onMouseEnter(menuItem, $event)"
+      ng-mouseleave="menu.onMouseLeave(menuItem, $event)"
+      ng-click="menu.onMouseClick(menuItem, $event)"
+      item="menuItem">
+    <item-placeholder style="flex: 1 1 auto;"
+      template-markup="menu.getLabelTemplateMarkup(menuItem)">
+    </item-placeholder>
+  </hierarchical-menu-item>
+  <hierarchical-menu
+      ng-if="menu.hasChildren(menuItem) && menu.isExpanded(menuItem)"
+      items="menu.getChildren(menuItem)"></hierarchical-menu>
+</div>

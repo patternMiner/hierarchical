@@ -3,6 +3,13 @@ library item_placeholder;
 import 'dart:html';
 import 'package:angular/angular.dart';
 
+/**
+ * Helps in the transclusion of fully styled, application specific, components
+ * inside other components.
+ *
+ * Input:
+ *  template-markup:  The markup to be transcluded inside this component.
+ */
 @NgComponent(
     selector: 'item-placeholder',
     templateUrl: '../lib/component/item_placeholder/item_placeholder.html',
@@ -30,5 +37,4 @@ class ItemPlaceholderComponent implements NgShadowRootAware {
         _injector.createChild([new Module()..value(Scope, childScope)]);
     template(childInjector, [placeholder]);
   }
-
 }

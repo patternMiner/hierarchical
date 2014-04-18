@@ -2,6 +2,9 @@ library graph;
 
 import 'dart:collection';
 
+/**
+ * Simple implementation of a directed graph.
+ */
 class Graph<T> {
   final Set<T> _vertices = new LinkedHashSet<T>();
   final Map<T, Set<T>> _inEdgeMap = new Map<T, Set<T>>();
