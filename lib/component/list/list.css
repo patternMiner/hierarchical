@@ -1,9 +1,0 @@
-.list {
-  display: flex;
-  flex-direction: column;
-}
-
-.list-item:hover, .list-item-selected {
-  color: #222;
-  background-color: #F1F1F1;
-}

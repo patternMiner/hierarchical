@@ -78,15 +78,15 @@ h3, h4 {
   outline: none;
 }
 
-.list-item-content {
+.menu-item-content {
   flex: 1 1 auto;
   margin: 0 0 0 5px;
 }
 
-.list-item-ancestry {
+.menu-item-ancestry {
   flex: none;
 }
 
-.list-item-content .list-item-ancestry {
+.menu-item-content .menu-item-ancestry {
   width: 200px;
 }

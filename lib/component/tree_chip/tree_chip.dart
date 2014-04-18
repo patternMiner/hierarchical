@@ -2,7 +2,7 @@ library tree_chip;
 
 import 'dart:html';
 import 'package:angular/angular.dart';
-import '../menu_controller/menu_controller.dart';
+import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
 
 @NgComponent(
     selector: 'tree-chip',
@@ -15,7 +15,7 @@ class TreeChipComponent {
   @NgOneWayOneTime('title')
   String title;
   @NgOneWayOneTime('menu-model')
-  MenuModel model;
+  HierarchicalMenuModel model;
   @NgOneWayOneTime('multi-select')
   bool multiSelect = false;
 
