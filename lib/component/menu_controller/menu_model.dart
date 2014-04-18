@@ -195,13 +195,11 @@ abstract class MenuModelMixin {
   void filter() {
     _filteredItems.clear();
     _filteredItems.addAll(_primaryFilter(items));
-    processFilteredOutItems(items.toSet().difference(_filteredItems));
-    processFilteredInItems(_filteredItems);
     _updateFilteredItems();
   }
 
-  processFilteredOutItems(Iterable<MenuItem> filteredOutItems);
   processFilteredInItems(Iterable<MenuItem> filteredInItems);
+  processFilteredOutItems(Iterable<MenuItem> filteredOutItems);
 
   Stream<MenuSelectionEvent> onSelectionItemRemoved() {
     if (itemRemovedStreamController == null) {
@@ -212,6 +210,7 @@ abstract class MenuModelMixin {
   }
 
   Iterable getChildren(MenuItem item);
+  bool isLeaf(MenuItem item);
   MenuItem add(MenuItem item);
   void addAll(Iterable<MenuItem> item);
 
@@ -347,16 +346,6 @@ class TreeMenuModel extends Object with MenuModelMixin
     }
     return item;
   }
-
-  void processFilteredOutItems(Iterable<MenuItem> filteredOutItems) {
-      filteredOutItems.forEach((MenuItem item) =>
-          _removeFromGraph(item, true));
-  }
-
-  void processFilteredInItems(Iterable<MenuItem> filteredInItems) {
-      filteredInItems.forEach((MenuItem item) =>
-          _addToGraph(item));
-  }
 }
 
 class ListMenuModel extends Object with MenuModelMixin
@@ -413,12 +402,6 @@ class ListMenuModel extends Object with MenuModelMixin
     filteredItems.remove(item);
     _updateFilteredItems();
     return item;
-  }
-
-  void processFilteredOutItems(Iterable<MenuItem> filteredOutItems) {
-  }
-
-  void processFilteredInItems(Iterable<MenuItem> filteredInItems) {
   }
 }
 

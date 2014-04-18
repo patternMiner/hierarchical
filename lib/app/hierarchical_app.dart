@@ -24,8 +24,7 @@ class HierarchicalApp {
                  'Thursday', 'Friday', 'Saturday']];
 
   final MenuModel hierarchical =
-      new TreeMenuModel.fromList(entities)..
-      search='angle';
+      new TreeMenuModel.fromList(entities);
 
   final MenuModel linear =
       new ListMenuModel.fromList(entities)..

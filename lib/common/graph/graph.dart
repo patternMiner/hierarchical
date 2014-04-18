@@ -7,6 +7,13 @@ class Graph<T> {
   final Map<T, Set<T>> _inEdgeMap = new Map<T, Set<T>>();
   final Map<T, Set<T>> _outEdgeMap =  new Map<T, Set<T>>();
 
+  Graph<T> clone() {
+    Graph<T> other = new Graph<T>();
+    _vertices.forEach((T src) =>
+        getChildren(src).forEach((T dst) => other.addEdge(src, dst)));
+    return other;
+  }
+
   List<T> get nodes => new List<T>.from(_vertices);
 
   int get numNodes => _vertices.length;
@@ -30,8 +37,9 @@ class Graph<T> {
   }
 
   bool removeNode(T node) {
-    _getInEdges(node).forEach((T parent) => _getOutEdges(parent).remove(node));
-    _getOutEdges(node).forEach((T child) => removeNode(child));
+    _getInEdges(node).forEach((T parent) =>
+        _getOutEdges(parent).remove(node));
+    getChildren(node).forEach((T child) => removeNode(child));
     _inEdgeMap.remove(node);
     _outEdgeMap.remove(node);
     return _vertices.remove(node);
