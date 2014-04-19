@@ -367,38 +367,34 @@ class TreeMenuModel extends Object with HierarchicalMenuModelMixin
     _childrenMap.clear();
     _roots.clear();
     _graph.clear();
-    filteredItems.clear();
     reset();
-    _updateFilteredItems();
   }
 
   void addAll(Iterable<MenuItem> items) {
     items.forEach((MenuItem item) => _addToGraph(item));
     itemListProvider.addAll(items);
-    filteredItems.addAll(items);
     _unfilteredItems.addAll(items);
-   _updateFilteredItems();
+   reset();
   }
 
   MenuItem add(MenuItem item) {
     itemListProvider.add(_addToGraph(item));
-    filteredItems.add(item);
     _unfilteredItems.add(item);
-    _updateFilteredItems();
+    reset();
     return item;
   }
 
   MenuItem remove(MenuItem item) {
     itemListProvider.remove(_removeFromGraph(item, false));
-    filteredItems.remove(item);
     _unfilteredItems.remove(item);
-    _updateFilteredItems();
+    reset();
     return item;
   }
 
   MenuItem _addToGraph(MenuItem item) {
     MenuItem parent = item.parent;
     if (parent != null) {
+      _addToGraph(parent);
       _graph.addEdge(parent, item);
     } else {
       _graph.addNode(item);
@@ -462,23 +458,21 @@ class ListMenuModel extends Object with HierarchicalMenuModelMixin
     itemListProvider.clear();
     _childrenMap.clear();
     _roots.clear();
-    filteredItems.clear();
+    _filteredItems.clear();
+    _unfilteredItems.clear();
     reset();
-    _updateFilteredItems();
   }
 
   void addAll(Iterable<MenuItem> items) {
     itemListProvider.addAll(items);
-    filteredItems.addAll(items);
     _unfilteredItems.addAll(items);
-    _updateFilteredItems();
+    reset();
   }
 
   MenuItem add(MenuItem item) {
     itemListProvider.add(item);
-    filteredItems.add(item);
     _unfilteredItems.add(item);
-    _updateFilteredItems();
+    reset();
     return item;
   }
 
@@ -488,9 +482,8 @@ class ListMenuModel extends Object with HierarchicalMenuModelMixin
           MenuSelectionEvent.MENU_ITEM_DELETED, this, item, null));
     }
     itemListProvider.remove(item);
-    filteredItems.remove(item);
     _unfilteredItems.remove(item);
-    _updateFilteredItems();
+    reset();
     return item;
   }
 

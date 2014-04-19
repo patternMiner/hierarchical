@@ -14,15 +14,19 @@ part 'menu_selection_event_mediator.dart';
 
 /**
  * A controller to manage and notify selections and expansions
- * of a hierarchical menu componet. The selections are notified
- * through a [MenuSelectionEventMediator] selection mediator.
+ * of a hierarchical menu componet.
+ *
+ * The selections are notified through a [MenuSelectionEventMediator].
  *
  * Inputs:
- *    menu-model:  The [HierarchicalMenuModel] that represents
- *                 the menu hierarchy.
- *    multi-select: Whether the multiple menu-items can be selected.
+ *    menu-model:
+ *        The [HierarchicalMenuModel] that represents the menu hierarchy.
  *
- *    selection-mediator:  The [MenuSelectionEventMediator] mediator.
+ *    multi-select:
+ *        Whether the multiple menu-items can be selected.
+ *
+ *    selection-mediator:
+ *        The [MenuSelectionEventMediator] mediator.
  *
  *  Sample usage:
  *    <hierarchical-menu-controller multi-select="ctrl.multiSelect"
