@@ -87,18 +87,20 @@ abstract class HierarchicalMenuModel {
  */
 class MenuItem {
   final List components;
+  MenuItem _parent;
   String _labelForFiltering;
 
   MenuItem(this.components) {
     assert(this.components != null);
+    _parent = components.length < 2 ? null :
+        new MenuItem(components.sublist(0, components.length-1));
   }
 
-  MenuItem get parent => components.length < 2 ? null :
-      new MenuItem(components.sublist(0, components.length-1));
+  MenuItem get parent => _parent;
 
   int  get hashCode {
-    int hash = 1;
-    components.forEach((value) => hash = hash * 31 + value.hashCode);
+    int hash = 17;
+    components.forEach((value) => hash = hash * 37 + value.hashCode);
     return hash;
   }
 
