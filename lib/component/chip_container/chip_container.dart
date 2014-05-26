@@ -5,14 +5,14 @@ import 'package:angular/angular.dart';
 
 import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
 
-@NgComponent(
+@Component(
     selector: 'chip-container',
     templateUrl: '../lib/component/chip_container/chip_container.html',
     cssUrl: '../lib/component/chip_container/chip_container.css',
     publishAs: 'chips',
     applyAuthorStyles: true
 )
-class ChipContainerComponent implements NgAttachAware, NgDetachAware {
+class ChipContainerComponent implements AttachAware, DetachAware {
 
   @NgOneWayOneTime('selection-mediator')
   MenuSelectionEventMediator mediator;

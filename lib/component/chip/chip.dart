@@ -2,11 +2,11 @@ library chip;
 
 import 'package:angular/angular.dart';
 
-@NgComponent(
+@Component(
     selector: 'chip',
     templateUrl: '../lib/component/chip/chip.html',
     cssUrl: '../lib/component/chip/chip.css',
-    visibility: NgDirective.CHILDREN_VISIBILITY,
+    visibility: Directive.CHILDREN_VISIBILITY,
     publishAs: 'chip',
     applyAuthorStyles: true
 )

@@ -1,4 +1,4 @@
-import 'package:angular/angular.dart';
+import 'package:angular/application_factory.dart';
 import 'package:logging/logging.dart';
 
 import '../lib/hierarchical.dart';
@@ -9,5 +9,7 @@ void main() {
   Logger.root.onRecord.listen((LogRecord r) { print(r.message); });
 
   // Bootstrap Angular
-  ngBootstrap(module: new HierarchicalModule());
+  applicationFactory()
+    ..addModule(new HierarchicalModule())
+    ..run();
 }

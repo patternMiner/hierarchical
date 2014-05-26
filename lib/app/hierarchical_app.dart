@@ -1,6 +1,6 @@
 part of hierarchical;
 
-@NgController(
+@Controller(
     selector: 'hierarchical-app',
     publishAs: 'app'
 )

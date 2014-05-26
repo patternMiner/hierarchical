@@ -35,40 +35,68 @@ part 'menu_selection_event_mediator.dart';
  *      <hierarchical-menu items="menuController.roots"></hierarchical-menu>
  *    </hierarchical-menu-controller>
  */
-@NgController(
+@Component(
   selector: 'hierarchical-menu-controller',
   publishAs: 'menuController',
-  visibility: NgDirective.CHILDREN_VISIBILITY
+  visibility: Directive.CHILDREN_VISIBILITY,
+  map: const {
+    'menu-model': '=>!model',
+    'multi-select': '=>!multiSelect',
+    'selection-mediator': '=>!mediator'
+  }
 )
-class HierarchicalMenuController implements NgAttachAware, NgDetachAware {
+class HierarchicalMenuController implements AttachAware, DetachAware {
   final Set _selectionSet = new HashSet();
   final Set _expansionSet = new HashSet();
   final List<MenuItem> _visibleItems = <MenuItem>[];
   MenuItem _markedItem;
 
-  @NgOneWayOneTime('menu-model')
-  HierarchicalMenuModel model;
-  @NgOneWayOneTime('multi-select')
+  HierarchicalMenuModel _model;
+  MenuSelectionEventMediator _mediator;
   bool multiSelect = false;
-  @NgOneWayOneTime('selection-mediator')
-  MenuSelectionEventMediator mediator;
+
+  final Completer _modelCompleter = new Completer(),
+            _mediatorCompleter = new Completer();
 
   StreamSubscription<MenuSelectionEvent> _mediatorSubscription;
   StreamSubscription<MenuSelectionEvent> _modelSubscription;
 
+  HierarchicalMenuController() {
+    Future.wait([_modelCompleter.future, _mediatorCompleter.future]).then((_) {
+      _computeVisibleItems();
+      _createSubscription();
+    });
+  }
+
   void attach() {
-    _computeVisibleItems();
-    _createSubscription();
   }
 
   void detach() {
     _cancelSubscription();
-    if (model != null) {
-      model.clear();
+    if (_model != null) {
+      _model.clear();
     }
     _selectionSet.clear();
     _expansionSet.clear();
   }
+
+  void set model (HierarchicalMenuModel m) {
+    if (m != null) {
+      _model = m;
+      _modelCompleter.complete();
+    }
+  }
+
+  HierarchicalMenuModel get model => _model;
+
+  void set mediator (MenuSelectionEventMediator m) {
+    if (m != null) {
+      _mediator = m;
+      _mediatorCompleter.complete();
+    }
+  }
+
+  MenuSelectionEventMediator get mediator => _mediator;
 
   void _createSubscription() {
     if (mediator != null) {

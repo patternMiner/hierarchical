@@ -12,15 +12,18 @@ class Graph<T> {
 
   Graph<T> clone() {
     Graph<T> other = new Graph<T>();
-    _vertices.forEach((T src) =>
-        getChildren(src).forEach((T dst) => other.addEdge(src, dst)));
+    _vertices.forEach((T src) {
+      other.addNode(src);
+      getChildren(src).forEach((T dst) => other.addEdge(src, dst));
+    });
     return other;
   }
 
-  List<T> get nodes => new List<T>.from(_vertices);
+  Set<T> get nodes => _vertices.toSet();
 
   int get numNodes => _vertices.length;
 
+  /// The number of edges.  Takes time O(|V| + |E|) so don't call too often.
   int get numEdges {
     int size = 0;
     for (T node in _vertices) {
@@ -35,9 +38,7 @@ class Graph<T> {
     _outEdgeMap.clear();
   }
 
-  bool addNode(T node) {
-    return _vertices.add(node);
-  }
+  bool addNode(T node) => _vertices.add(node);
 
   bool removeNode(T node) {
     _getInEdges(node).forEach((T parent) =>
@@ -49,7 +50,10 @@ class Graph<T> {
   }
 
   bool addEdge(T src, T dst) {
-    _vertices.addAll([src, dst]);
+    if (src == dst || getAncestors(src).contains(dst)) {
+      throw new ArgumentError('cycle detected with edge: ($src, $dst)');
+    }
+    _vertices..add(src)..add(dst);
     _getInEdges(dst).add(src);
     return _getOutEdges(src).add(dst);
   }
@@ -70,53 +74,33 @@ class Graph<T> {
 
   List<T> getParents(T node) => _getInEdges(node).toList();
 
-  List<T> getDescendants(T node) =>
-      _getDescendantsInternal(node, new HashSet<T>());
-
-  List<T> getAncestors(T node) =>
-      _getAncestorsInternal(node, new HashSet<T>());
-
-  bool isLeaf(T node) {
-    bool result = _getOutEdges(node).isEmpty;
-    return result;
+  Set<T> getDescendants(T node) {
+    var visited = new Set<T>();
+    void _visitDescendants(T node) {
+      visited.add(node);
+      _getOutEdges(node).forEach((T child) {
+        if (!visited.contains(child)) {
+          _visitDescendants(child);
+        }
+      });
+    }
+    _visitDescendants(node);
+    return visited..remove(node);
   }
 
-  List<T> _getDescendantsInternal(T node, Set<T> visited) {
-    visited.add(node);
-    Iterable<T> descendants = getChildren(node);
-    List<T> result = descendants.toList(growable: true);
-    descendants.forEach((T child) {
-      if (!visited.contains(child)) {
-        result.addAll(_getDescendantsInternal(child, visited));
-      }
-    });
-    return result;
+  Set<T> getAncestors(T node) {
+    var visited = new Set<T>();
+    void _visitAncestors(T node) {
+      visited.add(node);
+      _getInEdges(node).forEach((T parent) {
+        if (!visited.contains(parent)) {
+          _visitAncestors(parent);
+        }
+      });
+    }
+    _visitAncestors(node);
+    return visited..remove(node);
   }
 
-  Iterable<T> _getAncestorsInternal(T node, Set<T> visited) {
-    visited.add(node);
-    Iterable<T> ancestors = getParents(node);
-    List<T> result = ancestors.toList(growable: true);
-    ancestors.forEach((T parent) {
-      if (!visited.contains(parent)) {
-        result.addAll(_getAncestorsInternal(parent, visited));
-      }
-    });
-    return result;
-  }
-
-  void printGraph(T root, String indent) {
-    _printGraphInternal(root, indent, new Set());
-  }
-
-  void _printGraphInternal(T root, String indent, Set<T>visited) {
-    print("$indent $root");
-    visited.add(root);
-    indent = "$indent    ";
-    getChildren(root).forEach((T child) {
-      if (!visited.contains(child)){
-        _printGraphInternal(child, indent, visited);
-      }
-    });
-  }
+  bool isLeaf(T node) => _getOutEdges(node).isEmpty;
 }

@@ -27,13 +27,13 @@ import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
  *     </item-placeholder>
  *   </hierarchical-menu-item>
  */
-@NgComponent(
+@Component(
     selector: 'hierarchical-menu-item',
     templateUrl: '../lib/component/hierarchical_menu_item/hierarchical_menu_item.html',
     cssUrl: '../lib/component/hierarchical_menu_item/hierarchical_menu_item.css',
     publishAs: 'ctrl',
     applyAuthorStyles: true,
-    visibility: NgDirective.CHILDREN_VISIBILITY
+    visibility: Directive.CHILDREN_VISIBILITY
 )
 class HierarchicalMenuItemComponent {
 

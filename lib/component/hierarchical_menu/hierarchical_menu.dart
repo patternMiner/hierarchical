@@ -23,7 +23,7 @@ import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
  *      <hierarchical-menu items="menuController.roots"></hierarchical-menu>
  *    </hierarchical-menu-controller>
  */
-@NgComponent(
+@Component(
     selector: 'hierarchical-menu',
     templateUrl: '../lib/component/hierarchical_menu/hierarchical_menu.html',
     cssUrl: '../lib/component/hierarchical_menu/hierarchical_menu.css',

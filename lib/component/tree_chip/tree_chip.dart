@@ -4,22 +4,32 @@ import 'dart:html';
 import 'package:angular/angular.dart';
 import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
 
-@NgComponent(
+@Component(
     selector: 'tree-chip',
     templateUrl: '../lib/component/tree_chip/tree_chip.html',
     applyAuthorStyles: true,
+    map: const {
+      'title': '=>!title',
+      'menu-model': '=>!model',
+      'multi-select': '=>!multiSelect',
+    },
     publishAs: 'ctrl'
 )
 class TreeChipComponent {
 
-  @NgOneWayOneTime('title')
   String title;
-  @NgOneWayOneTime('menu-model')
-  HierarchicalMenuModel model;
-  @NgOneWayOneTime('multi-select')
+  HierarchicalMenuModel _model;
   bool multiSelect = false;
 
   final MenuSelectionEventMediator mediator = new MenuSelectionEventMediator();
+
+  void set model (HierarchicalMenuModel m) {
+    if (m != null) {
+      _model = m;
+    }
+  }
+
+  HierarchicalMenuModel get model => _model;
 
   void onMouseDown(MouseEvent event) {
     if (isOnScrollbar(event)) {

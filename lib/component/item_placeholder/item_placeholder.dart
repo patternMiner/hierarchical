@@ -10,13 +10,13 @@ import 'package:angular/angular.dart';
  * Input:
  *  template-markup:  The markup to be transcluded inside this component.
  */
-@NgComponent(
+@Component(
     selector: 'item-placeholder',
     templateUrl: '../lib/component/item_placeholder/item_placeholder.html',
     applyAuthorStyles: true,
     publishAs: 'ctrl'
 )
-class ItemPlaceholderComponent implements NgShadowRootAware {
+class ItemPlaceholderComponent implements ShadowRootAware {
   @NgOneWayOneTime('template-markup')
   String templateMarkup;
 
