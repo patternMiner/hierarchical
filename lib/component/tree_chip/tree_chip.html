@@ -7,11 +7,6 @@
       <hierarchical-menu-controller multi-select="ctrl.multiSelect"
         selection-mediator="ctrl.mediator"
         menu-model="ctrl.model">
-        <div style="display: flex; flex-direction: column;" tabindex="0"
-             ng-keydown="menuController.onKeyDown($event)"
-             ng-keyup="menuController.onKeyUp($event)">
-          <hierarchical-menu items="menuController.roots"></hierarchical-menu>
-        </div>
       </hierarchical-menu-controller>
     </div>
   </div>

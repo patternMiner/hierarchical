@@ -37,6 +37,8 @@ part 'menu_selection_event_mediator.dart';
  */
 @Component(
   selector: 'hierarchical-menu-controller',
+  templateUrl: '../lib/component/hierarchical_menu_controller'
+               '/hierarchical_menu_controller.html',
   publishAs: 'menuController',
   visibility: Directive.CHILDREN_VISIBILITY,
   map: const {
@@ -54,6 +56,7 @@ class HierarchicalMenuController implements AttachAware, DetachAware {
   HierarchicalMenuModel _model;
   MenuSelectionEventMediator _mediator;
   bool multiSelect = false;
+  bool isInitialized = false;
 
   final Completer _modelCompleter = new Completer(),
             _mediatorCompleter = new Completer();
@@ -65,6 +68,7 @@ class HierarchicalMenuController implements AttachAware, DetachAware {
     Future.wait([_modelCompleter.future, _mediatorCompleter.future]).then((_) {
       _computeVisibleItems();
       _createSubscription();
+      isInitialized = true;
     });
   }
 

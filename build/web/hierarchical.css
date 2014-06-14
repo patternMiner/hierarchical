@@ -1,0 +1,92 @@
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-size: 13px;
+  font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+  color: #666666;
+  font-weight: normal;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: normal;
+  color: #666666;
+  margin: 0px;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: normal;
+  color: #666666;
+  margin: 0px;
+}
+
+h3, h4 {
+  margin: 0px;
+}
+
+.panel {
+  width: 370px;
+  height: 360px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dcdcdc;
+  margin: 20px;
+}
+
+.panel-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.panel-header {
+  border-bottom: 1px solid #dcdcdc;
+  background: #f7f7f7;
+  padding: 15px;
+}
+
+.panel-content {
+  margin: 5px 0px;
+  flex: 1;
+  overflow: auto;
+}
+
+.chip-bordered-box {
+  display: inline-block;
+  border: 1px solid #dcdcdc;
+  border-radius: 2px;
+  background: #F7F7F7;
+  margin: 3px;
+}
+
+.chip-close-button {
+  color: #A0A0A0;
+  width: 13px;
+  height: 13px;
+  cursor: pointer;
+  margin: 4px 0 0 10px;
+  float: right;
+}
+
+.chip-margin {
+  margin: 0px 2px 0px 2px;
+}
+
+*:focus {
+  outline: none;
+}
+
+.menu-item-content {
+  flex: 1 1 auto;
+  margin: 0 0 0 5px;
+}
+
+.menu-item-ancestry {
+  flex: none;
+}
+
+.menu-item-content .menu-item-ancestry {
+  width: 200px;
+}

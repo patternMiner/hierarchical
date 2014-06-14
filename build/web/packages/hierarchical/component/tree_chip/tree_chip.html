@@ -1,0 +1,29 @@
+<div class="panel-container">
+  <div class="panel">
+    <div class="panel-header">
+      <h1>{{ctrl.title}}</h1>
+    </div>
+    <div class="panel-content" ng-mousedown="ctrl.onMouseDown($event)">
+      <hierarchical-menu-controller multi-select="ctrl.multiSelect"
+        selection-mediator="ctrl.mediator"
+        menu-model="ctrl.model">
+        <div ng-if="menuController.isInitialized"
+             style="display: flex; flex-direction: column;" tabindex="0"
+             ng-keydown="menuController.onKeyDown($event)"
+             ng-keyup="menuController.onKeyUp($event)">
+          <hierarchical-menu items="menuController.roots"></hierarchical-menu>
+        </div>
+      </hierarchical-menu-controller>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-header">
+      <h1>Selection chips</h1>
+    </div>
+    <div class="panel-content">
+      <chip-container selection-mediator="ctrl.mediator">
+      </chip-container>
+    </div>
+  </div>
+</div>
