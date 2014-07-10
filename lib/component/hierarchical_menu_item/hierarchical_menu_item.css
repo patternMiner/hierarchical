@@ -20,7 +20,7 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
-  background:url('../lib/component/hierarchical_menu/collapse.png') center no-repeat;
+  background:url('/packages/hierarchical/component/hierarchical_menu/collapse.png') center no-repeat;
 }
 
 .menu-item-expanded {
@@ -28,7 +28,7 @@
   width: 16px;
   height: 16px;
   cursor: pointer;
-  background:url('../lib/component/hierarchical_menu/collapse.png') center no-repeat;
+  background:url('/packages/hierarchical/component/hierarchical_menu/collapse.png') center no-repeat;
   -webkit-transform: rotate(90deg);
 }
 
