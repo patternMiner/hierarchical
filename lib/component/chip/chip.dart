@@ -4,8 +4,8 @@ import 'package:angular/angular.dart';
 
 @Component(
     selector: 'chip',
-    templateUrl: '../lib/component/chip/chip.html',
-    cssUrl: '../lib/component/chip/chip.css',
+    templateUrl: '/packages/hierarchical/component/chip/chip.html',
+    cssUrl: '/packages/hierarchical/component/chip/chip.css',
     visibility: Directive.CHILDREN_VISIBILITY,
     publishAs: 'chip',
     map: const {

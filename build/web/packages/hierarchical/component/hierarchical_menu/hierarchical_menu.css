@@ -1,9 +1,0 @@
-.menu {
-  display: flex;
-  flex-direction: column;
-}
-
-.menu-item:hover, .menu-item-selected {
-  color: #222;
-  background-color: #F1F1F1;
-}

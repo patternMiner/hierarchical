@@ -4,3 +4,5 @@ version: 0.0.1
 dependencies:
   angular: any
   browser: any
+transformers:
+- angular

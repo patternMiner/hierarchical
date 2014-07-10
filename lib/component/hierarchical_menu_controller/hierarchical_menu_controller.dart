@@ -37,7 +37,7 @@ part 'menu_selection_event_mediator.dart';
  */
 @Component(
   selector: 'hierarchical-menu-controller',
-  templateUrl: '../lib/component/hierarchical_menu_controller'
+  templateUrl: '/packages/hierarchical/component/hierarchical_menu_controller'
                '/hierarchical_menu_controller.html',
   publishAs: 'menuController',
   visibility: Directive.CHILDREN_VISIBILITY,

@@ -6,8 +6,8 @@ import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
 
 @Component(
     selector: 'tree-chip',
-    templateUrl: '../lib/component/tree_chip/tree_chip.html',
-    cssUrl: '../web/hierarchical.css',
+    templateUrl: '/packages/hierarchical/component/tree_chip/tree_chip.html',
+    cssUrl: 'hierarchical.css',
     map: const {
       'title': '=>!title',
       'menu-model': '=>!model',

@@ -29,8 +29,10 @@ import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
  */
 @Component(
     selector: 'hierarchical-menu-item',
-    templateUrl: '../lib/component/hierarchical_menu_item/hierarchical_menu_item.html',
-    cssUrl: '../lib/component/hierarchical_menu_item/hierarchical_menu_item.css',
+    templateUrl: '/packages/hierarchical/component/hierarchical_menu_item'
+                 '/hierarchical_menu_item.html',
+    cssUrl: '/packages/hierarchical/component/hierarchical_menu_item'
+            '/hierarchical_menu_item.css',
     publishAs: 'ctrl',
     map: const {
       'item': '=>!item'

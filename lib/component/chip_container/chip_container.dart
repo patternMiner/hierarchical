@@ -7,8 +7,10 @@ import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
 
 @Component(
     selector: 'chip-container',
-    templateUrl: '../lib/component/chip_container/chip_container.html',
-    cssUrl: '../lib/component/chip_container/chip_container.css',
+    templateUrl: '/packages/hierarchical/component/chip_container'
+                 '/chip_container.html',
+    cssUrl: '/packages/hierarchical/component/chip_container'
+            '/chip_container.css',
     map: const {
       'selection-mediator': '=>!mediator',
       'get-label-template-markup': '=>!getLabelTemplateMarkup'

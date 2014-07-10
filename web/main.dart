@@ -1,7 +1,7 @@
 import 'package:angular/application_factory.dart';
 import 'package:logging/logging.dart';
 
-import '../lib/hierarchical.dart';
+import 'package:hierarchical/hierarchical.dart';
 
 void main() {
   // Configure logger

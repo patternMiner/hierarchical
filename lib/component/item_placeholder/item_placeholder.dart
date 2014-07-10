@@ -12,8 +12,8 @@ import 'package:angular/angular.dart';
  */
 @Component(
     selector: 'item-placeholder',
-    templateUrl: '../lib/component/item_placeholder/item_placeholder.html',
-    cssUrl: '../../web/hierarchical.css',
+    templateUrl: '/packages/hierarchical/component/item_placeholder/item_placeholder.html',
+    cssUrl: 'hierarchical.css',
     map: const {
       'template-markup': '=>!templateMarkup'
     },

@@ -25,8 +25,10 @@ import '../hierarchical_menu_controller/hierarchical_menu_controller.dart';
  */
 @Component(
     selector: 'hierarchical-menu',
-    templateUrl: '../lib/component/hierarchical_menu/hierarchical_menu.html',
-    cssUrl: '../lib/component/hierarchical_menu/hierarchical_menu.css',
+    templateUrl: '/packages/hierarchical/component/hierarchical_menu'
+                 '/hierarchical_menu.html',
+    cssUrl: '/packages/hierarchical/component/hierarchical_menu'
+            '/hierarchical_menu.css',
     map: const {
       'items': '=>!items'
     },

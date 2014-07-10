@@ -1,9 +1,0 @@
-<div class="chip-container" ng-if="chips.getLabelTemplateMarkup != null">
-    <chip ng-repeat="chip in chips.list" item="chip"
-        on-delete="chips.onDelete">
-      <item-placeholder
-          style="flex: 1 1 auto;"
-          template-markup="chips.getLabelTemplateMarkup(chip)">
-      </item-placeholder>
-    </chip>
-</div>
