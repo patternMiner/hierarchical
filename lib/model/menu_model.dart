@@ -254,8 +254,7 @@ abstract class MenuModelMixin<T> {
   List<MenuItem<T>> filteredItems = [];
   bool showDeselectOption = false;
   String placeholder;
-  bool sortItems = true;
-
+  bool _searchInProgress = false;
 
   /// User defined filters and enrichers, if any, are applied to the original
   /// item list each time the 'filteredItems' getter is called.  User defined
@@ -275,14 +274,23 @@ abstract class MenuModelMixin<T> {
   /// text as a search string to fetch new items.
   set search(String text) {
     _search = text;
+    clearSelections();
+    if (_searchInProgress) {
+      return;
+    }
     if (_itemListProvider._filterMode) {
       // apply the primary filter
       filter();
-    } else { // search mode, get the dynamic item list.
-      clearSelections();
-      _itemListProvider.getItems(text)
-          .then((Map<T, T> provisionedItems) {
-        init(provisionedItems);
+    } else {
+      _searchInProgress = true;
+      // search mode, get the dynamic item list.
+      _itemListProvider.getItems(text).then(init).then((_) {
+          _searchInProgress = false;
+          // Do the search again on any user text that has been
+          // entered during the previous search operation.
+          if (_search != text) {
+            search = _search;
+          }
       });
     }
   }
