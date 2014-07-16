@@ -1,0 +1,62 @@
+
+.menu-container {
+  display: flex;
+  flex-direction: row;
+  outline: none;
+  flex: 1 1 auto;
+  overflow-x: hidden;
+}
+
+.search-box {
+  margin: 16px;
+  position: relative;
+}
+
+.search-box-input {
+  width: 100%;
+  padding: 5px 10px 5px 5px;
+  outline: none;
+}
+
+.search-icon {
+  position: absolute;
+  top: 9px;
+  right: 5px;
+}
+
+.select-link-row {
+  margin: 16px;
+}
+
+.select-link-row .select-link {
+  margin-right: 12px;
+  color: #1155cc;
+  cursor: pointer;
+}
+
+.select-link-row .select-link:hover {
+  text-decoration: underline;
+}
+
+.tool-bar {
+  margin: 16px;
+}
+
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-row-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex: 1;
+}
+
+.flex-column-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}

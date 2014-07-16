@@ -1,0 +1,36 @@
+<div class="menu">
+  <div ng-repeat="menuItem in ctrl.items">
+    <div ng-if="ctrl.isVisible(menuItem)">
+      <div ng-class="ctrl.getStyle(menuItem)"
+           ng-mouseenter="ctrl.onMouseEnter(menuItem)"
+           ng-mouseleave="ctrl.onMouseLeave(menuItem)">
+        <!-- indent -->
+        <div ng-repeat="path in ctrl.getAncestors(menuItem)"
+             class="menu-item-indent">
+        </div>
+        <!-- expand/collapse cell-->
+        <div ng-if="ctrl.hasChildren(menuItem)"
+             class="menu-item-expand-collapse">
+          <div ng-class="ctrl.getExpansionState(menuItem)"
+               ng-click="ctrl.toggleExpand(menuItem)">
+          </div>
+        </div>
+        <!-- selection cell -->
+        <div ng-if="ctrl.multiSelect">
+          <input class="menu-item-selection"
+              type="checkbox"
+              ng-model="ctrl.selected[menuItem]">
+        </div>
+        <!-- content cell -->
+        <item-template class="menu-item-content"
+          ng-click="ctrl.onMouseClick(menuItem)"
+          template-markup="ctrl.getLabelTemplate(menuItem)">
+        </item-template>
+      </div>
+      <div ng-if="ctrl.isExpanded(menuItem)">
+        <hierarchical-menu items="ctrl.getChildren(menuItem)">
+        </hierarchical-menu>
+      </div>
+    </div>
+  </div>
+</div>

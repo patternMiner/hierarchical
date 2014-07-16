@@ -1,0 +1,33 @@
+
+.chip-container {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 1 1 auto;
+}
+
+.menu-item-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+}
+
+.menu-item-name {
+  display: flex;
+  flex-direction: row;
+  flex: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #666666;
+  margin-right: 20px;
+}
+
+.menu-item-ancestry {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #999999;
+}

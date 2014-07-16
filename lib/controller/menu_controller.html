@@ -1,0 +1,50 @@
+<menu-shell class="flex-container">
+  <menu-search-box ng-if="ctrl.searchable">
+    <div class="search-box">
+      <input type="text"
+             class="search-box-input"
+             ng-model="ctrl.model.search"
+             ng-keydown="ctrl.onKeyDown($event)"
+             ng-keyup="ctrl.onKeyUp($event)"
+             autofocus>
+    </div>
+  </menu-search-box>
+  <menu-select-link ng-if="ctrl.showSelectAll">
+    <div class="select-link-row">
+      <span class="select-link"
+        ng-click="ctrl.selectAll()">
+        Select all
+      </span>
+      <span class="select-link"
+        ng-click="ctrl.selectNone()">
+        None
+      </span>
+    </div>
+  </menu-select-link>
+  <menu-body>
+    <div class="menu-container" tabindex="0"
+         ng-keydown="ctrl.onKeyDown($event)"
+         ng-keyup="ctrl.onKeyUp($event)">
+      <linear-single-select-menu
+        ng-if="ctrl.isLinear && !ctrl.multiSelect"
+        class="flex-column-container"
+        items="ctrl.roots">
+      </linear-single-select-menu>
+      <linear-multi-select-menu
+        ng-if="ctrl.isLinear && ctrl.multiSelect"
+        class="flex-column-container"
+        items="ctrl.roots">
+      </linear-multi-select-menu>
+      <hierarchical-menu
+        ng-if="!ctrl.isLinear"
+        class="flex-column-container"
+        items="ctrl.roots">
+      </hierarchical-menu>
+    </div>
+  </menu-body>
+  <menu-footer ng-if="ctrl.showFooter">
+    <div class="tool-bar">
+      <g-button button-style="primary" ng-click="ctrl.close()">Close</g-button>
+    </div>
+  </menu-footer>
+</menu-shell>

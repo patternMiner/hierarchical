@@ -1,0 +1,12 @@
+<div class="menu">
+  <div ng-repeat="menuItem in ctrl.items"
+       ng-class="ctrl.getStyle(menuItem)"
+       ng-mouseenter="ctrl.onMouseEnter(menuItem)"
+       ng-mouseleave="ctrl.onMouseLeave(menuItem)">
+    <!-- list-item content cell -->
+    <item-template class="menu-item-content"
+      ng-click="ctrl.onMouseClick(menuItem)"
+      template-markup="ctrl.getLabelTemplate(menuItem)">
+    </item-template>
+  </div>
+</div>

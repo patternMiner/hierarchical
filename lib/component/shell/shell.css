@@ -1,0 +1,36 @@
+
+.menu-shell {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-header {
+  display: flex;
+  flex-direction: column;
+  flex-align: start;
+  flex: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  overflow: auto;
+  outline: none;
+  margin: 0;
+  padding: 0;
+}
+
+.menu-footer {
+  display: flex;
+  flex-direction: column;
+  margin: 6px 16px;
+  flex: none;
+  flex-align: end;
+}
+

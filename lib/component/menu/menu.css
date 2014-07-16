@@ -1,0 +1,91 @@
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  flex: auto;
+}
+
+.menu-item:hover, .menu-item-selected {
+  color: #222222;
+  background-color: #f2f2f2;
+}
+
+.menu-item-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+}
+
+.menu-item-name {
+  display: flex;
+  flex-direction: row;
+  flex: 4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #666666;
+  margin-right: 20px;
+}
+
+.menu-item-ancestry {
+  display: flex;
+  flex-direction: row;
+  flex: 7;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #999999;
+}
+
+.menu-item {
+  cursor: default;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  padding: 6px 6px 6px 16px;
+}
+
+.menu-item-indent {
+  margin: 0px 0px 0px 22px;
+}
+
+.menu-item-expand-collapse {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.menu-item-collapsed {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background:url('/packages/hierarchical/component/menu/collapse.png') center no-repeat;
+}
+
+.menu-item-expanded {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  background:url('/packages/hierarchical/component/menu/collapse.png') center no-repeat;
+  -webkit-transform: rotate(90deg);
+}
+
+.menu-item-selection {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin: 0px 5px 0px 5px;
+  cursor: pointer;
+}
+
+.menu-item-content {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+
+input {
+  margin: 0;
+  padding: 0;
+}

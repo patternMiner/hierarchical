@@ -10,6 +10,6 @@ void main() {
 
   // Bootstrap Angular
   applicationFactory()
-    ..addModule(new HierarchicalModule())
+    ..addModule(new HierarchicalMenuModule())
     ..run();
 }

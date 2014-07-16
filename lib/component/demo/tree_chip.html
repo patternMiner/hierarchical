@@ -4,8 +4,8 @@
       <h1>{{ctrl.title}}</h1>
     </div>
     <div class="panel-content" ng-mousedown="ctrl.onMouseDown($event)">
-      <hierarchical-menu-controller multi-select="ctrl.multiSelect"
-        selection-mediator="ctrl.mediator"
+      <hierarchical-menu-controller
+        selection-model="ctrl.selectionModel"
         menu-model="ctrl.model">
       </hierarchical-menu-controller>
     </div>
@@ -16,7 +16,10 @@
       <h1>Selection chips</h1>
     </div>
     <div class="panel-content">
-      <chip-container selection-mediator="ctrl.mediator">
+      <chip-container
+        items="ctrl.selectedItems"
+        on-delete="ctrl.deleteItem"
+        label-template-maker="ctrl.model.makeLabelTemplate">
       </chip-container>
     </div>
   </div>

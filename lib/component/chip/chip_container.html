@@ -1,0 +1,8 @@
+<div class="chip-container">
+  <chip ng-repeat="item in ctrl.items" item="item"
+    on-delete="ctrl.onChipDelete" class="flex-row-container">
+    <item-template template-markup="ctrl.getTemplate(item, false)">
+    </item-template>
+  </chip>
+    <content></content>
+</div>

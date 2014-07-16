@@ -78,15 +78,37 @@ h3, h4 {
   outline: none;
 }
 
+.menu-item-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1 1 auto;
+}
+
 .menu-item-content {
   flex: 1 1 auto;
   margin: 0 0 0 5px;
 }
 
-.menu-item-ancestry {
-  flex: none;
+.menu-item-name {
+  display: flex;
+  flex-direction: row;
+  flex: 3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: #666666;
+  margin-right: 20px;
 }
 
-.menu-item-content .menu-item-ancestry {
-  width: 200px;
+.menu-item {
+  cursor: default;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  padding: 6px 6px 6px 16px;
+}
+
+.menu-item-ancestry {
+  flex: 6;
+  color: #999999;
 }

@@ -1,27 +1,23 @@
 library hierarchical;
 
 import 'package:angular/angular.dart';
-import 'package:di/di.dart';
 
-import 'component/chip_container/chip_container.dart';
 import 'component/chip/chip.dart';
-import 'component/item_placeholder/item_placeholder.dart';
-import 'component/hierarchical_menu/hierarchical_menu.dart';
-import 'component/hierarchical_menu_item/hierarchical_menu_item.dart';
-import 'component/tree_chip/tree_chip.dart';
-import 'component/hierarchical_menu_controller/hierarchical_menu_controller.dart';
+import 'component/item_template/item_template.dart';
+import 'component/menu/menu.dart';
+import 'component/shell/shell.dart';
+import 'component/demo/hierarchical_menu_demo.dart'; // demo component
+import 'controller/menu_controller.dart';
 
-part 'app/hierarchical_app.dart';
-
-class HierarchicalModule extends Module {
-  HierarchicalModule() {
+class HierarchicalMenuModule extends Module {
+  HierarchicalMenuModule() {
     bind(ChipComponent);
     bind(ChipContainerComponent);
-    bind(HierarchicalApp);
-    bind(ItemPlaceholderComponent);
+    bind(ItemTemplateComponent);
     bind(HierarchicalMenuComponent);
-    bind(HierarchicalMenuItemComponent);
     bind(HierarchicalMenuController);
-    bind(TreeChipComponent);
+    bind(MenuShellComponent);
+    bind(HierarchicalMenuDemoComponent);
+    bind(TreeChipComponent); // demo component
   }
 }

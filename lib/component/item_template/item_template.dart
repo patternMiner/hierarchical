@@ -1,4 +1,4 @@
-library item_placeholder;
+library item_template;
 
 import 'dart:html';
 import 'package:angular/angular.dart';
@@ -11,15 +11,16 @@ import 'package:angular/angular.dart';
  *  template-markup:  The markup to be transcluded inside this component.
  */
 @Component(
-    selector: 'item-placeholder',
-    templateUrl: '/packages/hierarchical/component/item_placeholder/item_placeholder.html',
+    selector: 'item-template',
+    templateUrl: 'packages/hierarchical/component/item_template/'
+                 'item_template.html',
     cssUrl: 'hierarchical.css',
     map: const {
       'template-markup': '=>!templateMarkup'
     },
     publishAs: 'ctrl'
 )
-class ItemPlaceholderComponent implements ShadowRootAware {
+class ItemTemplateComponent implements ShadowRootAware {
   String templateMarkup;
 
   Compiler _compiler;
@@ -27,7 +28,7 @@ class ItemPlaceholderComponent implements ShadowRootAware {
   Scope _scope;
   DirectiveMap _directives;
 
-  ItemPlaceholderComponent(this._compiler, this._injector, this._scope,
+  ItemTemplateComponent(this._compiler, this._injector, this._scope,
       this._directives);
 
   void onShadowRoot(ShadowRoot shadowRoot) {

@@ -8,30 +8,7 @@
   </head>
   <body>
 
-    <hierarchical-app>
-      <div>
-          <label>Linear Filter:</label>
-          <input type="text" ng-model="app.linear.search"
-                 placeholder="Enter filter text">
-      </div>
-      <div>
-          <label>Nonlinear Filter:</label>
-          <input type="text" ng-model="app.hierarchical.search"
-                 placeholder="Enter filter text">
-      </div>
-      <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
-          <tree-chip title="'Linear (single selection)'"
-                     menu-model="app.linear"></tree-chip>
-          <tree-chip title="'Linear (multiple selection)'"
-                     multi-select="true"
-                     menu-model="app.linear"></tree-chip>
-          <tree-chip title="'Nonlinear (single selection)'"
-                     menu-model="app.hierarchical"></tree-chip>
-          <tree-chip title="'Nonlinear (multiple selection)'"
-                     multi-select="true"
-                     menu-model="app.hierarchical"></tree-chip>
-      </div>
-    </hierarchical-app>
+    <hierarchical-menu-demo></hierarchical-menu-demo>
 
     <script type="application/dart" src="main.dart"></script>
     <script type="text/javascript" src="packages/browser/dart.js"></script>
