@@ -1,12 +1,32 @@
+
+<div style="display: flex; flex-direction: row;">
+  <input style="margin: 20px 5px 20px 20px;" type="checkbox"
+      ng-model="ctrl.isLinear">
+  <div style="margin: 20px 0;">linear</div>
+  <input style="margin: 20px 5px 20px 20px;" type="checkbox"
+      ng-model="ctrl.isMultiSelect">
+  <div style="margin: 20px 0;">multiSelect</div>
+</div>
+
 <div style="display: flex; flex-direction: row; flex-wrap: wrap;">
+  <div ng-if="ctrl.isLinear && !ctrl.isMultiSelect">
     <tree-chip title="'Linear (single selection)'"
+               multi-select="false"
                menu-model="ctrl.linear"></tree-chip>
+  </div>
+  <div ng-if="ctrl.isLinear && ctrl.isMultiSelect">
     <tree-chip title="'Linear (multiple selection)'"
                multi-select="true"
                menu-model="ctrl.linear"></tree-chip>
+  </div>
+  <div ng-if="!ctrl.isLinear && !ctrl.isMultiSelect">
     <tree-chip title="'Nonlinear (single selection)'"
+               multi-select="false"
                menu-model="ctrl.hierarchical"></tree-chip>
+  </div>
+  <div ng-if="!ctrl.isLinear && ctrl.isMultiSelect">
     <tree-chip title="'Nonlinear (multiple selection)'"
                multi-select="true"
                menu-model="ctrl.hierarchical"></tree-chip>
+  </div>
 </div>

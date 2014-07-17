@@ -23,7 +23,7 @@ part 'tree_chip.dart';
     publishAs: 'ctrl'
 )
 class HierarchicalMenuDemoComponent {
-
+  bool isLinear=false, isMultiSelect=true;
   MenuModel<String> linear, hierarchical;
   MenuModelFactory<String> modelFactory = new MenuModelFactory<String>();
 
