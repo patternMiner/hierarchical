@@ -9,9 +9,9 @@
              class="menu-item-indent">
         </div>
         <!-- expand/collapse cell-->
-        <div ng-if="ctrl.hasChildren(menuItem)"
-             class="menu-item-expand-collapse">
-          <div ng-class="ctrl.getExpansionState(menuItem)"
+        <div class="menu-item-expand-collapse">
+          <div ng-if="ctrl.hasChildren(menuItem)"
+               ng-class="ctrl.getExpansionState(menuItem)"
                ng-click="ctrl.toggleExpand(menuItem)">
           </div>
         </div>

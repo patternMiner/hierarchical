@@ -68,11 +68,12 @@ class TreeChipComponent implements AttachAware, DetachAware {
   bool get multiSelect => selectionModel.multiSelect;
 
   void onMouseDown(MouseEvent event) {
-    if (isOnScrollbar(event)) {
-      print("clicked on the scrollbar");
-    }
+//    if (isOnScrollbar(event)) {
+//      print("clicked on the scrollbar");
+//    }
   }
 
+  /*
   bool isOnScrollbar(MouseEvent event) {
     Element element = event.target as Element;
     bool isOverflow = element.scrollWidth > element.clientWidth ||
@@ -88,4 +89,5 @@ class TreeChipComponent implements AttachAware, DetachAware {
     }
     return false;
   }
+  */
 }
