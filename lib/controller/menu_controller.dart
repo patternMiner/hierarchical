@@ -94,9 +94,6 @@ class HierarchicalMenuController implements AttachAware, DetachAware {
   @override
   void detach() {
     _cancelSubscription();
-    if (model != null) {
-      model.clear();
-    }
     if (selectionModel != null) {
       selectionModel.close();
     }
@@ -309,7 +306,7 @@ class HierarchicalMenuController implements AttachAware, DetachAware {
 
   bool isActive (MenuItem item) => _markedItem == item;
 
-  bool get multiSelect => selectionModel.multiSelect;
+  bool get multiSelect => selectionModel != null && selectionModel.multiSelect;
 
   void markItemForSelectionByIndex(int index) {
     if (index < _visibleItems.length) {
@@ -349,11 +346,12 @@ class HierarchicalMenuController implements AttachAware, DetachAware {
   /// there was a currently marked item.
   bool commitSelection() => isVisible(_markedItem) && _select(_markedItem);
 
-  bool get isLinear => model.isLinear;
-  bool get showSelectAll =>
+  bool get isLinear => model != null && model.isLinear;
+  bool get showSelectAll => selectionModel != null &&
       selectionModel.multiSelect && selectionModel.includeSelectAll &&
       model != null && model.roots.isNotEmpty;
-  bool get showFooter => popupMode && selectionModel.multiSelect;
+  bool get showFooter => popupMode && selectionModel != null &&
+      selectionModel.multiSelect;
 
   void onMouseDownInput(MouseEvent event) {
     event.stopPropagation();
