@@ -1,0 +1,10 @@
+name:  hierarchical_menu_demo
+description:  Hierarchical Menu Demo
+version: 0.0.1
+dependencies:
+  angular: any
+  hierarchical:
+    path: ../
+  browser: any
+transformers:
+- angular

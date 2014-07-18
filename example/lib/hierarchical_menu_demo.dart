@@ -4,8 +4,8 @@ import 'dart:html';
 import 'dart:async';
 import 'package:angular/angular.dart';
 
-import '../../model/menu_model.dart';
-import '../../event/menu_selection_event.dart';
+import 'package:hierarchical/model/menu_model.dart';
+import 'package:hierarchical/event/menu_selection_event.dart';
 
 part 'tree_chip.dart';
 
@@ -18,8 +18,7 @@ part 'tree_chip.dart';
  */
 @Component(
     selector: 'hierarchical-menu-demo',
-    templateUrl: 'packages/hierarchical/component/demo/'
-                 'hierarchical_menu_demo.html',
+    templateUrl: 'packages/hierarchical_menu_demo/hierarchical_menu_demo.html',
     publishAs: 'ctrl'
 )
 class HierarchicalMenuDemoComponent {

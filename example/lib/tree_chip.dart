@@ -2,7 +2,7 @@ part of hierarchical_menu_demo;
 
 @Component(
     selector: 'tree-chip',
-    templateUrl: 'packages/hierarchical/component/demo/tree_chip.html',
+    templateUrl: 'packages/hierarchical_menu_demo/tree_chip.html',
     cssUrl: 'hierarchical.css',
     map: const {
       'title': '=>!title',

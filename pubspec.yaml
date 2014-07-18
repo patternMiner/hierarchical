@@ -1,5 +1,5 @@
 name: hierarchical
-description: Sample hierarchical components using AngularDart.
+description: Hierarchical List Components using AngularDart.
 version: 0.0.1
 dependencies:
   angular: any
