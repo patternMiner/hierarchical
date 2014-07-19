@@ -1,23 +1,13 @@
 
-import 'package:angular/angular.dart';
+import'package:angular/angular.dart';
 import 'package:angular/application_factory.dart';
 import 'package:logging/logging.dart';
 
-import 'package:hierarchical/component/chip/chip.dart';
-import 'package:hierarchical/component/item_template/item_template.dart';
-import 'package:hierarchical/component/menu/menu.dart';
-import 'package:hierarchical/component/shell/shell.dart';
-import 'package:hierarchical/controller/menu_controller.dart';
+import 'package:hierarchical/hierarchical.dart';
 import 'package:hierarchical_menu_demo/hierarchical_menu_demo.dart';
 
-class HierarchicalMenuModule extends Module {
-  HierarchicalMenuModule() {
-    bind(ChipComponent);
-    bind(ChipContainerComponent);
-    bind(ItemTemplateComponent);
-    bind(HierarchicalMenuComponent);
-    bind(HierarchicalMenuController);
-    bind(MenuShellComponent);
+class HierarchicalMenuDemoModule extends Module {
+  HierarchicalMenuDemoModule() {
     bind(HierarchicalMenuDemoComponent);
     bind(TreeChipComponent);
   }
@@ -31,5 +21,6 @@ void main() {
   // Bootstrap Angular
   applicationFactory()
     ..addModule(new HierarchicalMenuModule())
+    ..addModule(new HierarchicalMenuDemoModule())
     ..run();
 }

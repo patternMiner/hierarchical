@@ -1,3 +1,4 @@
 hierarchical
 ============
-Demo project for building reusable and pluggable hierarchical web components in Dart using AngularDart. 
+Reusable and pluggable components that enable navigation and selection of
+hierarchical data using AngularDart. 
