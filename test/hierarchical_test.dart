@@ -1,12 +1,9 @@
 library hierarchical_tests;
 
-@MirrorsUsed(targets: const [
-    'hierarchical_tests',
-  ], override: '*')
-import 'dart:mirrors';
 import 'dart:async';
 
-import 'package:unittest/unittest.dart';
+import 'package:guinness/guinness.dart';
+import 'package:angular/mock/module.dart';
 import 'package:hierarchical/controller/menu_controller.dart';
 import 'package:hierarchical/model/menu_model.dart';
 import 'package:hierarchical/event/menu_selection_event.dart';
@@ -92,11 +89,16 @@ void testTreeMenuModel() {
   describe('TreeMenuModel:', () {
     MenuModel<String> model;
     MenuModelFactory<String> modelFactory = new MenuModelFactory<String>();
-    beforeEach(async(() {
-      gtb = createGtTestBed();
+    TestBed _tb;
+
+    beforeEach(setUpInjector);
+    afterEach(tearDownInjector);
+
+    beforeEach((TestBed tb) {
+      _tb = tb;
       model = initHierarchy(
           modelFactory.createStaticTreeModel(labelMaker: getLabel), entities);
-    }));
+    });
 
     it('must have the correct structure of '
         '9 roots, 23 filtered items etc.', async(() {
@@ -158,11 +160,16 @@ void testListMenuModel() {
   describe('ListMenuModel:', () {
     MenuModel<String> model;
     MenuModelFactory<String> modelFactory = new MenuModelFactory<String>();
-    beforeEach(async(() {
-      gtb = createGtTestBed();
+    TestBed _tb;
+
+    beforeEach(setUpInjector);
+    afterEach(tearDownInjector);
+
+    beforeEach((TestBed tb) {
+      _tb = tb;
       model = initHierarchy(
           modelFactory.createStaticListModel(labelMaker: getLabel), entities);
-    }));
+    });
 
     it('must have the correct structure of '
         '23 roots, 23 filtered items etc.', async(() {
@@ -222,19 +229,23 @@ void testHierarchicalMenuController() {
     MenuModelFactory<String> modelFactory = new MenuModelFactory<String>();
     MenuModel model;
     MenuSelectionModel selectionModel;
+    TestBed _tb;
 
-    beforeEach(async(() {
-      gtb = createGtTestBed();
-    }));
+    beforeEach(setUpInjector);
+    afterEach(tearDownInjector);
+
+    beforeEach((TestBed tb) {
+      _tb = tb;
+    });
 
     describe('TreeMenuModel: SingleSelect:', () {
-      beforeEach(async(() {
-        ctrl = new HierarchicalMenuController(Shapes.instance);
+      beforeEach(() {
+        ctrl = new HierarchicalMenuController();
         ctrl.model = initHierarchy(
             modelFactory.createStaticTreeModel(labelMaker: getLabel), entities);
         ctrl.selectionModel =
             new MenuSelectionModel(new MenuSelectionEventMediator());
-      }));
+      });
 
       it('must have the correct structure of '
          '9 roots, 23 filtered items etc.',
@@ -293,7 +304,7 @@ void testHierarchicalMenuController() {
 
     describe('TreeMenuModel: MultiSelect:', () {
       beforeEach(async(() {
-        ctrl = new HierarchicalMenuController(Shapes.instance);
+        ctrl = new HierarchicalMenuController();
         ctrl.model = initHierarchy(
             modelFactory.createStaticTreeModel(labelMaker: getLabel), entities);
         ctrl.selectionModel =
@@ -337,14 +348,18 @@ void testMenuSelectionEventMediator() {
     MenuModelFactory<String> modelFactory = new MenuModelFactory<String>();
     MenuModel model;
     MenuSelectionModel selectionModel;
+    TestBed _tb;
 
-    beforeEach(async(() {
-      gtb = createGtTestBed();
-    }));
+    beforeEach(setUpInjector);
+    afterEach(tearDownInjector);
+
+    beforeEach((TestBed tb) {
+      _tb = tb;
+    });
 
     describe('MenuSelectionEventMediator: MultiSelect:', () {
       beforeEach(async(() {
-        ctrl = new HierarchicalMenuController(Shapes.instance);
+        ctrl = new HierarchicalMenuController();
         ctrl.model = initHierarchy(
             modelFactory.createStaticTreeModel(labelMaker: getLabel), entities);
         ctrl.selectionModel =
@@ -370,12 +385,12 @@ void testMenuSelectionEventMediator() {
 
         // State after the selection of an item.
         ctrl.toggleSelection(makeMenuItem([shape, closedShape]));
-        fastForward();
+        microLeap();
         expect(selectedItems.length, 7);
 
         // State after the deselection of an item.
         ctrl.toggleSelection(makeMenuItem([shape, closedShape]));
-        fastForward();
+        microLeap();
         expect(selectedItems.length, 0);
 
         subscription.cancel();
@@ -405,7 +420,7 @@ void testMenuSelectionEventMediator() {
         ctrl.mediator.post(new MenuSelectionEvent(
             MenuSelectionEvent.SET_SELECTION, null,
             [makeMenuItem([shape, closedShape])], null));
-        fastForward();
+        microLeap();
 
         Completer completer = new Completer();
         completer.future.then((Iterable<MenuItem> selections) {
@@ -415,14 +430,14 @@ void testMenuSelectionEventMediator() {
 
         ctrl.mediator.post(new MenuSelectionEvent(
             MenuSelectionEvent.GET_CURRENT_SELECTION, null, null, completer));
-        fastForward();
+        microLeap();
 
         expect(selectedItems.length, 1);
 
         // State after the deselection of a subtree.
         ctrl.mediator.post(new MenuSelectionEvent(MenuSelectionEvent.DESELECT,
             null, makeMenuItem([shape, closedShape]), null));
-        fastForward();
+        microLeap();
 
         expect(selectedItems.length, 0);
 

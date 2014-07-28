@@ -1,0 +1,12 @@
+name:  hierarchical_tests
+description:  Hierarchical Menu Tests
+version: 0.0.1
+dependencies:
+  angular: any
+  hierarchical:
+    path: ../
+  browser: any
+  guinness: any
+  unittest: any
+transformers:
+- angular

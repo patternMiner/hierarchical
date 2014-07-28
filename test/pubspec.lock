@@ -37,6 +37,12 @@ packages:
     description: guinness
     source: hosted
     version: "0.1.12"
+  hierarchical:
+    description:
+      path: ".."
+      relative: true
+    source: path
+    version: "0.0.1"
   html5lib:
     description: html5lib
     source: hosted
