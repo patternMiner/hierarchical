@@ -4,7 +4,9 @@ version: 0.0.1
 dependencies:
   angular: any
   browser: any
-  unittest: any
+dev_dependencies:
   guinness: any
+  mock: any
+  unittest: any
 transformers:
 - angular

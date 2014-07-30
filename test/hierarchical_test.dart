@@ -2,8 +2,8 @@ library hierarchical_tests;
 
 import 'dart:async';
 
-import 'package:guinness/guinness.dart';
 import 'package:angular/mock/module.dart';
+import 'package:guinness/guinness.dart';
 import 'package:hierarchical/controller/menu_controller.dart';
 import 'package:hierarchical/model/menu_model.dart';
 import 'package:hierarchical/event/menu_selection_event.dart';
@@ -100,7 +100,7 @@ void testTreeMenuModel() {
           modelFactory.createStaticTreeModel(labelMaker: getLabel), entities);
     });
 
-    it('must have the correct structure of '
+    iit('must have the correct structure of '
         '9 roots, 23 filtered items etc.', async(() {
       expect(model.roots.length, 9);
       expect(model.filteredItems.length, 23);
