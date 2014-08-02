@@ -37,7 +37,7 @@ class ItemTemplateComponent implements ShadowRootAware {
     ViewFactory template = _compiler([placeholder], _directives);
     Scope childScope = _scope.createChild(new PrototypeMap(_scope.context));
     Injector childInjector =
-        _injector.createChild([new Module()..bind(Scope, toValue: childScope)]);
-    template(childInjector, [placeholder]);
+        new ModuleInjector([new Module()..bind(Scope, toValue: childScope)], _injector);
+    template(childScope, childInjector.get(DirectiveInjector), [placeholder]);
   }
 }
