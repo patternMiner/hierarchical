@@ -1,2 +1,5 @@
 build
 packages
+example/packages
+pubspec.lock
+example/pubspec.lock
