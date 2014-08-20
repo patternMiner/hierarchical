@@ -45,9 +45,10 @@ import '../event/menu_selection_event.dart';
  *      </heading>
  *      <div class="card notes-card">
  *        <hierarchical-menu-controller
- *            mediator="ctrl.mediator"
- *            selection-options="ctrl.selectionOptions"
- *            menu-model="ctrl.menuModel">
+ *            menu-model="ctrl.menuModel"
+ *            selection-model="ctrl.selectionModel"
+ *            searchable="true"
+ *            popup-mode="false>
  *          <hierarchical-menu
  *              class="flex-column-container"
  *              items="ctrl.menuModel.roots">
